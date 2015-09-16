@@ -1,0 +1,13 @@
+#+TITLE: tcbozzetti's LabBook
+#+AUTHOR: Tiago
+#+LATEX_HEADER: \usepackage[margin=2cm,a4paper]{geometry}
+#+STARTUP: overview indent
+#+TAGS: Lucas(L) Tiago(T) Arnaud(A) noexport(n) deprecated(d)
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+SEQ_TODO: TODO(t!) STARTED(s!) WAITING(w!) | DONE(d!) CANCELLED(c!) DEFERRED(f!)
+
+* 2015-09-16 Starting LabBook
+
+This is just an entry to reflect the creation of Tiago's LabBook.
+
