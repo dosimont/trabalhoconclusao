@@ -35,7 +35,7 @@ print_usage()
   -m|--machine_file 
   -h|help print help information
 End-of-message
- exit 1
+    exit 1
 }
 
 TEMP=`getopt -o i:o:p:m:h --long input:,output:,platform:,machine_file:,help -n 'smpi2pj.sh' -- "$@"`

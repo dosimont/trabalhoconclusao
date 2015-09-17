@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 my $format = q(tit); # time independent trace output format
-my $output = q(./smpi-paraver/paraver_trace/bigdft_8_rl); # output file name
+my $output = q(out); # output file name
 my $input = q(EXTRAE_Paraver_trace_mpich); # input file name
 
 my $power_reference = 286.087E-3; # in flop/mus
@@ -55,7 +55,7 @@ sub parse_row {
         }
     }
 
-		#print Dumper(\%resource_name);
+		# print Dumper(\%resource_name);
     return (\%resource_name);
 }
 
@@ -171,9 +171,9 @@ sub convert_prv {
         my(%mapping);
         my($task);
         foreach $task (1..$nb_task) {
-            my($nb_thread,$node_id) = split(/_/,$task_list[$task-1]);
-            if(!defined($mapping{$node_id})) { $mapping{$node_id}=[]; }
-            push @{$mapping{$node_id}},[$task,$nb_thread];
+            my($nb_thread, $node_id) = split(/_/, $task_list[$task - 1]);
+            if(!defined($mapping{$node_id})) { $mapping{$node_id} = []; }
+            push @{$mapping{$node_id}}, [$task, $nb_thread];
 						$task_mapping[$task] = $node_id;
         }
         $Appl{$app}{nb_task}=$nb_task;
@@ -290,12 +290,6 @@ sub convert_prv {
             my($sname_param);
             my($record, $cpu, $appli, $task, $thread, $begin_time, $end_time, $state) = split(/:/, $line);
 
-						print "$state\n";
-						print "$$state_name{$state}\n";
-						print "$begin_time\n";
-						print "$end_time\n";
-						print "$task\n";
-
 						# if state name contains 'Group' or 'Others', process next record that is an event
             if($$state_name{$state} =~ /Group/ || $$state_name{$state} =~ /Others/ ) {
                 $line = <INPUT>;
@@ -324,16 +318,11 @@ sub convert_prv {
                     ($end_time-$begin_time).", 0, ".$sname."\n";
             }
             if($format eq "tit") {
-                # $task = $task - 1;                  
+								my $tit_task = $task - 1;
+								my $tit_task_cpu = $task_mapping[$task] - 1;
                 defined($tit_translate{$sname}) or die "Unknown state '$sname' for tit\n";
                 if($tit_translate{$sname} ne "") {
-										print "$task\n";
-										# print "$tit_translate{$sname}\n";
-										# print "$sname_param\n";
-										# print "@fh\n";
-										print "$task_mapping[$task]\n";
-										print "$fh[$task_mapping[$task] - 1]\n";
-                    print { $fh[$task_mapping[$task] - 1] } "$task $tit_translate{$sname} $sname_param\n",
+                    print { $fh[$tit_task_cpu] } "$tit_task $tit_translate{$sname} $sname_param\n",
                 }
             }
         }
@@ -344,10 +333,11 @@ sub convert_prv {
           my($sname, $sname_param) = process_event(%event_list);
 
           if($format eq "tit") {
-              $task = $task - 1;                  
+							my $tit_task = $task - 1;
+							my $tit_task_cpu = $task_mapping[$task] - 1;           
               defined($tit_translate{$sname}) or die "Unknown state '$sname' for tit:\n\t$line\n";
               if($tit_translate{$sname} ne "") {
-                  print { $fh[$task] } "$task $tit_translate{$sname} $sname_param\n",
+                  print { $fh[$tit_task_cpu] } "$tit_task_cpu $tit_translate{$sname} $sname_param\n",
               }
           }
         }
