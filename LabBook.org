@@ -108,7 +108,6 @@ Source: references/ref1.pdf
    example, X and Y must contain the same family of processors or same
    number of processors. The reference 1 was not so clear about this.
 
-
 * Starting LabBook <2015-09-16 Wed>                                                 :journal:
 Lucas setup the org mode file for the journal.
 ** Copied the entries from the README file
@@ -151,3 +150,46 @@ the rank zero...
 
 
 
+* Compilation of all smpi replay operations <2015-09-17 Thu> :trace_replay:simgrid:tit:
+I took a look at the source code of the =smpi_replay= (the
+=references/ref1.pdf= does not contain all operations and all possible
+arguments) and compiled all the smpi trace replay operations and its
+arguments. I expect that this can be useful in the future.
+
+| MPI actions          | Trace entry                                       |
+|----------------------+---------------------------------------------------|
+| =CPU burst=          | =<rank> compute <flops>=                          |
+| =MPI_Send=           | =<rank> send <dst> <comm_size> [<datatype>]=      |
+| =MPI_Isend=          | =<rank> send <dst> <comm_size> [<datatype>]=      |
+| =MPI_Recv=           | =<rank> recv <src> <comm_size> [<datatype>]=      |
+| =MPI_Irecv=          | =<rank> Irecv <src> <comm_size> [<datatype>]=     |
+| =MPI_Broadcast=      | =<rank> bcast <comm_size> [<root> [<datatype>]]=  |
+| =MPI_Reduce=         | =<rank> reduce <comm_size> <comp_size>=           |
+|                      | =[<root> [<datatype>]]=                           |
+| =MPI_AllReduce=      | =<rank> allReduce <comm_size> <comp_size>=        |
+|                      | =[<datatype>]=                                    |
+| =MPI_Reduce_scatter= | =<rank> reduceScatter <recv_sizes†> <comp_size>=   |
+|                      | =[<datatype>]=                                    |
+| =MPI_Gather=         | =<rank> gather <send_size> <recv_size> <root>=    |
+|                      | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_AllGather=      | =<rank> allGather <send_size> <recv_size>=        |
+|                      | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_Alltoall=       | =<rank> allToAll <send_size> <recv_recv>=         |
+|                      | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_Alltoallv=      | =<rank> allToAllV <send_size> <send_sizes†>=       |
+|                      | =<recv_size> <recv_sizes†>=                        |
+|                      | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_GatherV=        | =<rank> gatherV <send_size> <recv_sizes†> <root>=  |
+|                      | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_AllGatherV=     | =<rank> allGatherV <send_size> <recv_sizes>=      |
+|                      | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_Barrier=        | =<rank> barrier=                                  |
+| =MPI_Wait=           | =<rank> wait=                                     |
+| =MPI_Waitall=        | =<rank> waitAll=                                  |
+| =MPI_Init=           | =<rank> init [<set_default_double>]=              |
+| =MPI_Finalize=       | =<rank> finalize=                                 |
+| =MPI_Comm_size=      | =<rank> comm_size <size>=                         |
+| =MPI_Comm_split=     | =<rank> comm_split=                               |
+| =MPI_Comm_dup=       | =<rank> comm_dup=                                 |
+† =send_sizes/recv_sizes= is an array, the number of elements must be equal
+to the number of processes in the communicator.
