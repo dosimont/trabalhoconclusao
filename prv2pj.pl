@@ -55,7 +55,7 @@ sub parse_row {
         }
     }
 
-		# print Dumper(\%resource_name);
+    # print Dumper(\%resource_name);
     return (\%resource_name);
 }
 
@@ -101,7 +101,7 @@ my(%pcf_coll_arg) = (
     "root" => "50100003",
     "communicator" => "50100003",
     "compute" => "my_reduce_compute_amount",
-);
+    );
 
 my(%tit_translate) = (
     "Running" => "compute",
@@ -124,7 +124,7 @@ my(%tit_translate) = (
     "MPI_Reduce_scatter" => "reduceScatter",
     "MPI_Finalize" => "finalize",
     "MPI_Barrier" => "barrier",
- );
+    );
 
 sub convert_prv {
     my($prv, $state_name, $event_name, $resource_name, $output, $format) = @_;
@@ -132,34 +132,34 @@ sub convert_prv {
     my(%event);
     my(@fh) = ();
 
-		open(INPUT, $prv) or die "Cannot open $prv. $!";
+    open(INPUT, $prv) or die "Cannot open $prv. $!";
 
     # Start parsing the header to get the trace hierarchy. 
     # We should get something like
     # #Paraver (dd/mm/yy at hh:m):ftime:0:nAppl:applicationList[:applicationList]
 
     $line = <INPUT>;
-		chomp $line;
+    chomp $line;
     $line =~ /^\#Paraver / or die "Invalid header '$line'\n";
     my $header = $line;
     $header =~ s/^[^:\(]*\([^\)]*\):// or die "Invalid header '$line'\n";
     $header =~ s/(\d+):(\d+)([^\(\d])/$1\_$2$3/g;
     $header =~ s/,\d+$//g;
-		# print "$header\n";
+    # print "$header\n";
     my($max_duration, $resource, $nb_app, @appl) = split(/:/, $header);
-		# print "$max_duration\n";
-		# print "$resource\n";
-		# print "$nb_app\n";
-		# print "@appl\n";
+    # print "$max_duration\n";
+    # print "$resource\n";
+    # print "$nb_app\n";
+    # print "@appl\n";
     $max_duration =~ s/_.*$//g;
     $resource =~ /^(.*)\((.*)\)$/ or die "Invalid resource description '$resource'\n";
     my($nb_nodes, $cpu_list) = ($1, $2);
-		# print "$nb_nodes\n";
+    # print "$nb_nodes\n";
     $nb_app == 1 or die "I can handle only one application type at the moment\n";
     my @cpu_list = split(/,/, $cpu_list);
-		# print "@cpu_list\n";
+    # print "@cpu_list\n";
 
-		my(@task_mapping);
+    my(@task_mapping);
     my(%Appl);
     my($nb_task);
     foreach my $app (1..$nb_app) {
@@ -174,13 +174,13 @@ sub convert_prv {
             my($nb_thread, $node_id) = split(/_/, $task_list[$task - 1]);
             if(!defined($mapping{$node_id})) { $mapping{$node_id} = []; }
             push @{$mapping{$node_id}}, [$task, $nb_thread];
-						$task_mapping[$task] = $node_id;
+	    $task_mapping[$task] = $node_id;
         }
         $Appl{$app}{nb_task}=$nb_task;
         $Appl{$app}{mapping}=\%mapping;
     }
-		# print Dumper(\%Appl);
-		# print "@task_mapping\n";
+    # print Dumper(\%Appl);
+    # print "@task_mapping\n";
 
     for ($format) {
         if (/^csv$/) { 
@@ -265,7 +265,7 @@ sub convert_prv {
                 }
             }
         } else { # This may be application of trace flushing event
-                 # and hardware counter, user function, ...
+	    # and hardware counter, user function, ...
             my($warn)=1;
             for (40000018,40000003,40000001,
                  42009999,42001003,42001010,42001015,300,
@@ -280,7 +280,7 @@ sub convert_prv {
         return($sname,$sname_param);
     }
 
-		# start reading records
+    # start reading records
     while(defined($line=<INPUT>)) {
         chomp($line);
 
@@ -290,7 +290,7 @@ sub convert_prv {
             my($sname_param);
             my($record, $cpu, $appli, $task, $thread, $begin_time, $end_time, $state) = split(/:/, $line);
 
-						# if state name contains 'Group' or 'Others', process next record that is an event
+	    # if state name contains 'Group' or 'Others', process next record that is an event
             if($$state_name{$state} =~ /Group/ || $$state_name{$state} =~ /Others/ ) {
                 $line = <INPUT>;
                 chomp $line;
@@ -306,8 +306,8 @@ sub convert_prv {
             }
 
             if($sname eq "Running") {
-								$sname_param.= (($end_time - $begin_time) * $power_reference);
-						}
+		$sname_param.= (($end_time - $begin_time) * $power_reference);
+	    }
 
             if($format eq "csv") {
                 print OUTPUT "State, $task, MPI_STATE, $begin_time, $end_time, ".
@@ -318,8 +318,8 @@ sub convert_prv {
                     ($end_time-$begin_time).", 0, ".$sname."\n";
             }
             if($format eq "tit") {
-								my $tit_task = $task - 1;
-								my $tit_task_cpu = $task_mapping[$task] - 1;
+		my $tit_task = $task - 1;
+		my $tit_task_cpu = $task_mapping[$task] - 1;
                 defined($tit_translate{$sname}) or die "Unknown state '$sname' for tit\n";
                 if($tit_translate{$sname} ne "") {
                     print { $fh[$tit_task_cpu] } "$tit_task $tit_translate{$sname} $sname_param\n",
@@ -327,27 +327,27 @@ sub convert_prv {
             }
         }
 
-				# Event records are in the format 2:cpu:appl:task:thread:time:event_type:event_value
-				elsif ($line =~ /^2/) {
-          my($event, $cpu, $appli, $task, $thread, $time, %event_list) = split(/:/, $line);
-          my($sname, $sname_param) = process_event(%event_list);
+	# Event records are in the format 2:cpu:appl:task:thread:time:event_type:event_value
+	elsif ($line =~ /^2/) {
+	    my($event, $cpu, $appli, $task, $thread, $time, %event_list) = split(/:/, $line);
+	    my($sname, $sname_param) = process_event(%event_list);
 
-          if($format eq "tit") {
-							my $tit_task = $task - 1;
-							my $tit_task_cpu = $task_mapping[$task] - 1;           
-              defined($tit_translate{$sname}) or die "Unknown state '$sname' for tit:\n\t$line\n";
-              if($tit_translate{$sname} ne "") {
-                  print { $fh[$tit_task_cpu] } "$tit_task_cpu $tit_translate{$sname} $sname_param\n",
-              }
-          }
+	    if($format eq "tit") {
+		my $tit_task = $task - 1;
+		my $tit_task_cpu = $task_mapping[$task] - 1;           
+		defined($tit_translate{$sname}) or die "Unknown state '$sname' for tit:\n\t$line\n";
+		if($tit_translate{$sname} ne "") {
+		    print { $fh[$tit_task_cpu] } "$tit_task_cpu $tit_translate{$sname} $sname_param\n",
+		}
+	    }
         }
 
-				# Communication records are in the format 3:cpu_send:ptask_send:task_send:thread_send:logical_time_send:actual_time_send:cpu_recv:ptask_recv:task_recv:thread_recv:logical_time_recv:actual_time_recv:size:tag
-				elsif($line =~ /^3/) { 
+	# Communication records are in the format 3:cpu_send:ptask_send:task_send:thread_send:logical_time_send:actual_time_send:cpu_recv:ptask_recv:task_recv:thread_recv:logical_time_recv:actual_time_recv:size:tag
+	elsif($line =~ /^3/) { 
             print STDERR "Skipping this communication event\n";
         }
 
-				# Communicator record are in the format c:app_id:communicator_id:number_of_process:thread_list (e.g., 1:2:3:4:5:6:7:8)
+	# Communicator record are in the format c:app_id:communicator_id:number_of_process:thread_list (e.g., 1:2:3:4:5:6:7:8)
         if($line =~ /^c/) {
             print STDERR "Skipping communicator definition\n";
         }
