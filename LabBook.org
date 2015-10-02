@@ -296,3 +296,36 @@ library in my system (or any other solution in the internet). I have
 mailed tools@bsc.es to get a proper solution.
 
 
+* 2015-10-02 Checking if Extrae was correctly installed               :Lucas:
+
+So, I have both Extrae and Dyninst installed.
+
+These are the steps to see if it is working:
+
+#+BEGIN_SRC sh :results output :session :exports both
+export STOW_DIR="/home/schnorr/install/stow/"
+rm -rf $STOW_DIR/*
+mkdir -p $STOW_DIR
+echo $STOW_DIR
+stow /home/schnorr/install/dyninst-9.0.3/
+stow /home/schnorr/install/extrae-3.1.0/
+export LD_LIBRARY_PATH=$STOW_DIR/lib/
+export PATH=$PATH:$STOW_DIR/bin/
+extrae
+#+END_SRC
+
+I wasn't able to run the following commands from org-mode.
+
+If it works, you should have something like this:
+
+#+BEGIN_SRC sh :results output :session :exports both
+export STOW_DIR=/home/schnorr/install/stow/
+export LD_LIBRARY_PATH=$STOW_DIR/lib/
+export PATH=$PATH:$STOW_DIR/bin
+extrae
+#+END_SRC
+
+You should see the message:
+
++ *Extrae: You have to provide a binary to instrument*
+
