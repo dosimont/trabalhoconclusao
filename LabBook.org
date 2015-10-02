@@ -193,15 +193,20 @@ I created a new script based on the old one so I could have a better ideia of wh
 The script started supporting the MPI calls on the =EXTRAE_Paraver_trace_mpich= trace
 
 * Immediate send format on the Paraver trace <2015-10-01 Thu> :paraver:tracing:
-The =cgpop.linux_icc_mt.180x120.24tasks.chop1= trace contains immediate sends and this was one of the
-reasons the script was failing. I examined how the trace tool generates the entries in the trace file
-when an immediate send happens. First we have a state entry telling us that the task is in an immediate
-send state, then we have a event entry (right after the state entry) with the =MPI_Isend= event. Keep in
-mind that the parameters we need for an immediate send is the destiny and the communication size. The event
-entry, however, does not provide any of those. If we continue on the trace, we will find a communication entry
-that is associated with the immediate send. This communication entry is not necessarily after the event entry.
-Also, this entry contains the destiny and the message size. In the example below the immediate send event entry
-is the first line while the communication entry of the immediate send is the last line.
+The =cgpop.linux_icc_mt.180x120.24tasks.chop1= trace contains immediate
+sends and this was one of the reasons the script was failing. I
+examined how the trace tool generates the entries in the trace file
+when an immediate send happens. First we have a state entry telling us
+that the task is in an immediate send state, then we have a event
+entry (right after the state entry) with the =MPI_Isend= event. Keep in
+mind that the parameters we need for an immediate send is the destiny
+and the communication size. The event entry, however, does not provide
+any of those. If we continue on the trace, we will find a
+communication entry that is associated with the immediate send. This
+communication entry is not necessarily after the event entry.  Also,
+this entry contains the destiny and the message size. In the example
+below the immediate send event entry is the first line while the
+communication entry of the immediate send is the last line.
 #+BEGIN_SRC shell
 2:3:1:3:1:52372287:50000001:3:42000050:14833...
 1:6:1:6:1:52372820:52379709:1
