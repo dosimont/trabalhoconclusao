@@ -233,3 +233,66 @@ Please, feel free to create items and subitems if necessary.
 - State "TODO"       from ""           [2015-09-18 Sex 10:25]
 ** TODO Look into why the two other traces are not working how they should.
 - State "TODO"       from ""           [2015-09-18 Sex 10:26]
+* 2015-10-02 Using Arnaud's init.org                                  :Lucas:
+
+Please, follow the instructions of:
+
+http://mescal.imag.fr/membres/arnaud.legrand/misc/init.php
+
+* 2015-10-02 Installing Extrae                                  :Lucas:Tiago:
+
+That's really hard, lots of dependencies, problems, log below tries to
+handle all that, but several indications are Debian testing-specific.
+
+Download latest Extrae from:
+
++ https://www.bsc.es/computer-sciences/performance-tools/downloads
+
+Dyninst dependencies in my box:
+
+#+BEGIN_SRC sh
+sudo apt-get install libboost-thread-dev libboost-system-dev libelf-dev
+#+END_SRC
+
+Download dyinst, configure and install:
+
+#+begin_src sh :results output :session :exports both
+cd ~/misc
+wget --quiet http://www.paradyn.org/release9.0.3/DyninstAPI-9.0.3.tgz
+tar xfz DyninstAPI-9.0.3.tgz
+cd DyninstAPI-9.0.3
+mkdir build
+cd build
+cmake ..
+make
+make install
+#+end_src
+
+Let's install other Extrae's dependencies:
+
+#+begin_src R :results output :session :exports both
+sudo apt-get install libopempi-dev libdwarf-dev libpapi-dev libbinutils-dev
+#+end_src
+
+I have put in my *misc* directory:
+
+#+BEGIN_SRC sh :results output :session :exports both
+cd misc
+tar xfj extrae-3.1.0.tar.bz2
+cd extrae-3.1.0
+./configure --prefix=$HOME/install/extrae-3.1.0/ \
+            --with-mpi=/usr/lib/openmpi/ \
+            --with-unwind=/usr \
+            --with-dyninst=/home/schnorr/install/dyninst-9.0.3/ \
+            --with-dwarf=/home/schnorr/install/dyninst-9.0.3/ \
+            --with-dwarf=/usr/ --with-papi=/usr --with-binutils=/usr
+make
+make install
+#+END_SRC
+
+After the configure and before make, I had to comment the line on the
+Makefile that contained -lsymLite, since I was unable to find such
+library in my system (or any other solution in the internet). I have
+mailed tools@bsc.es to get a proper solution.
+
+
