@@ -193,3 +193,33 @@ arguments. I expect that this can be useful in the future.
 | =MPI_Comm_dup=       | =<rank> comm_dup=                                 |
 † =send_sizes/recv_sizes= is an array, the number of elements must be equal
 to the number of processes in the communicator.
+
+* More Paraver traces with more MPI primitives <2015-09-20 Sun> :tracing:paraver:
+We need to make sure the conversion script is able to handle any kind of Paraver trace.
+So far, our script does not handle some MPI primitives that are less used, such as MPI_AlltoAllv.
+I tried to install the Extrae tool to use it to generate some traces but I failed in completing this task.
+
+* New script for converting to =.tit= format <2015-10-01 Thu> :tit:
+I created a new script based on the old one so I could have a better ideia of what was being done.
+The script started supporting the MPI calls on the =EXTRAE_Paraver_trace_mpich= trace
+
+* Immediate send format on the Paraver trace <2015-10-01 Thu> :paraver:tracing:
+The =cgpop.linux_icc_mt.180x120.24tasks.chop1= trace contains immediate sends and this was one of the
+reasons the script was failing. I examined how the trace tool generates the entries in the trace file
+when an immediate send happens. First we have a state entry telling us that the task is in an immediate
+send state, then we have a event entry (right after the state entry) with the =MPI_Isend= event. Keep in
+mind that the parameters we need for an immediate send is the destiny and the communication size. The event
+entry, however, does not provide any of those. If we continue on the trace, we will find a communication entry
+that is associated with the immediate send. This communication entry is not necessarily after the event entry.
+Also, this entry contains the destiny and the message size. In the example below the immediate send event entry
+is the first line while the communication entry of the immediate send is the last line.
+#+BEGIN_SRC shell
+2:3:1:3:1:52372287:50000001:3:42000050:14833...
+1:6:1:6:1:52372820:52379709:1
+2:6:1:6:1:52372820:50000001:0:42000050:8708...
+1:6:1:6:1:52379709:52390070:11
+2:6:1:6:1:52379709:50000001:4:42000050:2191...
+1:3:1:3:1:52389139:52396811:1
+2:3:1:3:1:52389139:50000001:0
+3:3:1:3:1:52372287:52389139:2:1:2:1:52853369:53050068:9912:103
+#+END_SRC
