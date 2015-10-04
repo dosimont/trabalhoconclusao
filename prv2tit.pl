@@ -89,6 +89,7 @@ my @mpi_calls = (
     "MPI_Wait",
     "MPI_Waitall",
     "MPI_Isend",
+    "MPI_Reduce_scatter",
     );
     
 # search for a MPI call in the event's parameters
@@ -136,7 +137,7 @@ sub get_mpi_parameters {
 sub create_tit_entry {
     my($task, %parameters) = @_;
 
-    #print Dumper(\%parameters);
+    print Dumper(\%parameters);
 
     my $mpi_call = $parameters{"mpi_call"};
     my $send_size = $parameters{"send_size"};
@@ -178,6 +179,7 @@ sub create_tit_entry {
 	}
 	case "MPI_Reduce_scatter" {
 	    # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
+	    print("reduce scatter\n");
 	}
 	case "MPI_Gather" {
 	    # FORMAT: <rank> gather <send_size> <recv_size> <root> [<send_datatype> <recv_datatype>]
@@ -386,7 +388,7 @@ sub parse_prv {
 	   $current_tasks_parameters[$task_send - 1]->{"comm_size"} = $size;
 	   $current_tasks_parameters[$task_send - 1]->{"source"} = $task_send;
 	   $current_tasks_parameters[$task_send - 1]->{"destiny"} = $task_recv;
-	   print Dumper(\%{$current_tasks_parameters[$task_send - 1]});
+	   #print Dumper(\%{$current_tasks_parameters[$task_send - 1]});
         }
 
 	# communicator record are in the format c:app_id:communicator_id:number_of_process:thread_list (e.g., 1:2:3:4:5:6:7:8)
