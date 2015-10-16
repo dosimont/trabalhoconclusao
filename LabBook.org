@@ -145,8 +145,8 @@ I took a look at the source code of the =smpi_replay= (the
 arguments) and compiled all the smpi trace replay operations and its
 arguments. I expect that this can be useful in the future.
 
-| MPI actions          | Trace entry                                       |
-|----------------------+---------------------------------------------------|
+| MPI actions        | Trace entry                                     |
+|--------------------+-------------------------------------------------|
 | =CPU burst=          | =<rank> compute <flops>=                          |
 | =MPI_Send=           | =<rank> send <dst> <comm_size> [<datatype>]=      |
 | =MPI_Isend=          | =<rank> send <dst> <comm_size> [<datatype>]=      |
@@ -154,24 +154,24 @@ arguments. I expect that this can be useful in the future.
 | =MPI_Irecv=          | =<rank> Irecv <src> <comm_size> [<datatype>]=     |
 | =MPI_Broadcast=      | =<rank> bcast <comm_size> [<root> [<datatype>]]=  |
 | =MPI_Reduce=         | =<rank> reduce <comm_size> <comp_size>=           |
-|                      | =[<root> [<datatype>]]=                           |
+|                    | =[<root> [<datatype>]]=                           |
 | =MPI_AllReduce=      | =<rank> allReduce <comm_size> <comp_size>=        |
-|                      | =[<datatype>]=                                    |
-| =MPI_Reduce_scatter= | =<rank> reduceScatter <recv_sizes†> <comp_size>=   |
-|                      | =[<datatype>]=                                    |
+|                    | =[<datatype>]=                                    |
+| =MPI_Reduce_scatter= | =<rank> reduceScatter <recv_sizes†> <comp_size>=  |
+|                    | =[<datatype>]=                                    |
 | =MPI_Gather=         | =<rank> gather <send_size> <recv_size> <root>=    |
-|                      | =[<send_datatype> <recv_datatype>]=               |
+|                    | =[<send_datatype> <recv_datatype>]=               |
 | =MPI_AllGather=      | =<rank> allGather <send_size> <recv_size>=        |
-|                      | =[<send_datatype> <recv_datatype>]=               |
+|                    | =[<send_datatype> <recv_datatype>]=               |
 | =MPI_Alltoall=       | =<rank> allToAll <send_size> <recv_recv>=         |
-|                      | =[<send_datatype> <recv_datatype>]=               |
-| =MPI_Alltoallv=      | =<rank> allToAllV <send_size> <send_sizes†>=       |
-|                      | =<recv_size> <recv_sizes†>=                        |
-|                      | =[<send_datatype> <recv_datatype>]=               |
-| =MPI_GatherV=        | =<rank> gatherV <send_size> <recv_sizes†> <root>=  |
-|                      | =[<send_datatype> <recv_datatype>]=               |
-| =MPI_AllGatherV=     | =<rank> allGatherV <send_size> <recv_sizes>=      |
-|                      | =[<send_datatype> <recv_datatype>]=               |
+|                    | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_Alltoallv=      | =<rank> allToAllV <send_size> <send_sizes†>=      |
+|                    | =<recv_size> <recv_sizes†>=                       |
+|                    | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_GatherV=        | =<rank> gatherV <send_size> <recv_sizes†> <root>= |
+|                    | =[<send_datatype> <recv_datatype>]=               |
+| =MPI_AllGatherV=     | =<rank> allGatherV <send_size> <recv_sizes†>=     |
+|                    | =[<send_datatype> <recv_datatype>]=               |
 | =MPI_Barrier=        | =<rank> barrier=                                  |
 | =MPI_Wait=           | =<rank> wait=                                     |
 | =MPI_Waitall=        | =<rank> waitAll=                                  |
