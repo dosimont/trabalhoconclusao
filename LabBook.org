@@ -322,10 +322,55 @@ If it works, you should have something like this:
 export STOW_DIR=/home/schnorr/install/stow/
 export LD_LIBRARY_PATH=$STOW_DIR/lib/
 export PATH=$PATH:$STOW_DIR/bin
+export EXTRAE_HOME=/home/schnorr/install/extrae-3.1.0/
 extrae
 #+END_SRC
 
 You should see the message:
 
 + *Extrae: You have to provide a binary to instrument*
+
+* 2015-10-02 Checking if Extrae is able to instrument                 :Lucas:
+
+Environment variables:
+
+#+BEGIN_SRC sh :results output :session myses
+export STOW_DIR=/home/schnorr/install/stow/
+export LD_LIBRARY_PATH=$STOW_DIR/lib/
+export PATH=$PATH:$STOW_DIR/bin
+export EXTRAE_HOME=/home/schnorr/install/extrae-3.1.0/
+#+END_SRC
+
+#+RESULTS:
+
+
+#+BEGIN_SRC C :tangle mpi_init_finalize.c
+#include <mpi.h>
+int main (int argc, char **argv)
+{
+  MPI_Init(&argc, &argv);
+  MPI_Finalize();
+}
+#+END_SRC
+
+Compile:
+
+#+BEGIN_SRC sh :results output :session myses
+mpicc mpi_init_finalize.c
+#+END_SRC
+
+#+RESULTS:
+
+Instrument:
+
+#+BEGIN_SRC sh :results output :session myses
+export EXTRAE_CONFIG_FILE=/home/schnorr/install/extrae-3.1.0/share/example/MPI/extrae.xml
+extrae a.out
+#+END_SRC
+
+#+RESULTS:
+: 
+: Welcome to Extrae 3.1.0 revision 3316 based on extrae/trunk launcher using DynInst 9.0.3
+: Extrae: Creating process for image binary a.out
+: Extrae: Error creating the target application process
 
