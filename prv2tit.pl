@@ -36,11 +36,11 @@ sub main {
     parse_pcf($input.".pcf");
     parse_prv($input.".prv");
 
-    print("Translated events:\n");
-    print join ", ", keys %translated_events;
-    print("\nIgnored events:\n");
-    print join ", ", keys %ignored_events;
-    print("\n");
+    print STDERR "Translated events:\n";
+    print STDERR join ", ", keys %translated_events;
+    print STDERR "\nIgnored events:\n";
+    print STDERR join ", ", keys %ignored_events;
+    print STDERR "\n";
 }
 
 my %mpi_call_parameters = (
