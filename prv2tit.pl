@@ -109,38 +109,40 @@ sub extract_mpi_call {
 sub generate_tit {
     my($task) = @_;
 
+    $task = $task - 1;
+
     # keep translating until some MPI call is still missing some parameters
     while (1) {
-	if (scalar @{$task_states_buffer[$task - 1]} == 0) { last; }
-	my $state_entry = $task_states_buffer[$task - 1][0];
+	if (scalar @{$task_states_buffer[$task]} == 0) { last; }
+	my $state_entry = $task_states_buffer[$task][0];
 
 	# if current state is running, generate tit entry, remove state and continue translating
 	if ($state_entry->{"state"} eq "Running") {
 	    my $comp_size = ($state_entry->{"end_time"} - $state_entry->{"begin_time"}) * $power_reference;
 	    my $time = $state_entry->{"begin_time"};
 	    print("$task compute $comp_size\n");
-	    shift(@{$task_states_buffer[$task - 1]});
+	    shift(@{$task_states_buffer[$task]});
 	    next;
 	}
 
 	# if there are no events in the buffer and more than one state,
 	# remove all states but the last one and continue
-	if (scalar @{$task_events_buffer[$task - 1]} == 0
-	    && scalar @{$task_states_buffer[$task - 1]} > 1) {
-	    shift(@{$task_states_buffer[$task - 1]});
+	if (scalar @{$task_events_buffer[$task]} == 0
+	    && scalar @{$task_states_buffer[$task]} > 1) {
+	    shift(@{$task_states_buffer[$task]});
 	    next;		
 	}
 
 	# if there are no events in the buffer, stop
-	if (scalar @{$task_events_buffer[$task - 1]} == 0) {
+	if (scalar @{$task_events_buffer[$task]} == 0) {
 	    last;
 	}
 
 	# remove current state if it does not contain any event and continue
-	my $event_entry = $task_events_buffer[$task - 1][0];
+	my $event_entry = $task_events_buffer[$task][0];
 	if (!($state_entry->{"begin_time"} <= $event_entry->{"time"}
 	    && $state_entry->{"end_time"} > $event_entry->{"time"})) {
-	    shift(@{$task_states_buffer[$task - 1]});
+	    shift(@{$task_states_buffer[$task]});
 	    next;
 	}
 
@@ -152,12 +154,12 @@ sub generate_tit {
 	    my $found_communication = 0;
 
 	    # if communication buffer is empty, stop translating
-	    if (! defined $task_comms_buffer[$task - 1]) {
+	    if (! defined $task_comms_buffer[$task]) {
 		last;
 	    }
 
-	    for (my $j = 0; $j < scalar @{$task_comms_buffer[$task - 1]}; $j++) {
-		my $comm_entry = $task_comms_buffer[$task - 1][$j];
+	    for (my $j = 0; $j < scalar @{$task_comms_buffer[$task]}; $j++) {
+		my $comm_entry = $task_comms_buffer[$task][$j];
 		if ($state_entry->{"begin_time"} <= $comm_entry->{"time"}
 		      && $state_entry->{"end_time"} >= $comm_entry->{"time"}) {
 		    $found_communication = 1;
@@ -191,9 +193,9 @@ sub generate_tit {
 			    print("$task Irecv $src $comm_size\n");
 			}
 		    }
-		    splice(@{$task_comms_buffer[$task - 1]}, $j, 1);
-		    shift(@{$task_events_buffer[$task - 1]});
-		    shift(@{$task_states_buffer[$task - 1]});
+		    splice(@{$task_comms_buffer[$task]}, $j, 1);
+		    shift(@{$task_events_buffer[$task]});
+		    shift(@{$task_states_buffer[$task]});
 		    last;
 		}
 	    }
@@ -287,8 +289,8 @@ sub generate_tit {
 		print("$task alltoall $send_size $recv_size\n");
 	    }
 	}
-	shift(@{$task_events_buffer[$task - 1]});
-	shift(@{$task_states_buffer[$task - 1]});	
+	shift(@{$task_events_buffer[$task]});
+	shift(@{$task_states_buffer[$task]});
     }
 }
 
