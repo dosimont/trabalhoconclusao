@@ -389,3 +389,65 @@ To convert a Paraver trace file to the time-independent trace format execute the
 #+BEGIN_SRC shell
 $ perl prv2tit.pl -i <paraver_trace_file>
 #+END_SRC
+
+* 2015-10-16 Meeting with Tiago                                 :Lucas:Tiago:
+
++ The /MPI_Comm_size/ is a function that receives the size of the
+  communicator. It is pretty easy to obtain, Tiago will do it soon.
+  An MPI application might have multiple communicators, but luckly the
+  paraver trace file keeps track of all this. So we basically need a
+  hash mapping the communicator identifier to its size. When the event
+  /MPI_Comm_size/ appears for a given process, we only have to lookup in
+  that hash table.
++ All operations that receive as parameter the *size* (of something:
+  receive or send sizes particular to each process) are going to be
+  implemented by Tiago soon. They are not yet translated because they
+  are slightly more complicated to get the size parameter for each
+  processes. Tiago already has an idea on how to deal with that, he's
+  going to implement that soon. These are the concerned functions:
+  /MPI_Reduce_scatter/, /MPI_Alltoallv/, /MPI_Allgatherv/, /MPI_GatherV/.
++ All operations that have /comp_size/ are not yet completed (for
+  example: allReduce and reduce). This comp size means "computation"
+  since they run an operation for the reduce. We have to take into
+  account the computation cost of doing so, but as of now, we have no
+  idea on how to obtain such metric from the trace. We could take the
+  time spent in the reduce operation, but that means it would also
+  take the communication time. We intend to discuss this with Arnaud
+  to get his opinion.
++ Micro-applications for validation: Tiago has already done four
+  micro-applications (in the applications dir). He is going to extend
+  that in order to check if every single MPI operation supported by
+  tit is being correctly translated.
++ The next step is simulating the tit traces using SimGrid. It would
+  be better to use the *git* version since any changes can be considered
+  at the moment they are pushed to there. Here's the git you have to
+  clone:
+
+  git+ssh://schnorr@scm.gforge.inria.fr//gitroot//simgrid/simgrid.git
+
++ We have used smpi2pj.sh script, but reading of tit files generated
+  by Tiago's script is not working. The current idea of why is that
+  ranks are starting at 1, instead of zero. We have looked in Arnaud's
+  script and he indeed subtract 1 from task identifiers. We have done
+  so rapidly (see commit) and it works.
+
++ We convert the paraver to tit, we simulate with /smpi_replay/ and we
+  got a paje trace file, and then we convert it to CSV using /pj_dump/
+  from pajeng package [1]. With that, we have the "SimGrid size".  To
+  have the "Dimemas size", we get the paraver, we feed to to dimemas,
+  we get another paraver that reflects the simulation that has been
+  conducted by dimemas (so timestamps are going to change), and then
+  we have to convert this second simulated paraver trace file to Paje,
+  and then use /pj_dump/ to CSV, to finally tackle the comparison
+  between Simgrid and Dimemas.
+
+  + "SimGrid size" is almost ready.
+  + "Dimemas size" depends on paraver2paje (Tiago has to build a
+    paraver to paje converter as well, which is going a copy of the
+    prv2tit, but much more easy).
+
+[1]: https://github.com/schnorr/pajeng/
+
+
+
+
