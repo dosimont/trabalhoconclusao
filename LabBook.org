@@ -219,18 +219,22 @@ communication entry of the immediate send is the last line.
 #+END_SRC
 
 * 2015-10-15 New Paraver traces
-After installing EXTRAE, we were able to generate the traces of a few simple MPI applications.
-Those applications can be found in the directory =applications=, and a script to generate their traces is also on the directory.
-You need to have EXTRAE installed, however.
-The traces generated will be helpful to validade the translation to tit.
+After installing EXTRAE, we were able to generate the traces of a few
+simple MPI applications.  Those applications can be found in the
+directory =applications=, and a script to generate their traces is also
+on the directory.  You need to have EXTRAE installed, however.  The
+traces generated will be helpful to validade the translation to tit.
 
 * 2015-10-15 New approach
-We came to the conclusion that we can not generate the =.tit= entries one by one while reading the Paraver trace file.
-The new script =prv2tit.pl= uses buffers to store the MPI calls that have missing parameters.
-Those parameters can be obtained in a trace entry that can be 10 or 20 lines after the event.
-The immediate send MPI call is an example of this situation.
-Anyway, the script is able to translate all MPI calls supported by SIMGRID except for the V operations.
-The V operations require some extra functionality in the script that will be soon implemented.
+We came to the conclusion that we can not generate the =.tit= entries
+one by one while reading the Paraver trace file.  The new script
+=prv2tit.pl= uses buffers to store the MPI calls that have missing
+parameters.  Those parameters can be obtained in a trace entry that
+can be 10 or 20 lines after the event.  The immediate send MPI call is
+an example of this situation.  Anyway, the script is able to translate
+all MPI calls supported by SIMGRID except for the V operations.  The V
+operations require some extra functionality in the script that will be
+soon implemented.
 
 * 2015-10-15 How to run it?
 To convert a Paraver trace file to the time-independent trace format execute the following command:
