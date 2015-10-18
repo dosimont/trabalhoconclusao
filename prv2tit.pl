@@ -16,6 +16,9 @@ my %ignored_events;
 
 my $number_of_tasks;
 
+# store communicator id and size
+my %communicators;
+
 my @task_states_buffer;
 my @task_events_buffer;
 my @task_comms_buffer;
@@ -63,19 +66,17 @@ my @mpi_calls = (
     "MPI_Reduce",
     "MPI_Allreduce",
     "MPI_Barrier",
-    "MPI_Comm_split",
-    "MPI_Comm_dup",
     "MPI_Gather",
     "MPI_AllGather",
     "MPI_Alltoall",
+    "MPI_Gatherv",
+    "MPI_Allgatherv",
+    "MPI_Reduce_scatter",
+    # "MPI_Alltoallv"
     );
 
 # Missing MPI calls:
-# "MPI_Reduce_scatter"
 # "MPI_Alltoallv"
-# "MPI_Allgatherv"
-# "MPI_GatherV"
-# "MPI_Comm_size"
 
 
 
@@ -108,11 +109,11 @@ sub extract_mpi_call {
 
 sub generate_tit {
     my($task) = @_;
-
     $task = $task - 1;
 
     # keep translating until some MPI call is still missing some parameters
     while (1) {
+	if (! (defined $task_states_buffer[$task])) { last; }
 	if (scalar @{$task_states_buffer[$task]} == 0) { last; }
 	my $state_entry = $task_states_buffer[$task][0];
 
@@ -145,10 +146,81 @@ sub generate_tit {
 	    shift(@{$task_states_buffer[$task]});
 	    next;
 	}
+	my $mpi_call = $event_entry->{"mpi_call"};
+
+	# if event is a mpi v operation
+	# check if other tasks already permormed that operation using the communicator v operation buffer
+	if ($mpi_call eq "MPI_Gatherv" || $mpi_call eq "MPI_Allgatherv"
+	    || $mpi_call eq "MPI_Reduce_scatter" || $mpi_call eq "MPI_Alltoallv") {
+
+
+	    my @task_list = @{$communicators{$event_entry->{"communicator"}}{tasks}};
+	    my $action_ready = 1;
+	    for (my $i = 0; $i < scalar @task_list; $i++) {
+		if (! (defined($communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}))) {
+		    $action_ready = 0;
+		    last;
+		}
+		if (scalar @{$communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}} == 0) {
+		    $action_ready = 0;
+		    last;
+		}	
+	    }
+	    if ($action_ready == 0) {
+		last;
+	    }
+
+	    my @recv_counts;
+	    my @send_counts;
+	    my $root;
+	    for (my $i = 0; $i < scalar @task_list; $i++) {
+		push(@recv_counts, $communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}[0]{"recv_size"});
+		push(@send_counts, $communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}[0]{"send_size"});
+		if (! (defined($root))) {
+		    $root = $communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}[0]{"root"};
+		}
+
+		my $use_count = $communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}[0]{"use_count"} + 1;
+		$communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}[0]{"use_count"} = $use_count;
+		if ($use_count == $communicators{$event_entry->{"communicator"}}{size}) {
+		    shift(@{$communicators{$event_entry->{"communicator"}}{$mpi_call}{$task_list[$i]}});
+		}
+	    }
+
+	    switch ($mpi_call) {
+		case "MPI_Gatherv" {
+		    # FORMAT: <rank> gatherV <send_size> <recv_sizes†> <root> [<send_datatype> <recv_datatype>]
+		    my $send_size = $event_entry->{"send_size"};
+		    my $recv_sizes = join(" ", @recv_counts);
+		    print("$task gatherV $send_size $recv_sizes $root\n");
+		}
+		case "MPI_Allgatherv" {
+		    # FORMAT: <rank> allGatherV <send_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
+		    my $send_size = $event_entry->{"send_size"};
+		    my $recv_sizes = join(" ", @recv_counts);
+		    print("$task allGatherV $send_size $recv_sizes\n");
+		}
+		case "MPI_Reduce_scatter" {
+		    # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
+		    my $recv_sizes = join(" ", @recv_counts);
+		    print("$task reduceScatter $recv_sizes <comp_size>\n");
+		}
+		# case "MPI_Alltoallv" {
+		    # FORMAT: <rank> allToAllV <send_size> <send_sizes†> <recv_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
+		#    my $send_sizes = join(" ", @send_counts);
+		#    my $recv_sizes = join(" ", @recv_counts);
+		#    print("allToAllV $send_sizes $recv_sizes\n");
+		    #print("$task allToAllV $recv_sizes <comp_size>\n");
+		#}
+	    }
+
+	    shift(@{$task_events_buffer[$task]});
+	    shift(@{$task_states_buffer[$task]});
+	    next;
+	}
 
 	# if event is a mpi point to point communication
 	# check if the p2p communication is on the communications buffer
-	my $mpi_call = $event_entry->{"mpi_call"};
 	if ($mpi_call eq "MPI_Send" || $mpi_call eq "MPI_Recv"
 	    || $mpi_call eq "MPI_Isend" || $mpi_call eq "MPI_Irecv") {
 	    my $found_communication = 0;
@@ -307,7 +379,6 @@ sub add_state_entry {
     $entry{"state"} = $state;
 
     push @{ $task_states_buffer[$task - 1] }, \%entry;
-    generate_tit($task);
 }
 
 sub add_event_entry {
@@ -329,7 +400,18 @@ sub add_event_entry {
     $entry{"communicator"} = $communicator;
     push @{ $task_events_buffer[$task - 1] }, \%entry;
 
-    generate_tit($task);
+    # if event is a mpi v operations
+    # create buffer entry for it in the communicator entry
+    if ($mpi_call eq "MPI_Gatherv" || $mpi_call eq "MPI_Allgatherv"
+	|| $mpi_call eq "MPI_Reduce_scatter" || $mpi_call eq "MPI_Alltoallv") {
+	my %v_operation_entry;
+	$v_operation_entry{"time"} = $time;
+	$v_operation_entry{"send_size"} = $send_size;
+	$v_operation_entry{"recv_size"} = $recv_size;
+	$v_operation_entry{"root"} = $root;
+	$v_operation_entry{"use_count"} = 0;
+	push @{ $communicators{$communicator}{$mpi_call}{$task} }, \%v_operation_entry;
+    }
 }
 
 sub add_communication_entry {
@@ -346,14 +428,12 @@ sub add_communication_entry {
     $entry_send{"comm_size"} = $comm_size;
     $entry_send{"destiny"} = $destiny;
     push @{ $task_comms_buffer[$task_send - 1] }, \%entry_send;
-    generate_tit($task_send);
 
     my %entry_recv;
     $entry_recv{"time"} = $time_recv;
     $entry_recv{"comm_size"} = $comm_size;
     $entry_recv{"source"} = $source;
     push @{ $task_comms_buffer[$task_recv - 1] }, \%entry_recv;
-    generate_tit($task_recv);
 }
 
 
@@ -401,12 +481,13 @@ sub parse_prv {
             my($record, $cpu, $appli, $task, $thread, $begin_time, $end_time, $state_id) = split(/:/, $line);
 	    my $state_name = $states{$state_id}{name};
 
+	    generate_tit($task);
+
 	    my %parameters;
 	    $parameters{"begin_time"} = $begin_time;
 	    $parameters{"end_time"} = $end_time;
 	    $parameters{"state"} = $state_name;
 	    add_state_entry($task, %parameters);
-	    
         }
 
 	# event records are in the format 2:cpu:appl:task:thread:time:event_type:event_value
@@ -414,7 +495,7 @@ sub parse_prv {
 	    my($record, $cpu, $appli, $task, $thread, $time, %event_list) = split(/:/, $line);
 	    my $mpi_call = extract_mpi_call(%event_list);
 
-	    # if event is a MPI call, get the MPI call parameters from the event entry
+	    # if event is a MPI call, get the MPI call parameteradd_event_entry($task, %parameters);
 	    if($mpi_call ne "None") {
 		my $send_size = $event_list{$mpi_call_parameters{"send size"}};
 		my $recv_size = $event_list{$mpi_call_parameters{"recv size"}};
@@ -447,22 +528,29 @@ sub parse_prv {
 
 	# communicator record are in the format c:app_id:communicator_id:number_of_process:thread_list (e.g., 1:2:3:4:5:6:7:8)
         if($line =~ /^c/) {
-            # print STDERR "Skipping communicator definition\n";
+            my($record, $appli, $id, $size, @task_list) = split(/:/, $line);
+	    $communicators{$id} = { 'size' => $size };
+	    $communicators{$id}{tasks} = [@task_list];
         }
     }
 
+    for my $task (1 .. $number_of_tasks) {
+	generate_tit($task);
+    }
+
     for my $i (0 .. $#task_events_buffer) {
-    	# print("task $i:\n");
+    	#print("task $i:\n");
     	for my $entry ($task_states_buffer[$i]) {
-    	    # print Dumper($entry);
+    	#    print Dumper($entry);
     	}
     	for my $entry ($task_events_buffer[$i]) {
-    	    # print Dumper($entry);
+	#    print Dumper($entry);
     	}
     	for my $entry ($task_comms_buffer[$i]) {
-    	    # print Dumper($entry);
+    	#    print Dumper($entry);
     	}
     }
+    #print Dumper(\%communicators);
 
 
     return;

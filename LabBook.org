@@ -449,5 +449,22 @@ $ perl prv2tit.pl -i <paraver_trace_file>
 [1]: https://github.com/schnorr/pajeng/
 
 
+* 2015-10-17 SMPI replay and MPI_Comm_* calls                         :Tiago:
+The MPI calls =MPI_Comm_size=, =MPI_Comm_split= and =MPI_Comm_dup= are
+supported by the smpi replay command. These calls, however, do not
+affect the simulation process in any way. Therefore, we will be
+ignoring the events in the trace file that contain these MPI calls.
+
+
+* 2015-10-18 Support of "V" operations                                :Tiago:
+In order to support the "v" operations we made a tweak in the script
+so it stores the communicators information.  Each "v" operation has a
+buffer for storing its events in the communicator data structure.  To
+generate a tit entry for that v operation, the mpi call event from all
+the tasks in the communicator must be read first.  Currently
+=MPI_Gatherv=, =MPI_Allgatherv=, =MPI_Reduce_scatter= are supported.
+=MPI_Alltoallv= has a slightly more different implementation and will
+be supported soon.  The next step will be to create a few MPI
+applications for testing the translation of this MPI calls.
 
 
