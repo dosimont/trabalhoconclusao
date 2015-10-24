@@ -1,5 +1,6 @@
 /*
- * app4.c
+ * sendrecv3.c
+ * MPI_Isend, MPI_Irecv and MPI_Wait
  * Processes use nonblocking sends and receives to exchange some messages.
  * A MPI_Wait call is used to synchronize all the processes.
  */

@@ -1,6 +1,7 @@
-/* 
- * app2.c
- * The processes send and receive messages to/from its neighboors.
+/*
+ * sendrecv2.c
+ * MPI_Send and MPI_Recv
+ * The processes send and receive messages with different sizes.
  */
 
 #include <stdio.h>
@@ -17,16 +18,23 @@ int main(int argc, char **argv) {
       MPI_Finalize();
       return 1;
     }
-    
+
     if(rank % 2 == 0) {
-      int msg = 9999;
-      MPI_Send(&msg, 1, MPI_INT, rank + 1, 1234, MPI_COMM_WORLD);
+      int *msg = (int *)malloc((rank + 1) * sizeof(int));
+      int i;
+      for(i = 0; i < rank; i++) {
+	msg[i] = i;
+      }
+      MPI_Send(msg, 1, MPI_INT, rank + 1, 1234, MPI_COMM_WORLD);
       printf("process %d sent message to process %d\n", rank, rank + 1);
     }
     else {
       MPI_Status status;
-      int buffer;
-      MPI_Recv(&buffer, 1, MPI_INT, rank - 1, 1234, MPI_COMM_WORLD, &status);
+      int msg_size;
+      MPI_Probe(rank - 1, 1234, MPI_COMM_WORLD, &status);
+      MPI_Get_count(&status, MPI_INT, &msg_size);
+      int *buffer = (int *)malloc(msg_size * sizeof(int));
+      MPI_Recv(buffer, msg_size, MPI_INT, rank - 1, 1234, MPI_COMM_WORLD, &status);
       printf("process %d received a message from process %d\n", rank, rank - 1);
     }
     MPI_Finalize();

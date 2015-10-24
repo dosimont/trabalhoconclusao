@@ -1,5 +1,6 @@
 /*
- * app1.c
+ * initfinalize.c
+ * MPI_Init and MPI_Finalize
  * Each process call MPI_Init and MPI_Finalize.
  */
 
