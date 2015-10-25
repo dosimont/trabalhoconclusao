@@ -468,3 +468,26 @@ be supported soon.  The next step will be to create a few MPI
 applications for testing the translation of this MPI calls.
 
 
+* 2015-10-24 New MPI apps                                             :Tiago:
+I created a few more MPI applications on the =applications/=
+folder. They contain all MPI calls supported by SIMGRID. The shell
+script in the applications folder was used to generate their Paraver
+traces, which can be found on the =paraver_traces/= folder. The next
+step is use the conversion script to make sure all MPI calls are being
+converted correctly.
+
+
+* 2015-10-25 Validation with the new apps traces                      :Tiago:
+I tested the generated application traces with the conversion
+scripts. Only a few minor adjustments had to be made (print the
+correct task index for example).  All of the MPI calls are correctly
+translated into its tit version with one exception.  The MPI call
+=MPI_Alltoallv= requires a serie of parameters that apparently can not
+be obtained from the Paraver trace.  The tit format of this call
+requires the size of the send buffer, an array containing the size of
+the msg sent to each process in the communicator, the size of the
+receive buffer and an array with containing the size of the msg to be
+received from with each process in the communicator. The Paraver
+trace, however, only contain the total size of the msg sent of each
+process. Therefore, the script is currently not supporting this call
+until we find a workaround for this problem.
