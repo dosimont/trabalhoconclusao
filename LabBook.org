@@ -1,3 +1,4 @@
+
 #+TITLE: tcbozzetti's LabBook
 #+AUTHOR: Tiago
 #+LATEX_HEADER: \usepackage[margin=2cm,a4paper]{geometry}
@@ -484,10 +485,13 @@ correct task index for example).  All of the MPI calls are correctly
 translated into its tit version with one exception.  The MPI call
 =MPI_Alltoallv= requires a serie of parameters that apparently can not
 be obtained from the Paraver trace.  The tit format of this call
-requires the size of the send buffer, an array containing the size of
-the msg sent to each process in the communicator, the size of the
-receive buffer and an array with containing the size of the msg to be
-received from with each process in the communicator. The Paraver
-trace, however, only contain the total size of the msg sent of each
-process. Therefore, the script is currently not supporting this call
-until we find a workaround for this problem.
+requires:
+
++ the size of the send buffer
++ an array containing the size of the msg sent to each process in the communicator
++ the size of the receive buffer and 
++ an array with containing the size of the msg to be received from with each process in the communicator.
+
+The Paraver trace, however, only contain the total size of the msg
+sent of each process. Therefore, the script is currently not
+supporting this call until we find a workaround for this problem.
