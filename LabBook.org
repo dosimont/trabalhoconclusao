@@ -523,7 +523,7 @@ I have download the latest 3.2.1 version from extrae here:
 
 + https://www.bsc.es/computer-sciences/performance-tools/downloads
 
-I have installed *binutils-dev*.
+I have installed *libiberty-dev*.
 
 Now I have issued the following commands:
 
