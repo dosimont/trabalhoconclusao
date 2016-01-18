@@ -514,3 +514,32 @@ last version, I can suggest you two ways to proceed:
   mechanism doesn't use Dyninst). You have examples of this mechanism
   in section 7.2 of the user guide, and under the
   "share/examples/MPI/ld-preload" directory Extrae's home directory.
+
+* 2016-01-18 Extrae installation in another system                    :Lucas:
+
+I skip dyninst installation since I don't think I need it now to trace MPI.
+
+I have download the latest 3.2.1 version from extrae here:
+
++ https://www.bsc.es/computer-sciences/performance-tools/downloads
+
+I have installed *binutils-dev*.
+
+Now I have issued the following commands:
+
+#+BEGIN_SRC sh :results output :session :exports both
+cd misc
+tar xfj extrae-3.2.1.tar.bz2
+cd extrae-3.2.1
+./configure --prefix=$HOME/install/extrae-3.2.1/  \
+            --with-mpi=/usr/lib/openmpi/ \
+            --without-unwind \
+            --without-dyninst --without-papi
+make
+make install
+#+END_SRC
+
+Configure works, but I wans't able to compile because of this
+problem. I just e-mail support tools@bsc.es to understand if they can
+solve the problem for me. In the meantime, I will try extrae 3.1.0,
+which tarball I have at guarani.
