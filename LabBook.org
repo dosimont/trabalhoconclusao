@@ -495,3 +495,22 @@ requires:
 The Paraver trace, however, only contain the total size of the msg
 sent of each process. Therefore, the script is currently not
 supporting this call until we find a workaround for this problem.
+* 2016-01-18 Dynamic instrumentation only with Dyninst 8.2.1          :Lucas:
+
+Here's the e-mail message I got from German Llort (from BSC).
+
+We've noticed in the output logs that you sent that you're using
+Dyninst version 9.0.3.
+
+The last version that we've tested of Dyninst is 8.2.1, and it is very
+likely that with the upgrade to version 9.x there's been some major
+changes that broke compatibility. While we run some tests with this
+last version, I can suggest you two ways to proceed:
+
+- You can try installing Dyninst 8.2.1, which should work.
+
+- If you don't need to instrument user functions, you can trace your
+  application with the alternate method based on LD_PRELOAD (this
+  mechanism doesn't use Dyninst). You have examples of this mechanism
+  in section 7.2 of the user guide, and under the
+  "share/examples/MPI/ld-preload" directory Extrae's home directory.
