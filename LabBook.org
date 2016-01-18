@@ -515,7 +515,7 @@ last version, I can suggest you two ways to proceed:
   in section 7.2 of the user guide, and under the
   "share/examples/MPI/ld-preload" directory Extrae's home directory.
 
-* 2016-01-18 Extrae installation in another system                    :Lucas:
+* 2016-01-18 Extrae installation in another system (Sara)             :Lucas:
 
 I skip dyninst installation since I don't think I need it now to trace MPI.
 
