@@ -531,15 +531,15 @@ Now I have issued the following commands:
 cd misc
 tar xfj extrae-3.2.1.tar.bz2
 cd extrae-3.2.1
-./configure --prefix=$HOME/install/extrae-3.2.1/  \
-            --with-mpi=/usr/lib/openmpi/ \
-            --without-unwind \
-            --without-dyninst --without-papi
+#I need MPICC on Sara.
+MPICC=/usr/bin/mpicc ./configure --prefix=/home/schnorr/install/extrae-3.2.1/ \
+   --with-mpi=/usr/lib/openmpi/ \
+   --without-unwind \
+   --without-dyninst \
+   --without-papi \
+   --disable-openmp
 make
 make install
 #+END_SRC
 
-Configure works, but I wans't able to compile because of this
-problem. I just e-mail support tools@bsc.es to understand if they can
-solve the problem for me. In the meantime, I will try extrae 3.1.0,
-which tarball I have at guarani.
+Configure, make and make install.
