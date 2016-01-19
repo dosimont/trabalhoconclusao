@@ -1,4 +1,3 @@
-
 #+TITLE: tcbozzetti's LabBook
 #+AUTHOR: Tiago
 #+LATEX_HEADER: \usepackage[margin=2cm,a4paper]{geometry}
