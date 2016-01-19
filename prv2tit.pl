@@ -310,7 +310,7 @@ sub generate_tit {
 		my $root = $event_entry->{"root"};
                 # PRINT bcast
 		if (defined $root) {
-		    print("$task bcast $comm_size $task\n");
+		    print("$task bcast $comm_size $task\n"); #BUG TODO
 		}
 		else {
 		    print("$task bcast $comm_size\n");
@@ -327,7 +327,7 @@ sub generate_tit {
 		my $root = $event_entry->{"root"};
                 # PRINT reduce
 		if (defined $root) {
-		    print("$task reduce $comm_size <comp_size> $task\n");
+		    print("$task reduce $comm_size <comp_size> $task\n"); #BUG TODO
 		}
 		else {
 		    print("$task reduce $comm_size <comp_size>\n");
@@ -356,7 +356,7 @@ sub generate_tit {
 		my $root = $event_entry->{"root"};
                 # PRINT gather
 		if (defined $root) {
-		    print("$task gather $send_size $recv_size $task\n");
+		    print("$task gather $send_size $recv_size $task\n"); #BUG TODO
 		}
 		else {
 		    print("$task gather $send_size $recv_size\n");
