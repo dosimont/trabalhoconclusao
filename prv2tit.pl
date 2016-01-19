@@ -112,11 +112,12 @@ sub generate_tit {
 	if (! (defined $task_states_buffer[$task])) { last; }
 	if (scalar @{$task_states_buffer[$task]} == 0) { last; }
 	my $state_entry = $task_states_buffer[$task][0];
-
+        
 	# if current state is running, generate tit entry, remove state and continue translating
 	if ($state_entry->{"state"} eq "Running") {
 	    my $comp_size = ($state_entry->{"end_time"} - $state_entry->{"begin_time"}) * $power_reference;
 	    my $time = $state_entry->{"begin_time"};
+            # PRINT compute
 	    print("$task compute $comp_size\n");
 	    shift(@{$task_states_buffer[$task]});
 	    next;
@@ -188,18 +189,22 @@ sub generate_tit {
 		    # FORMAT: <rank> gatherV <send_size> <recv_sizes†> <root> [<send_datatype> <recv_datatype>]
 		    my $send_size = $event_entry->{"send_size"};
 		    my $recv_sizes = join(" ", @send_counts);
+                    
 		    $root = $root - 1;
+                    # PRINT gatherV
 		    print("$task gatherV $send_size $recv_sizes $root\n");
 		}
 		case "MPI_Allgatherv" {
 		    # FORMAT: <rank> allGatherV <send_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
 		    my $send_size = $event_entry->{"send_size"};
 		    my $recv_sizes = join(" ", @send_counts);
+                    # PRINT allGatherV
 		    print("$task allGatherV $send_size $recv_sizes\n");
 		}
 		case "MPI_Reduce_scatter" {
 		    # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
 		    my $recv_sizes = join(" ", @recv_counts);
+                    # PRINT reduceScatter
 		    print("$task reduceScatter $recv_sizes <comp_size>\n");
 		}
 	    }
@@ -234,24 +239,28 @@ sub generate_tit {
 			    # FORMAT: <rank> send <dst> <comm_size> [<datatype>]
 			    my $dst = $comm_entry->{"destiny"} - 1;
 			    my $comm_size = $comm_entry->{"comm_size"};
+                            # PRINT send
 			    print("$task send $dst $comm_size\n");
 			}
 			case "MPI_Recv" {
 			    # FORMAT: <rank> recv <src> <comm_size> [<datatype>]
 			    my $src = $comm_entry->{"source"} - 1;
 			    my $comm_size = $comm_entry->{"comm_size"};
+                            # PRINT recv
 			    print("$task recv $src $comm_size\n");
 			}
 			case "MPI_Isend" {
 			    # FORMAT: <rank> Isend <dst> <comm_size> [<datatype>]
 			    my $dst = $comm_entry->{"destiny"} - 1;
 			    my $comm_size = $comm_entry->{"comm_size"};
+                            # PRINT Isend
 			    print("$task Isend $dst $comm_size\n");
 			}
 			case "MPI_Irecv" {
 			    # FORMAT: <rank> Irecv <src> <comm_size> [<datatype>]
 			    my $src = $comm_entry->{"source"} - 1;
 			    my $comm_size = $comm_entry->{"comm_size"};
+                            # PRINT Irecv
 			    print("$task Irecv $src $comm_size\n");
 			}
 		    }
@@ -277,24 +286,29 @@ sub generate_tit {
 	switch ($mpi_call) {
 	    case "MPI_Init" {
 		# FORMAT: <rank> init [<set_default_double>]
+                # PRINT init
 		print("$task init\n");
 	    }
 	    case "MPI_Finalize" {
 		# FORMAT: <rank> finalize
+                # PRINT finalize
 		print("$task finalize\n");
 	    }
 	    case "MPI_Wait" {
 		# FORMAT: <rank> wait
+                # PRINT wait
 		print("$task wait\n");
 	    }
 	    case "MPI_Waitall" {
 		# FORMAT: <rank> waitAll
+                # PRINT waitAll
 		print("$task waitAll\n");
 	    }
 	    case "MPI_Bcast" {
 		# FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
 		my $comm_size = $event_entry->{"send_size"} || $event_entry->{"recv_size"};
 		my $root = $event_entry->{"root"};
+                # PRINT bcast
 		if (defined $root) {
 		    print("$task bcast $comm_size $task\n");
 		}
@@ -304,12 +318,14 @@ sub generate_tit {
 	    }
 	    case "MPI_Barrier" {
 		# FORMAT: <rank> barrier
+                # PRINT barrier
 		print("$task barrier\n");
 	    }
 	    case "MPI_Reduce" {
 		# FORMAT: <rank> reduce <comm_size> <comp_size> [<root> [<datatype>]]
 		my $comm_size = $event_entry->{"send_size"} || $event_entry->{"recv_size"};
 		my $root = $event_entry->{"root"};
+                # PRINT reduce
 		if (defined $root) {
 		    print("$task reduce $comm_size <comp_size> $task\n");
 		}
@@ -320,14 +336,17 @@ sub generate_tit {
 	    case "MPI_Allreduce" {
 		# FORMAT: <rank> allReduce <comm_size> <comp_size> [<datatype>]
 		my $comm_size = $event_entry->{"send_size"} || $event_entry->{"recv_size"};
+                # PRINT allReduce
 		print("$task allReduce $comm_size <comp_size>\n");
 	    }
 	    case "MPI_Comm_split" {
 		# FORMAT: <rank> comm_split
+                # PRINT comm_split
 		print("$task comm_split\n");
 	    }
 	    case "MPI_Comm_dup" {
 		# FORMAT: <rank> comm_dup
+                # PRINT comm_dup
 		print("$task comm_dup\n");
 	    }
 	    case "MPI_Gather" {
@@ -335,6 +354,7 @@ sub generate_tit {
 		my $send_size = $event_entry->{"send_size"};
 		my $recv_size = $event_entry->{"recv_size"};
 		my $root = $event_entry->{"root"};
+                # PRINT gather
 		if (defined $root) {
 		    print("$task gather $send_size $recv_size $task\n");
 		}
@@ -346,12 +366,14 @@ sub generate_tit {
 		# FORMAT: <rank> allGather <send_size> <recv_size> [<send_datatype> <recv_datatype>]
 		my $send_size = $event_entry->{"send_size"};
 		my $recv_size = $event_entry->{"recv_size"};
+                # PRINT allGather
 		print("$task allGather $send_size $recv_size\n");
 	    }
 	    case "MPI_Alltoall" {
 		# FORMAT: <rank> allToAll <send_size> <recv_recv> [<send_datatype> <recv_datatype>]
 		my $send_size = $event_entry->{"send_size"};
 		my $recv_size = $event_entry->{"send_size"};
+                # PRINT alltoall
 		print("$task alltoall $send_size $recv_size\n");
 	    }
 	}
