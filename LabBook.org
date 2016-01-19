@@ -595,25 +595,84 @@ comes from the gather event.
 The following table is inspired from Table 1 of:
 + https://hal.inria.fr/hal-01064561/document
 
-|------------------------+-------------------------------------------------------------------+-----------|
-| *Name of the MPI action* | *TIT Entry*                                                         | *Converted* |
-|------------------------+-------------------------------------------------------------------+-----------|
-| CPU burst              | <r> compute <volume>                                              | ok        |
-| =MPI_Send=               | <r> send <dst> <volume>                                           | ok        |
-| =MPI_Isend=              | <r> isend <dst> <volume>                                          | ok        |
-| =MPI_Recv=               | <r> recv <src> <volume>                                           | ok        |
-| =MPI_Irecv=              | <r> irecv <src> <volume>                                          | ok        |
-|------------------------+-------------------------------------------------------------------+-----------|
-| =MPI_Bcast=              | <r> bcast <volume>                                                |           |
-| =MPI_Reduce=             | <r> reduce <vcomm> <vcomp>                                        |           |
-| =MPI_Reduce_scatter=     | <r> reducescatter <recvcounts> <vcomp>                            |           |
-| =MPI_Allreduce=          | <r> allreduce <vcomm> <vcomp>                                     |           |
-| =MPI_Alltoall=           | <r> alltoall <sendvolume> <recvvolume>                            |           |
-| =MPI_Alltoallv=          | <r> alltoallv <sendvolume> <sendcounts> <recvvolume> <recvcounts> |           |
-| =MPI_Gather=             | <r> gather <sendvolume> <recvcounts>                              |           |
-| =MPI_Allgatherv=         | <r> allgatherv <sendcount> <recvcounts>                           |           |
-| =MPI_Barrier=            | <r> barrier                                                       |           |
-|------------------------+-------------------------------------------------------------------+-----------|
-| =MPI_Wait=               | <r> wait                                                          | ok        |
-| =MPI_Waitall=            | <r> waitall                                                       | ok        |
-|------------------------+-------------------------------------------------------------------+-----------|
+And also from the SimGrid code (=smpi_replay.c=) as of January 19th, 2016.
+
+
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+| *Name of the MPI action* | *TIT Entry*                                                                                                                                         | *Converted* |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+| =MPI_Init=               | <r> init [default datatype]                                                                                                                       | ok        |
+| =MPI_Finalize=           | <r> finalize (*not implemented in* =mpi_replay.c)=.                                                                                                   |           |
+| =MPI_Comm_size=          | <r> =comm_size= <double>                                                                                                                            |           |
+| =MPI_Comm_split=         | <r> =comm_split=                                                                                                                                    |           |
+| =MPI_Comm_dup=           | <r> =comm_dup=                                                                                                                                      |           |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+| =MPI_Send=               | <r> send <dst> <volume> [datatype]                                                                                                                | ok        |
+| =MPI_Isend=              | <r> isend <dst> <volume> [datatype]                                                                                                               | ok        |
+| =MPI_Recv=               | <r> recv <src> <volume> [datatype]                                                                                                                | ok        |
+| =MPI_Irecv=              | <r> irecv <src> <volume> [datatype]                                                                                                               | ok        |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+| =MPI_Test=               | <r> test                                                                                                                                          |           |
+| =MPI_Wait=               | <r> wait                                                                                                                                          | ok        |
+| =MPI_Waitall=            | <r> waitall                                                                                                                                       | ok        |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+| =MPI_Barrier=            | <r> barrier                                                                                                                                       |           |
+| =MPI_Bcast=              | <r> bcast <volume> [root] [datatype]                                                                                                              | ok        |
+| =MPI_Reduce=             | <r> reduce <vcomm> <vcomp> [root] [datatype]                                                                                                      | ok        |
+| =MPI_Allreduce=          | <r> allreduce <vcomm> <vcomp> [datatype]                                                                                                          |           |
+| =MPI_Alltoall=           | <r> alltoall <sendvolume> <recvvolume> [datatype send] [datatype recv]                                                                            |           |
+| =MPI_Alltoallv=          | <r> alltoallv <sendvolume> <sendcounts times communicator size> <recvvolume> <recvcounts times communicator size> [datatype send] [datatype recv] |           |
+| =MPI_Gather=             | <r> gather <sendvolume> <recvcounts> [send datatype] [recv datatype]                                                                              |           |
+| =MPI_Gatherv=            | <r> gatherv <sendvolume> <recvcounts times communicator size> [send datatype] [recv datatype]                                                     |           |
+| =MPI_Allgather=          | <r> allgather <sendvolume> <recvvolume> [send datatype] [recv datatype]                                                                           |           |
+| =MPI_Allgatherv=         | <r> allgatherv <sendvolume> <recvvolume times communicator size> [send datatype] [recv datatype]                                                  |           |
+| =MPI_Reduce_scatter=     | <r> reducescatter <recvcounts times communicator size> <vcomp> [datatype]                                                                         |           |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+| CPU burst              | <r> compute <volume>                                                                                                                              | ok        |
+|------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
+
+** Datatype translation
+
+Check function =decode_datatype= at =smpi_replay.c=.
+
+|----------------------+------------------|
+| *Datatype translation* | *Kind*           |
+|----------------------+------------------|
+|                    0 | =MPI_DOUBLE=       |
+|                    1 | =MPI_INT=          |
+|                    2 | =MPI_CHAR=         |
+|                    3 | =MPI_SHORT=        |
+|                    4 | =MPI_LONG=         |
+|                    5 | =MPI_FLOAT=        |
+|                    6 | =MPI_BYTE=         |
+|                    7 | =MPI_DEFAULT_TYPE= |
+|----------------------+------------------|
+
+** Action replay in Simgrid
+
+#+BEGIN_SRC C
+    xbt_replay_action_register("init",       action_init);
+    xbt_replay_action_register("finalize",   action_finalize);
+    xbt_replay_action_register("comm_size",  action_comm_size);
+    xbt_replay_action_register("comm_split", action_comm_split);
+    xbt_replay_action_register("comm_dup",   action_comm_dup);
+    xbt_replay_action_register("send",       action_send);
+    xbt_replay_action_register("Isend",      action_Isend);
+    xbt_replay_action_register("recv",       action_recv);
+    xbt_replay_action_register("Irecv",      action_Irecv);
+    xbt_replay_action_register("test",       action_test);
+    xbt_replay_action_register("wait",       action_wait);
+    xbt_replay_action_register("waitAll",    action_waitall);
+    xbt_replay_action_register("barrier",    action_barrier);
+    xbt_replay_action_register("bcast",      action_bcast);
+    xbt_replay_action_register("reduce",     action_reduce);
+    xbt_replay_action_register("allReduce",  action_allReduce);
+    xbt_replay_action_register("allToAll",   action_allToAll);
+    xbt_replay_action_register("allToAllV",  action_allToAllv);
+    xbt_replay_action_register("gather",  action_gather);
+    xbt_replay_action_register("gatherV",  action_gatherv);
+    xbt_replay_action_register("allGather",  action_allgather);
+    xbt_replay_action_register("allGatherV",  action_allgatherv);
+    xbt_replay_action_register("reduceScatter",  action_reducescatter);
+    xbt_replay_action_register("compute",    action_compute);
+#+END_SRC
