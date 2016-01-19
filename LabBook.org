@@ -590,3 +590,30 @@ comes from the gather event.
     Fred Suter told me there is something strange in the
     implementation of the gather replay. He just committed a solution
     that solves the problem very quickly.
+* 2016-01-18 Current situation of translation                         :Lucas:
+
+The following table is inspired from Table 1 of:
++ https://hal.inria.fr/hal-01064561/document
+
+|------------------------+-------------------------------------------------------------------+-----------|
+| *Name of the MPI action* | *TIT Entry*                                                         | *Converted* |
+|------------------------+-------------------------------------------------------------------+-----------|
+| CPU burst              | <r> compute <volume>                                              | ok        |
+| =MPI_Send=               | <r> send <dst> <volume>                                           | ok        |
+| =MPI_Isend=              | <r> isend <dst> <volume>                                          | ok        |
+| =MPI_Recv=               | <r> recv <src> <volume>                                           | ok        |
+| =MPI_Irecv=              | <r> irecv <src> <volume>                                          | ok        |
+|------------------------+-------------------------------------------------------------------+-----------|
+| =MPI_Bcast=              | <r> bcast <volume>                                                |           |
+| =MPI_Reduce=             | <r> reduce <vcomm> <vcomp>                                        |           |
+| =MPI_Reduce_scatter=     | <r> reducescatter <recvcounts> <vcomp>                            |           |
+| =MPI_Allreduce=          | <r> allreduce <vcomm> <vcomp>                                     |           |
+| =MPI_Alltoall=           | <r> alltoall <sendvolume> <recvvolume>                            |           |
+| =MPI_Alltoallv=          | <r> alltoallv <sendvolume> <sendcounts> <recvvolume> <recvcounts> |           |
+| =MPI_Gather=             | <r> gather <sendvolume> <recvcounts>                              |           |
+| =MPI_Allgatherv=         | <r> allgatherv <sendcount> <recvcounts>                           |           |
+| =MPI_Barrier=            | <r> barrier                                                       |           |
+|------------------------+-------------------------------------------------------------------+-----------|
+| =MPI_Wait=               | <r> wait                                                          | ok        |
+| =MPI_Waitall=            | <r> waitall                                                       | ok        |
+|------------------------+-------------------------------------------------------------------+-----------|
