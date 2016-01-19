@@ -601,24 +601,24 @@ And also from the SimGrid code (=smpi_replay.c=) as of January 19th, 2016.
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
 | *Name of the MPI action* | *TIT Entry*                                                                                                                                         | *Converted* |
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
-| =MPI_Init=               | <r> init [default datatype]                                                                                                                       | ok        |
+| =MPI_Init=               | <r> init [default datatype]                                                                                                                       |           |
 | =MPI_Finalize=           | <r> finalize (*not implemented in* =mpi_replay.c)=.                                                                                                   |           |
 | =MPI_Comm_size=          | <r> =comm_size= <double>                                                                                                                            |           |
 | =MPI_Comm_split=         | <r> =comm_split=                                                                                                                                    |           |
 | =MPI_Comm_dup=           | <r> =comm_dup=                                                                                                                                      |           |
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
-| =MPI_Send=               | <r> send <dst> <volume> [datatype]                                                                                                                | ok        |
-| =MPI_Isend=              | <r> isend <dst> <volume> [datatype]                                                                                                               | ok        |
-| =MPI_Recv=               | <r> recv <src> <volume> [datatype]                                                                                                                | ok        |
-| =MPI_Irecv=              | <r> irecv <src> <volume> [datatype]                                                                                                               | ok        |
+| =MPI_Send=               | <r> send <dst> <volume> [datatype]                                                                                                                |           |
+| =MPI_Isend=              | <r> isend <dst> <volume> [datatype]                                                                                                               |           |
+| =MPI_Recv=               | <r> recv <src> <volume> [datatype]                                                                                                                |           |
+| =MPI_Irecv=              | <r> irecv <src> <volume> [datatype]                                                                                                               |           |
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
 | =MPI_Test=               | <r> test                                                                                                                                          |           |
-| =MPI_Wait=               | <r> wait                                                                                                                                          | ok        |
-| =MPI_Waitall=            | <r> waitall                                                                                                                                       | ok        |
+| =MPI_Wait=               | <r> wait                                                                                                                                          |           |
+| =MPI_Waitall=            | <r> waitall                                                                                                                                       |           |
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
 | =MPI_Barrier=            | <r> barrier                                                                                                                                       |           |
-| =MPI_Bcast=              | <r> bcast <volume> [root] [datatype]                                                                                                              | ok        |
-| =MPI_Reduce=             | <r> reduce <vcomm> <vcomp> [root] [datatype]                                                                                                      | ok        |
+| =MPI_Bcast=              | <r> bcast <volume> [root] [datatype]                                                                                                              |           |
+| =MPI_Reduce=             | <r> reduce <vcomm> <vcomp> [root] [datatype]                                                                                                      |           |
 | =MPI_Allreduce=          | <r> allreduce <vcomm> <vcomp> [datatype]                                                                                                          |           |
 | =MPI_Alltoall=           | <r> alltoall <sendvolume> <recvvolume> [datatype send] [datatype recv]                                                                            |           |
 | =MPI_Alltoallv=          | <r> alltoallv <sendvolume> <sendcounts times communicator size> <recvvolume> <recvcounts times communicator size> [datatype send] [datatype recv] |           |
@@ -628,7 +628,7 @@ And also from the SimGrid code (=smpi_replay.c=) as of January 19th, 2016.
 | =MPI_Allgatherv=         | <r> allgatherv <sendvolume> <recvvolume times communicator size> [send datatype] [recv datatype]                                                  |           |
 | =MPI_Reduce_scatter=     | <r> reducescatter <recvcounts times communicator size> <vcomp> [datatype]                                                                         |           |
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
-| CPU burst              | <r> compute <volume>                                                                                                                              | ok        |
+| CPU burst              | <r> compute <volume>                                                                                                                              |           |
 |------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+-----------|
 
 ** Datatype translation
