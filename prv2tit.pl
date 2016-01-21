@@ -135,11 +135,10 @@ sub dump_tit_lucas
 
         }elsif ($type eq "reduce_scatter"){
             # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
-            my $comp_size = $_->{"comp_size"};
             my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-            # PRINT reduceScatter
-            print("$task reducescatter $recv_sizes $comp_size\n");
-            
+            my $comp_size = $_->{"comp_size"};
+            print("$task $type $recv_sizes $comp_size\n");
+
         }else{
             print ($_->{"task"}, " <missing treatment of ", "$type>\n");
         }
