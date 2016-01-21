@@ -116,13 +116,13 @@ sub dump_tit_lucas
             # FORMAT: <rank> allReduce <comm_size> <comp_size> [<datatype>]
             my $comm_size = $_->{"comm_size"};
             my $comp_size = $_->{"comp_size"};
-            print("$task allReduce $comm_size $comp_size\n");
+            print("$task allreduce $comm_size $comp_size\n");
         }elsif ($type eq "allgather"){
             # FORMAT: <rank> allGather <send_size> <recv_size> [<send_datatype> <recv_datatype>]
             my $send_size = $_->{"send_size"};
             my $recv_size = $_->{"recv_size"};
             # PRINT allGather
-            print("$task allGather $send_size $recv_size\n");
+            print("$task allgather $send_size $recv_size\n");
         }elsif ($type eq "alltoall") {
             # FORMAT: <rank> allToAll <send_size> <recv_recv> [<send_datatype> <recv_datatype>]
             my $send_size = $_->{"send_size"};
