@@ -100,7 +100,8 @@ sub dump_tit_lucas
             # FORMAT: <rank> wait
             # FORMAT: <rank> waitAll
             # FORMAT: <rank> barrier
-            print ($task, " ", $type, "\n");
+            print "$task $type\n";
+
         }elsif ($type eq "allreduce"){
             # FORMAT: <rank> allReduce <comm_size> <comp_size> [<datatype>]
             my $comm_size = $_->{"comm_size"};
