@@ -1043,11 +1043,6 @@ sub parse_prv_lucas {
                         $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size;
                     }
 
-                    case ["MPI_Gather"] {
-                        $action{"send_size"} = $send_size;
-                        $action{"recv_size"} = $recv_size;
-                    }
-
                     case ["MPI_Send", "MPI_Recv", "MPI_Isend", "MPI_Irecv"] {
                         $action{"partner"} = undef;
                         $action{"comm_size"} = undef;
@@ -1058,7 +1053,7 @@ sub parse_prv_lucas {
                         $action{"comp_size"} = 0;     # where should we take this information from?
                     }
 
-                    case ["MPI_Allgather", "MPI_Alltoall"] {
+                    case ["MPI_Gather", "MPI_Allgather", "MPI_Alltoall"] {
                         $action{"send_size"} = $send_size;
                         $action{"recv_size"} = $recv_size;
                     }
