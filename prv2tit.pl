@@ -90,17 +90,10 @@ sub dump_tit_lucas
                 $type eq "isend" ||
                 $type eq "irecv"){
             # FORMAT: <rank> send <dst> <comm_size> [<datatype>]
-            my $partner = $_->{"partner"};
+            my $partner = $_->{"partner"} - 1;
             my $comm_size = $_->{"comm_size"};
-            if (!defined $partner){
-                $partner = "<PARTNER>";
-            }else{
-                $partner--;
-            }
-            if (!defined $comm_size){
-                $comm_size = "<COMM_SIZE>";
-            }
-            print ($task, " ", $type, " ", $partner, " ", $comm_size, "\n");
+            print "$task $type $partner $comm_size\n";
+
         }elsif ($type eq "wait"    ||
                 $type eq "waitall" ||
                 $type eq "barrier"){
