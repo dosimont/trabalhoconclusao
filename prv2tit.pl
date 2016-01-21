@@ -67,12 +67,10 @@ sub dump_tit_lucas
 
         }elsif ($type eq "bcast"){
             # FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
-            my $root = $_->{"root"};
-            if (defined $root){
-                print ($task, " bcast ", $_->{"comm_size"}, " ", $root, "\n");
-            }else{
-                print ($task, " bcast ", $_->{"comm_size"}, " <ROOT>\n");
-            }
+            my $comm_size = $_->{"comm_size"};
+            my $root = $_->{"root"}; # TODO check is -1
+            print "$task $type $comm_size $root\n";
+
         }elsif ($type eq "gather"){
             # FORMAT: <rank> gather <send_size> <recv_size> <root> [<send_datatype> <recv_datatype>]
             my $root = $_->{"root"};
