@@ -25,8 +25,12 @@ int main(int argc, char **argv) {
     if (rank == root) {
       receive_buffer = (int *)malloc(num_procs * 100 * sizeof(int)); 
     }
+
+    MPI_Bcast(send_buffer, 100, MPI_INT, root-1, MPI_COMM_WORLD);
+    
     MPI_Gather(send_buffer, 100, MPI_INT, receive_buffer, 100, MPI_INT, root, MPI_COMM_WORLD);
-    printf("process %d sent message to process %d\n", rank, root);
+    
+    MPI_Bcast(send_buffer, 100, MPI_INT, root+1, MPI_COMM_WORLD);
 
     MPI_Finalize();
 }

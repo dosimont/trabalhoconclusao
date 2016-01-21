@@ -18,16 +18,18 @@ int main(int argc, char **argv) {
       MPI_Finalize();
       return 1;
     }
-    
+
+    int i;
+    for (i = 0; i < 10; i++)
     if(rank % 2 == 0) {
-      int msg = 9999;
-      MPI_Send(&msg, 1, MPI_INT, rank + 1, 1234, MPI_COMM_WORLD);
+      int *msg = malloc(100*sizeof(int));
+      MPI_Send(&msg, 100, MPI_INT, rank + 1, 1234, MPI_COMM_WORLD);
       printf("process %d sent message to process %d\n", rank, rank + 1);
     }
     else {
       MPI_Status status;
-      int buffer;
-      MPI_Recv(&buffer, 1, MPI_INT, rank - 1, 1234, MPI_COMM_WORLD, &status);
+      int buffer[100];
+      MPI_Recv(&buffer, 100, MPI_INT, rank - 1, 1234, MPI_COMM_WORLD, &status);
       printf("process %d received a message from process %d\n", rank, rank - 1);
     }
     MPI_Finalize();

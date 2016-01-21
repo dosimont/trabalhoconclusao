@@ -19,6 +19,9 @@ int main(int argc, char **argv) {
       return 1;
     }
 
+    int j;
+    for (j = 0; j < 10; j++){
+    
     int stride = 1;
     int *displs = (int *)malloc(num_procs * sizeof(int));
     int *rcounts = (int *)malloc(num_procs * sizeof(int)); 
@@ -45,5 +48,7 @@ int main(int argc, char **argv) {
     MPI_Allgatherv(send_buffer, rank + 1, MPI_INT, receive_buffer, rcounts, displs, MPI_INT, MPI_COMM_WORLD);
     printf("process %d sent message of size %d to all processes\n", rank, rank + 1);
 
+    }
+    
     MPI_Finalize();
 }
