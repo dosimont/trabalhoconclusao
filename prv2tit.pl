@@ -50,13 +50,14 @@ sub dump_tit_lucas
     define_v_fields ();
     
     foreach (@lucas){
-        my $type = $_->{"type"};
-        my $task = $_->{"task"};
+        my $action = $_;
+        my $type = $action->{"type"};
+        my $task = $action->{"task"};
         $task = $task - 1; # remove one
 
         switch ($type){
             case ["compute"] {
-                my $comp_size = $_->{"comp_size"};
+                my $comp_size = $action->{"comp_size"};
                 print "$task $type $comp_size\n";
             }
 
@@ -71,68 +72,68 @@ sub dump_tit_lucas
 
             case ["bcast"] {
                 # FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
-                my $comm_size = $_->{"comm_size"};
-                my $root = $_->{"root"} - 1;
+                my $comm_size = $action->{"comm_size"};
+                my $root = $action->{"root"} - 1;
                 print "$task $type $comm_size $root\n";
             }
 
             case ["gather"] {
                 # FORMAT: <rank> gather <send_size> <recv_size> <root> [<send_datatype> <recv_datatype>]
-                my $send_size = $_->{"send_size"};
-                my $recv_size = $_->{"recv_size"};
-                my $root = $_->{"root"} - 1;
+                my $send_size = $action->{"send_size"};
+                my $recv_size = $action->{"recv_size"};
+                my $root = $action->{"root"} - 1;
                 print "$task $type $send_size $recv_size $root\n";
             }
 
             case ["reduce"] {
                 # FORMAT: <rank> reduce <comm_size> <comp_size> [<root> [<datatype>]]
-                my $comm_size = $_->{"comm_size"};
-                my $comp_size = $_->{"comp_size"};
-                my $root = $_->{"root"} - 1;
+                my $comm_size = $action->{"comm_size"};
+                my $comp_size = $action->{"comp_size"};
+                my $root = $action->{"root"} - 1;
                 print "$task $type $comm_size $comp_size $root\n";
             }
 
             case ["allreduce"] {
                 # FORMAT: <rank> allReduce <comm_size> <comp_size> [<datatype>]
-                my $comm_size = $_->{"comm_size"};
-                my $comp_size = $_->{"comp_size"};
+                my $comm_size = $action->{"comm_size"};
+                my $comp_size = $action->{"comp_size"};
                 print "$task $type $comm_size $comp_size\n";
             }
 
             case ["send", "recv", "isend", "irecv"] {
                 # FORMAT: <rank> send <dst> <comm_size> [<datatype>]
-                my $partner = $_->{"partner"} - 1;
-                my $comm_size = $_->{"comm_size"};
+                my $partner = $action->{"partner"} - 1;
+                my $comm_size = $action->{"comm_size"};
                 print "$task $type $partner $comm_size\n";
             }
 
             case ["allgather", "alltoall"] {
                 # FORMAT: <rank> allGather <send_size> <recv_size> [<send_datatype> <recv_datatype>]
                 # FORMAT: <rank> allToAll <send_size> <recv_recv> [<send_datatype> <recv_datatype>]
-                my $send_size = $_->{"send_size"};
-                my $recv_size = $_->{"recv_size"};
+                my $send_size = $action->{"send_size"};
+                my $recv_size = $action->{"recv_size"};
                 print "$task $type $send_size $recv_size\n";
             }
 
             case ["gatherv"] {
                 # FORMAT: <rank> gatherV <send_size> <recv_sizes†> <root> [<send_datatype> <recv_datatype>]
-                my $send_size = $_->{"send_size"};
-                my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-                my $root =  $_->{"root"} - 1;
+                my $send_size = $action->{"send_size"};
+                my $recv_sizes = join(" ", @{$action->{"recv_sizes"}});
+                my $root =  $action->{"root"} - 1;
                 print "$task $type $send_size $recv_sizes $root\n";
             }
 
             case ["allgatherv"] {
                 # FORMAT: <rank> allGatherV <send_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
-                my $send_size = $_->{"send_size"};
-                my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
+                my $send_size = $action->{"send_size"};
+                my $recv_sizes = join(" ", @{$action->{"recv_sizes"}});
                 print("$task $type $send_size $recv_sizes\n");
             }
 
             case ["reducescatter"] {
                 # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
-                my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-                my $comp_size = $_->{"comp_size"};
+                my $recv_sizes = join(" ", @{$action->{"recv_sizes"}});
+                my $comp_size = $action->{"comp_size"};
                 print("$task $type $recv_sizes $comp_size\n");
             }
 
