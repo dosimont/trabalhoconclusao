@@ -1053,12 +1053,7 @@ sub parse_prv_lucas {
                         $action{"comm_size"} = undef;
                     }
 
-                    case ["MPI_Allreduce"] {
-                        $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
-                        $action{"comp_size"} = 0;     # where should we take this information from?
-                    }
-
-                    case ["MPI_Reduce"] {
+                    case ["MPI_Allreduce", "MPI_Reduce"] {
                         $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
                         $action{"comp_size"} = 0;     # where should we take this information from?
                     }
