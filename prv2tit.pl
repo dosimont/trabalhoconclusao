@@ -1023,76 +1023,87 @@ sub parse_prv_lucas {
 		my $root = $event_list{$mpi_call_parameters{"root"}}; #marker present in the root
 		my $comm = $event_list{$mpi_call_parameters{"communicator"}};
 
-                
-                if ($mpi_call eq "MPI_Bcast"){
-                    $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size;
-                    $action{"root"} = undef;
+                switch ($mpi_call) {
+                    case ["MPI_Init", "MPI_Finalize"] {
+                        # nothing particular to do
+                    }
 
-                    # register the root for backpatching
-                    register_root ($comm, $task, $mpi_call, $root, \%action);
-
-                }elsif ($mpi_call eq "MPI_Gather"){
-                    $action{"send_size"} = $send_size;
-                    $action{"recv_size"} = $recv_size;
-                    $action{"root"} = undef;
-
-                    # register the root for backpatching
-                    register_root ($comm, $task, $mpi_call, $root, \%action);
-                    
-                }elsif ($mpi_call eq "MPI_Init" ||
-                        $mpi_call eq "MPI_Finalize"){
-                    # nothing particular to do
-                }elsif ($mpi_call eq "MPI_Send"  ||
-                        $mpi_call eq "MPI_Recv"  ||
-                        $mpi_call eq "MPI_Isend" ||
-                        $mpi_call eq "MPI_Irecv") {
-                    $action{"partner"} = undef;
-                    $action{"comm_size"} = undef;
-                }elsif ($mpi_call eq "MPI_Allreduce"){
-                    $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
-                    $action{"comp_size"} = 0;     # where should we take this information from?
-                }elsif ($mpi_call eq "MPI_Reduce"){
-                    $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
-                    $action{"comp_size"} = 0;     # where should we take this information from?
-                    $action{"root"} = 0;
-                    register_root ($comm, $task, $mpi_call, $root, \%action);
-                }elsif ($mpi_call eq "MPI_Allgather" ||
-                        $mpi_call eq "MPI_Alltoall"){
-                    $action{"send_size"} = $send_size;
-                    $action{"recv_size"} = $recv_size;
-                }elsif ($mpi_call eq "MPI_Allgatherv" ||
-                        $mpi_call eq "MPI_Gatherv"){
-
-                    $action{"send_size"} = $send_size;
-                    $action{"recv_sizes"} = undef;
-
-                    # the action that should be backpatched
-                    push @{$v_actions{$comm}{$task}{$mpi_call}}, \%action;
-
-                    # the information that should be used to backpatch
-                    register_v_count ($comm, $mpi_call, $task, $send_size);
-
-                    # register the root for MPI_Gatherv
-                    if ($mpi_call eq "MPI_Gatherv") {
+                    case ["MPI_Bcast"] {
+                        $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size;
                         $action{"root"} = undef;
+
+                        # register the root for backpatching
                         register_root ($comm, $task, $mpi_call, $root, \%action);
                     }
-                }elsif ($mpi_call eq "MPI_Reduce_scatter"){
-                    $action{"comp_size"} = 0;     # where should we take this information from?
 
-                    # the action that should be backpatched
-                    push @{$v_actions{$comm}{$task}{$mpi_call}}, \%action;
+                    case ["MPI_Gather"] {
+                        $action{"send_size"} = $send_size;
+                        $action{"recv_size"} = $recv_size;
+                        $action{"root"} = undef;
 
-                    # the information that should be used to backpatch
-                    register_v_count ($comm, $mpi_call, $task, $recv_size);
+                        # register the root for backpatching
+                        register_root ($comm, $task, $mpi_call, $root, \%action);
+                    }
+
+                    case ["MPI_Send", "MPI_Recv", "MPI_Isend", "MPI_Irecv"] {
+                        $action{"partner"} = undef;
+                        $action{"comm_size"} = undef;
+                    }
+
+                    case ["MPI_Allreduce"] {
+                        $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
+                        $action{"comp_size"} = 0;     # where should we take this information from?
+                    }
+
+                    case ["MPI_Reduce"] {
+                        $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
+                        $action{"comp_size"} = 0;     # where should we take this information from?
+                        $action{"root"} = 0;
+                        register_root ($comm, $task, $mpi_call, $root, \%action);
+                    }
+
+                    case ["MPI_Allgather", "MPI_Alltoall"] {
+                        $action{"send_size"} = $send_size;
+                        $action{"recv_size"} = $recv_size;
+                    }
+
+                    case ["MPI_Allgatherv", "MPI_Gatherv"] {
+                        $action{"send_size"} = $send_size;
+                        $action{"recv_sizes"} = undef;
+
+                        # the action that should be backpatched
+                        push @{$v_actions{$comm}{$task}{$mpi_call}}, \%action;
+
+                        # the information that should be used to backpatch
+                        register_v_count ($comm, $mpi_call, $task, $send_size);
+
+                        # register the root for MPI_Gatherv
+                        if ($mpi_call eq "MPI_Gatherv") {
+                            $action{"root"} = undef;
+                            register_root ($comm, $task, $mpi_call, $root, \%action);
+                        }
+                    }
+
+                    case ["MPI_Reduce_scatter"] {
+                        $action{"comp_size"} = 0;     # where should we take this information from?
+
+                        # the action that should be backpatched
+                        push @{$v_actions{$comm}{$task}{$mpi_call}}, \%action;
+
+                        # the information that should be used to backpatch
+                        register_v_count ($comm, $mpi_call, $task, $recv_size);
+                    }
                 }
-
                 
                 # prep ptp
-                if ($mpi_call eq "MPI_Send" || $mpi_call eq "MPI_Isend"){
-                    push @{$ptp_partner_comm{$task}{"send"}}, \%action;
-                }elsif ($mpi_call eq "MPI_Recv" || $mpi_call eq "MPI_Irecv"){
-                    push @{$ptp_partner_comm{$task}{"recv"}}, \%action;
+                switch ($mpi_call){
+                    case ["MPI_Send", "MPI_Isend"] {
+                        push @{$ptp_partner_comm{$task}{"send"}}, \%action;
+                    }
+
+                    case ["MPI_Recv", "MPI_Irecv"] {
+                        push @{$ptp_partner_comm{$task}{"recv"}}, \%action;
+                    }
                 }
 
                 # push to the action array (everything is buffered before dump at the end)
