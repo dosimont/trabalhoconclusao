@@ -1023,6 +1023,17 @@ sub parse_prv_lucas {
 		my $root = $event_list{$mpi_call_parameters{"root"}}; #marker present in the root
 		my $comm = $event_list{$mpi_call_parameters{"communicator"}};
 
+                # register root
+                switch ($mpi_call) {
+                    case ["MPI_Bcast", "MPI_Gather", "MPI_Reduce", "MPI_Gatherv"] {
+                        $action{"root"} = undef;
+
+                        # register the root for backpatching
+                        register_root ($comm, $task, $mpi_call, $root, \%action);
+                    }
+                }
+
+                # remaining parameters
                 switch ($mpi_call) {
                     case ["MPI_Init", "MPI_Finalize"] {
                         # nothing particular to do
@@ -1030,19 +1041,11 @@ sub parse_prv_lucas {
 
                     case ["MPI_Bcast"] {
                         $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size;
-                        $action{"root"} = undef;
-
-                        # register the root for backpatching
-                        register_root ($comm, $task, $mpi_call, $root, \%action);
                     }
 
                     case ["MPI_Gather"] {
                         $action{"send_size"} = $send_size;
                         $action{"recv_size"} = $recv_size;
-                        $action{"root"} = undef;
-
-                        # register the root for backpatching
-                        register_root ($comm, $task, $mpi_call, $root, \%action);
                     }
 
                     case ["MPI_Send", "MPI_Recv", "MPI_Isend", "MPI_Irecv"] {
@@ -1058,8 +1061,6 @@ sub parse_prv_lucas {
                     case ["MPI_Reduce"] {
                         $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
                         $action{"comp_size"} = 0;     # where should we take this information from?
-                        $action{"root"} = 0;
-                        register_root ($comm, $task, $mpi_call, $root, \%action);
                     }
 
                     case ["MPI_Allgather", "MPI_Alltoall"] {
@@ -1076,12 +1077,6 @@ sub parse_prv_lucas {
 
                         # the information that should be used to backpatch
                         register_v_count ($comm, $mpi_call, $task, $send_size);
-
-                        # register the root for MPI_Gatherv
-                        if ($mpi_call eq "MPI_Gatherv") {
-                            $action{"root"} = undef;
-                            register_root ($comm, $task, $mpi_call, $root, \%action);
-                        }
                     }
 
                     case ["MPI_Reduce_scatter"] {
