@@ -59,7 +59,8 @@ sub dump_tit_lucas
 
         }elsif ($type eq "init"){
             # FORMAT: <rank> init [<set_default_double>]
-            print ($task, " init", "\n");
+            print "$task $type\n";
+
         }elsif ($type eq "finalize"){
             # FORMAT: <rank> finalize
             print ($task, " finalize", "\n");
