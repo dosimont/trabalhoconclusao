@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
       send_buffer[i] = rank;
     }
 
-    MPI_Gatherv(send_buffer, rank + 1, MPI_INT, receive_buffer, rcounts, displs, MPI_INT, 3, MPI_COMM_WORLD);
+    MPI_Gatherv(send_buffer, rank + 1, MPI_INT, receive_buffer, rcounts, displs, MPI_INT, root, MPI_COMM_WORLD);
     printf("process %d sent message of size %d to process %d\n", rank, rank + 1, root);
 
     /*
