@@ -68,21 +68,21 @@ sub dump_tit_lucas
         }elsif ($type eq "bcast"){
             # FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
             my $comm_size = $_->{"comm_size"};
-            my $root = $_->{"root"}; # TODO check is -1
+            my $root = $_->{"root"} - 1;
             print "$task $type $comm_size $root\n";
 
         }elsif ($type eq "gather"){
             # FORMAT: <rank> gather <send_size> <recv_size> <root> [<send_datatype> <recv_datatype>]
             my $send_size = $_->{"send_size"};
             my $recv_size = $_->{"recv_size"};
-            my $root = $_->{"root"}; # TODO check is -1
+            my $root = $_->{"root"} - 1;
             print "$task $type $send_size $recv_size $root\n";
 
         }elsif ($type eq "reduce"){
             # FORMAT: <rank> reduce <comm_size> <comp_size> [<root> [<datatype>]]
             my $comm_size = $_->{"comm_size"};
             my $comp_size = $_->{"comp_size"};
-            my $root = $_->{"root"}; # TODO check is -1
+            my $root = $_->{"root"} - 1;
             print "$task $type $comm_size $comp_size $root\n";
 
         }elsif ($type eq "send"  ||
