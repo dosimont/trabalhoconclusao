@@ -266,11 +266,11 @@ sub main {
 
     dump_tit_lucas();
     
-    # print STDERR "Translated events:\n";
-    # print STDERR join ", ", keys %translated_events;
-    # print STDERR "\nIgnored events:\n";
-    # print STDERR join ", ", keys %ignored_events;
-    # print STDERR "\n";
+    print STDERR "Translated events:\n";
+    print STDERR join ", ", keys %translated_events;
+    print STDERR "\nIgnored events:\n";
+    print STDERR join ", ", keys %ignored_events;
+    print STDERR "\n";
 }
 
 my %mpi_call_parameters = (
