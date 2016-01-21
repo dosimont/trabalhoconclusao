@@ -118,7 +118,7 @@ sub dump_tit_lucas
                 # FORMAT: <rank> gatherV <send_size> <recv_sizes†> <root> [<send_datatype> <recv_datatype>]
                 my $send_size = $_->{"send_size"};
                 my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-                my $root =  $_->{"root"} - 1; # BUG $root is undef
+                my $root =  $_->{"root"} - 1;
                 print "$task $type $send_size $recv_sizes $root\n";
             }
 
