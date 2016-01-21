@@ -1041,6 +1041,8 @@ sub parse_prv_lucas {
                 }elsif ($mpi_call eq "MPI_Reduce"){
                     $action{"comm_size"} = $send_size > $recv_size ? $send_size : $recv_size; # TODO
                     $action{"comp_size"} = 0;     # where should we take this information from?
+                    $action{"root"} = 0;
+                    register_root ($comm, $task, $mpi_call, $root, \%action);
                 }elsif ($mpi_call eq "MPI_Allgather" ||
                         $mpi_call eq "MPI_Alltoall"){
                     $action{"send_size"} = $send_size;
