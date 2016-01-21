@@ -43,6 +43,17 @@ my %v_actions; # communicator(HASH), task(HASH), mpi_call(HASH),
 my %ptp_partner_comm; # task(HASH), "send" or "recv" - ARRAY
 my @ptp_operations_order; # order on which PTP operations appear
 
+sub check_undef_action
+{
+    my $action = @_;
+    foreach my $value ($action){
+        if (!defined $value){
+            return undef;
+        }
+    }
+    return 1;
+}
+
 sub dump_tit_lucas
 {
     define_collective_root ();
@@ -54,6 +65,11 @@ sub dump_tit_lucas
         my $type = $action->{"type"};
         my $task = $action->{"task"};
         $task = $task - 1; # remove one
+
+        # check if action has no undefs
+        if (!check_undef_action ($action)){
+            die "action has undefs\n";
+        }
 
         switch ($type){
             case ["compute"] {
