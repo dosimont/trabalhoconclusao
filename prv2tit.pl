@@ -63,7 +63,8 @@ sub dump_tit_lucas
 
         }elsif ($type eq "finalize"){
             # FORMAT: <rank> finalize
-            print ($task, " finalize", "\n");
+            print "$task $type\n";
+
         }elsif ($type eq "bcast"){
             # FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
             my $root = $_->{"root"};
