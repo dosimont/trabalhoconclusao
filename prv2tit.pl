@@ -82,13 +82,9 @@ sub dump_tit_lucas
             # FORMAT: <rank> reduce <comm_size> <comp_size> [<root> [<datatype>]]
             my $comm_size = $_->{"comm_size"};
             my $comp_size = $_->{"comp_size"};
-            my $root = $_->{"root"};
-            # PRINT reduce
-            if (defined $root){
-                print ($task, " reduce ", $_->{"comm_size"}, " ", $_->{"comp_size"}, " ", $root, "\n");
-            }else{
-                print ($task, " reduce ", $_->{"comm_size"}, " ", $_->{"comp_size"}, " <ROOT>\n");
-            }            
+            my $root = $_->{"root"}; # TODO check is -1
+            print "$task $type $comm_size $comp_size $root\n";
+
         }elsif ($type eq "send"  ||
                 $type eq "recv"  ||
                 $type eq "isend" ||
