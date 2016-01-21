@@ -27,9 +27,7 @@ my @task_comms_buffer;
 my $power_reference = 286.087E-3; # in flop/mus
 
 # store all tit events (complete or incomplete)
-my @lucas;
-my %lucas_bcast;
-my @lucas_bcast_root_order;
+my @action_buffer;
 
 # to define the root of collective operations (bcast, gather)
 my %collective_root; # communicator(HASH), task(HASH), mpi_call(HASH) - ARRAY
@@ -60,7 +58,7 @@ sub dump_tit_lucas
     define_ptp_partner_comm_size ();
     define_v_fields ();
     
-    foreach (@lucas){
+    foreach (@action_buffer){
         my $action = $_;
         my $type = $action->{"type"};
         my $task = $action->{"task"};
@@ -991,7 +989,7 @@ sub parse_prv_lucas {
                 $action_compute{"type"} = "compute";
                 $action_compute{"comp_size"} = $comp_size;
                 $action_compute{"task"} = $task;
-                push @lucas, \%action_compute;
+                push @action_buffer, \%action_compute;
             }
         }
         
@@ -1098,7 +1096,7 @@ sub parse_prv_lucas {
                 }
 
                 # push to the action array (everything is buffered before dump at the end)
-                push @lucas, \%action;
+                push @action_buffer, \%action;
 	    }
         }
         # communication records are in the format 3:cpu_send:ptask_send:task_send:thread_send:logical_time_send:actual_time_send:cpu_recv:ptask_recv:task_recv:thread_recv:logical_time_recv:actual_time_recv:size:tag
