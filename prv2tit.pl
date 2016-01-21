@@ -112,8 +112,8 @@ sub dump_tit_lucas
             # FORMAT: <rank> allGather <send_size> <recv_size> [<send_datatype> <recv_datatype>]
             my $send_size = $_->{"send_size"};
             my $recv_size = $_->{"recv_size"};
-            # PRINT allGather
-            print("$task allgather $send_size $recv_size\n");
+            print "$task $type $send_size $recv_size\n";
+
         }elsif ($type eq "alltoall") {
             # FORMAT: <rank> allToAll <send_size> <recv_recv> [<send_datatype> <recv_datatype>]
             my $send_size = $_->{"send_size"};
