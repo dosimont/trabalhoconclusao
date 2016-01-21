@@ -54,7 +54,9 @@ sub dump_tit_lucas
         my $task = $_->{"task"};
         $task = $task - 1; # remove one
         if ($type eq "compute"){
-            print ($task, " compute ", $_->{"comp_size"}, "\n");
+            my $comp_size = $_->{"comp_size"};
+            print "$task $type $comp_size\n";
+
         }elsif ($type eq "init"){
             # FORMAT: <rank> init [<set_default_double>]
             print ($task, " init", "\n");
