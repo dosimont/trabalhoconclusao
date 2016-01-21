@@ -131,10 +131,8 @@ sub dump_tit_lucas
 	    # FORMAT: <rank> allGatherV <send_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
             my $send_size = $_->{"send_size"};
             my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-            # PRINT allGatherV
-            print("$task allgatherv $send_size $recv_sizes\n");
+            print("$task $type $send_size $recv_sizes\n");
 
-        
         }elsif ($type eq "reduce_scatter"){
             # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
             my $comp_size = $_->{"comp_size"};
