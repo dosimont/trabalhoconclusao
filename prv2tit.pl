@@ -1033,6 +1033,17 @@ sub parse_prv_lucas {
                     }
                 }
 
+                # register ptp info
+                switch ($mpi_call){
+                    case ["MPI_Send", "MPI_Isend"] {
+                        push @{$ptp_partner_comm{$task}{"send"}}, \%action;
+                    }
+
+                    case ["MPI_Recv", "MPI_Irecv"] {
+                        push @{$ptp_partner_comm{$task}{"recv"}}, \%action;
+                    }
+                }
+
                 # remaining parameters
                 switch ($mpi_call) {
                     case ["MPI_Init", "MPI_Finalize"] {
@@ -1080,17 +1091,6 @@ sub parse_prv_lucas {
                     }
                 }
                 
-                # prep ptp
-                switch ($mpi_call){
-                    case ["MPI_Send", "MPI_Isend"] {
-                        push @{$ptp_partner_comm{$task}{"send"}}, \%action;
-                    }
-
-                    case ["MPI_Recv", "MPI_Irecv"] {
-                        push @{$ptp_partner_comm{$task}{"recv"}}, \%action;
-                    }
-                }
-
                 # push to the action array (everything is buffered before dump at the end)
                 push @action_buffer, \%action;
 	    }
