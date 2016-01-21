@@ -53,94 +53,92 @@ sub dump_tit_lucas
         my $type = $_->{"type"};
         my $task = $_->{"task"};
         $task = $task - 1; # remove one
-        if ($type eq "compute"){
-            my $comp_size = $_->{"comp_size"};
-            print "$task $type $comp_size\n";
 
-        }elsif ($type eq "init"){
-            # FORMAT: <rank> init [<set_default_double>]
-            print "$task $type\n";
+        switch ($type){
+            case ["compute"] {
+                my $comp_size = $_->{"comp_size"};
+                print "$task $type $comp_size\n";
+            }
 
-        }elsif ($type eq "finalize"){
-            # FORMAT: <rank> finalize
-            print "$task $type\n";
+            case ["init", "finalize", "wait", "waitall", "barrier"] {
+                # FORMAT: <rank> init [<set_default_double>]
+                # FORMAT: <rank> finalize
+                # FORMAT: <rank> wait
+                # FORMAT: <rank> waitAll
+                # FORMAT: <rank> barrier
+                print "$task $type\n";
+            }
 
-        }elsif ($type eq "bcast"){
-            # FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
-            my $comm_size = $_->{"comm_size"};
-            my $root = $_->{"root"} - 1;
-            print "$task $type $comm_size $root\n";
+            case ["bcast"] {
+                # FORMAT: <rank> bcast <comm_size> [<root> [<datatype>]]
+                my $comm_size = $_->{"comm_size"};
+                my $root = $_->{"root"} - 1;
+                print "$task $type $comm_size $root\n";
+            }
 
-        }elsif ($type eq "gather"){
-            # FORMAT: <rank> gather <send_size> <recv_size> <root> [<send_datatype> <recv_datatype>]
-            my $send_size = $_->{"send_size"};
-            my $recv_size = $_->{"recv_size"};
-            my $root = $_->{"root"} - 1;
-            print "$task $type $send_size $recv_size $root\n";
+            case ["gather"] {
+                # FORMAT: <rank> gather <send_size> <recv_size> <root> [<send_datatype> <recv_datatype>]
+                my $send_size = $_->{"send_size"};
+                my $recv_size = $_->{"recv_size"};
+                my $root = $_->{"root"} - 1;
+                print "$task $type $send_size $recv_size $root\n";
+            }
 
-        }elsif ($type eq "reduce"){
-            # FORMAT: <rank> reduce <comm_size> <comp_size> [<root> [<datatype>]]
-            my $comm_size = $_->{"comm_size"};
-            my $comp_size = $_->{"comp_size"};
-            my $root = $_->{"root"} - 1;
-            print "$task $type $comm_size $comp_size $root\n";
+            case ["reduce"] {
+                # FORMAT: <rank> reduce <comm_size> <comp_size> [<root> [<datatype>]]
+                my $comm_size = $_->{"comm_size"};
+                my $comp_size = $_->{"comp_size"};
+                my $root = $_->{"root"} - 1;
+                print "$task $type $comm_size $comp_size $root\n";
+            }
 
-        }elsif ($type eq "send"  ||
-                $type eq "recv"  ||
-                $type eq "isend" ||
-                $type eq "irecv"){
-            # FORMAT: <rank> send <dst> <comm_size> [<datatype>]
-            my $partner = $_->{"partner"} - 1;
-            my $comm_size = $_->{"comm_size"};
-            print "$task $type $partner $comm_size\n";
+            case ["allreduce"] {
+                # FORMAT: <rank> allReduce <comm_size> <comp_size> [<datatype>]
+                my $comm_size = $_->{"comm_size"};
+                my $comp_size = $_->{"comp_size"};
+                print "$task $type $comm_size $comp_size\n";
+            }
 
-        }elsif ($type eq "wait"    ||
-                $type eq "waitall" ||
-                $type eq "barrier"){
-            # FORMAT: <rank> wait
-            # FORMAT: <rank> waitAll
-            # FORMAT: <rank> barrier
-            print "$task $type\n";
+            case ["send", "recv", "isend", "irecv"] {
+                # FORMAT: <rank> send <dst> <comm_size> [<datatype>]
+                my $partner = $_->{"partner"} - 1;
+                my $comm_size = $_->{"comm_size"};
+                print "$task $type $partner $comm_size\n";
+            }
 
-        }elsif ($type eq "allreduce"){
-            # FORMAT: <rank> allReduce <comm_size> <comp_size> [<datatype>]
-            my $comm_size = $_->{"comm_size"};
-            my $comp_size = $_->{"comp_size"};
-            print "$task $type $comm_size $comp_size\n";
+            case ["allgather", "alltoall"] {
+                # FORMAT: <rank> allGather <send_size> <recv_size> [<send_datatype> <recv_datatype>]
+                # FORMAT: <rank> allToAll <send_size> <recv_recv> [<send_datatype> <recv_datatype>]
+                my $send_size = $_->{"send_size"};
+                my $recv_size = $_->{"recv_size"};
+                print "$task $type $send_size $recv_size\n";
+            }
 
-        }elsif ($type eq "allgather"){
-            # FORMAT: <rank> allGather <send_size> <recv_size> [<send_datatype> <recv_datatype>]
-            my $send_size = $_->{"send_size"};
-            my $recv_size = $_->{"recv_size"};
-            print "$task $type $send_size $recv_size\n";
+            case ["gatherv"] {
+                # FORMAT: <rank> gatherV <send_size> <recv_sizes†> <root> [<send_datatype> <recv_datatype>]
+                my $send_size = $_->{"send_size"};
+                my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
+                my $root =  $_->{"root"} - 1; # BUG $root is undef
+                print "$task $type $send_size $recv_sizes $root\n";
+            }
 
-        }elsif ($type eq "alltoall") {
-            # FORMAT: <rank> allToAll <send_size> <recv_recv> [<send_datatype> <recv_datatype>]
-            my $send_size = $_->{"send_size"};
-            my $recv_size = $_->{"send_size"};
-            print "$task $type $send_size $recv_size\n";
+            case ["allgatherv"] {
+                # FORMAT: <rank> allGatherV <send_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
+                my $send_size = $_->{"send_size"};
+                my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
+                print("$task $type $send_size $recv_sizes\n");
+            }
 
-        }elsif ($type eq "gatherv"){
-            # FORMAT: <rank> gatherV <send_size> <recv_sizes†> <root> [<send_datatype> <recv_datatype>]
-            my $send_size = $_->{"send_size"};
-            my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-            my $root =  $_->{"root"} - 1; # BUG $root is undef
-            print "$task $type $send_size $recv_sizes $root\n";
+            case ["reducescatter"] {
+                # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
+                my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
+                my $comp_size = $_->{"comp_size"};
+                print("$task $type $recv_sizes $comp_size\n");
+            }
 
-        }elsif ($type eq "allgatherv"){
-	    # FORMAT: <rank> allGatherV <send_size> <recv_sizes†> [<send_datatype> <recv_datatype>]
-            my $send_size = $_->{"send_size"};
-            my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-            print("$task $type $send_size $recv_sizes\n");
-
-        }elsif ($type eq "reduce_scatter"){
-            # FORMAT: <rank> reduceScatter <recv_sizes†> <comp_size> [<datatype>]
-            my $recv_sizes = join(" ", @{$_->{"recv_sizes"}});
-            my $comp_size = $_->{"comp_size"};
-            print("$task $type $recv_sizes $comp_size\n");
-
-        }else{
-            print ($_->{"task"}, " <missing treatment of ", "$type>\n");
+            default {
+                die "<missing treatment of ", "$type>\n";
+            }
         }
     }
 
@@ -1049,6 +1047,7 @@ sub parse_prv_lucas {
                     $action{"recv_size"} = $recv_size;
                 }elsif ($mpi_call eq "MPI_Allgatherv" ||
                         $mpi_call eq "MPI_Gatherv"){
+
                     $action{"send_size"} = $send_size;
                     $action{"recv_sizes"} = undef;
 
