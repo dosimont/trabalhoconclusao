@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Switch;
+use List::Util 1.33 'any';
 
 # use dictionary to keep track of states and events
 my %states;
@@ -311,7 +312,8 @@ sub extract_mpi_call {
 	if(defined($events{$key})) {
 	    if(defined($events{$key}{value}{$event_info{$key}})) {
 		my $event_name = $events{$key}{value}{$event_info{$key}};
-		if(grep(/^$event_name$/, @mpi_calls)) {
+
+                if (any { /^$event_name$/ } @mpi_calls){
 		    $translated_events{$event_name} = 1;
 		    return $event_name;
 		}
