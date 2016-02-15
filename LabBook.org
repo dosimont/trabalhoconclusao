@@ -680,3 +680,180 @@ Check function =decode_datatype= at =smpi_replay.c=.
 
 + =prv2tit.pl= / =power_reference= / =compute_action=
 + 
+* 2016-02-15 DIMEMAS Installation                                     :Lucas:
+
+Download DIMEMAS from
+
++ https://www.bsc.es/computer-sciences/performance-tools/downloads
+
+Current version is:
+
++ dimemas-5.2.12.tar.gz
+
+There are dependencies, check the README file and install them.
+
+#+BEGIN_SRC sh
+cd misc
+tar xfz dimemas-5.2.12.tar.gz
+cd dimemas-5.2.12
+./configure --prefix=$HOME/install/dimemas-5.2.12/
+make
+make install
+#+END_SRC
+
+Here's the content after installation:
+
+#+begin_src sh :results output :session :exports both
+find /home/schnorr/install/dimemas-5.2.12/
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/install/dimemas-5.2.12/
+/home/schnorr/install/dimemas-5.2.12/lib
+/home/schnorr/install/dimemas-5.2.12/lib/GUI
+/home/schnorr/install/dimemas-5.2.12/lib/GUI/dimemas-gui-5.2.12.jar
+/home/schnorr/install/dimemas-5.2.12/lib/GUI/commons-io-2.4.jar
+/home/schnorr/install/dimemas-5.2.12/sendrecv4.dim
+/home/schnorr/install/dimemas-5.2.12/bin
+/home/schnorr/install/dimemas-5.2.12/bin/trf2dim
+/home/schnorr/install/dimemas-5.2.12/bin/DimemasGUI
+/home/schnorr/install/dimemas-5.2.12/bin/DimemasUpdateCFG
+/home/schnorr/install/dimemas-5.2.12/bin/Dimemas
+/home/schnorr/install/dimemas-5.2.12/bin/prv2dim
+/home/schnorr/install/dimemas-5.2.12/include
+/home/schnorr/install/dimemas-5.2.12/include/extern_comm_model.h
+/home/schnorr/install/dimemas-5.2.12/share
+/home/schnorr/install/dimemas-5.2.12/share/lib_extern_model_example
+/home/schnorr/install/dimemas-5.2.12/share/lib_extern_model_example/README
+/home/schnorr/install/dimemas-5.2.12/share/lib_extern_model_example/extern_comm_model.c
+/home/schnorr/install/dimemas-5.2.12/share/lib_extern_model_example/Makefile
+/home/schnorr/install/dimemas-5.2.12/sendrecv4.pcf
+/home/schnorr/install/dimemas-5.2.12/sendrecv4.row
+#+end_example
+
+We have a =Dimemas= binary and a =prv2dim= that interest us.
+
+Converting a file from =prv= to =dim= file format.
+
+#+begin_src sh :results output :session :exports both
+cd ~/install/dimemas-5.2.12/
+./bin/prv2dim ~/svn/bozzetti/paraver_traces2/sendrecv4.prv sendrecv4.dim
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+INITIALIZING PARSER... OK!
+SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 002 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 010 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 030 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 048 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 051 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 058 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 084 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 092 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+-> Trace first pass finished (communications split)
+   * Records parsed:          210
+   * Splitted communications 30
+SORTING PARTIAL COMMUNICATIONS
+COMMUNICATIONS SORTED
+INITIALIZING TRANSLATION...  OK
+CREATING TRANSLATION STRUCTURES  001/010CREATING TRANSLATION STRUCTURES  002/010CREATING TRANSLATION STRUCTURES  003/010CREATING TRANSLATION STRUCTURES  004/010CREATING TRANSLATION STRUCTURES  005/010CREATING TRANSLATION STRUCTURES  006/010CREATING TRANSLATION STRUCTURES  007/010CREATING TRANSLATION STRUCTURES  008/010CREATING TRANSLATION STRUCTURES  009/010CREATING TRANSLATION STRUCTURES  010/010CREATING TRANSLATION STRUCTURES  010/010
+WRITING HEADER... OK
+TRANSLATING COMMUNICATORS... OK
+RECORD TRANSLATION
+TRANSLATING RECORDS 000 %TRANSLATING RECORDS 002 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 010 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 030 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 048 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 051 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 054 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 058 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 063 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 084 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 092 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+MERGING PARTIAL OUTPUT TRACES
+   * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * Merging task    5 100 %   * Merging task    6 100 %   * Merging task    7 100 %   * Merging task    8 100 %   * Merging task    9 100 %   * Merging task   10 100 %   * All task merged!         
+
+********************************************************************************
+*                               WARNING                                        *
+********************************************************************************
+5 tasks of this application execute 'non-deterministic' communications 
+primitives (MPI_Test[*] | MPI_Waitany | MPI_Waitall | MPI_Waitsome)
+The simulation of this trace will not capture the possible indeterminism 
+********************************************************************************
+
+TRANSLATION FINISHED
+GENERATING PCF
+   * Input PCF /home/schnorr/svn/bozzetti/paraver_traces2/sendrecv4.pcf correctly copied to sendrecv4.pcf
+COPYING ROW FILE
+#+end_example
+
+Great, it works.
+
+Dimemas CLI simulator:
+
+#+begin_src sh :results output :session :exports both
+cd ~/install/dimemas-5.2.12/
+./bin/Dimemas -h
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Dimemas version 5.2.12
+
+Compiled on Mon Feb 15 07:27:46 BRST 2016 
+Usage: ./bin/Dimemas [-h] [-v] [-d] [-x[s|e|p]] [-o[l] output-file] [-T time] [-l] [-C]
+	[-p[a|b] paraver-file [-y time] -z time]] [-x[s|e]]
+	[-e event_type] [-g event_output_info] [-F] [-S sync_size]
+	[-w] [-ES] [-Eo eee_network_definition] [-Ef eee_frame_size]
+	[--dim input-trace] [--bw bandwidth] [--lat latency]
+	[--ppn processors_per_node] [--fill] [--interlvd]
+	 config-file
+
+Required arguments:
+	config-file	Dimemas configuration file
+
+Supported options:
+	-h		Display this help message
+	-v		Display Dimemas version information
+	-d		Enable debug output
+	-xa		Force assertations - Vladimir: check if optimizations caused some errors
+	-xs		Enable extra scheduling debug output
+	-xe		Enable extra event manager debug output
+	-xp		Enable extra Paraver trace generation debug output
+	-o[l] file	Set output file (default: stdout) (l:long info) 
+	-t		Show only simulation time as output
+	-T time		Set simulation stop time
+	-l		Enable in-core operation
+	-C		Perform critical path analysis
+	-p file		Generate Paraver tracefile (ASCII)
+	-pc file	Use the given file as output Paraver configuration file
+	-y time		Set Paraver tracefile start time
+	-z time		Set Paraver tracefile stop time
+	-e event_type	Show time distance between events occurrence
+	-g event_output	File for output information on events occurrence
+	-F		Ignore synchronism send trace field
+	-S sync_size	Minimum message size to use Rendez vous
+	-w	When generating Paraver trace, output the LOGICAL_RECV times when Wait primitives take place (Default: at IRecv execution time)
+	-ES	Enables the EEE network model (you must use '-Eo' and '-Ef'
+	-Eo eee_network_definition	Set the filename where the EEE network is defined
+	-Ef frame_size	Sets the EEE network frame size (in bytes)
+	--dim input-trace	Set input trace (overrides the configuration file)
+	--bw  bandwidth	Set inter-node bandwidth (MBps, overrides the configuration file)
+	--lat latency	Set inter-node latency for all nodes (seconds, overrides the configuration file)
+	--fill	Set node filling task mapping (overrides the configuration file)
+	--ppn tasks_per_node	Set 'n' tasks per node mapping (overrides the configuration file)
+	--interlvd	Set interleaved node tasks mapping (overrides the configuration file)
+#+end_example
+
+Now I have to find out how to use Dimemas.
+
+Looks like a configuration file is essential.
+
+There is some interesting tutorials here:
++ https://www.bsc.es/computer-sciences/performance-tools/documentation
+
+More specifically these ones:
++ https://www.bsc.es/sites/default/files/public/computer_science/performance_tools/2.introduction_to_dimemas.tar.gz
++ https://www.bsc.es/sites/default/files/public/computer_science/performance_tools/3.introduction_to_paraver_and_dimemas_methodology.tar.gz
++ https://www.bsc.es/sites/default/files/public/computer_science/performance_tools/4.methodology_of_analysis.tar.gz
+
+User-guide is here:
++ https://www.bsc.es/media/1324.pdf
+
+Download all this:
+
+#+begin_src sh :results output :session :exports both
+wget -q https://www.bsc.es/sites/default/files/public/computer_science/performance_tools/2.introduction_to_dimemas.tar.gz
+wget -q https://www.bsc.es/sites/default/files/public/computer_science/performance_tools/3.introduction_to_paraver_and_dimemas_methodology.tar.gz
+wget -q https://www.bsc.es/sites/default/files/public/computer_science/performance_tools/4.methodology_of_analysis.tar.gz
+wget -q https://www.bsc.es/media/1324.pdf
+#+end_src
+
+#+RESULTS:
+
