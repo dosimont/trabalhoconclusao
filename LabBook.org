@@ -760,7 +760,7 @@ MERGING PARTIAL OUTPUT TRACES
    * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * Merging task    5 100 %   * Merging task    6 100 %   * Merging task    7 100 %   * Merging task    8 100 %   * Merging task    9 100 %   * Merging task   10 100 %   * All task merged!         
 
 ********************************************************************************
-*                               WARNING                                        *
+ *                               WARNING                                        *
 ********************************************************************************
 5 tasks of this application execute 'non-deterministic' communications 
 primitives (MPI_Test[*] | MPI_Waitany | MPI_Waitall | MPI_Waitsome)
