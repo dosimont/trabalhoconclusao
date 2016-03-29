@@ -897,3 +897,16 @@ You might find some information here.
 * TODO 2016-03-29 Replaying with SimGrid to get a CSV for comparison
 
 - Get inspiration from =smpi2pj.sh=
+* 2016-03-29 Mercier's traces                                         :Lucas:
+
+#+begin_src sh :results output :session :exports both
+ls mercier_traces | grep .tar.gz
+#+end_src
+
+#+RESULTS:
+: lu.B.2_prv_24MB.tar.gz
+: lu.C.8_prv_377MB.tar.gz
+
+Download here:
+
+https://www.dropbox.com/sh/hnr7rhytapkuwtb/AACvpzo3MvHHm8LkAfklp61Ya?dl=0
