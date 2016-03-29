@@ -7,6 +7,7 @@ use warnings;
 use Data::Dumper;
 use Switch;
 use List::Util 1.33 'any';
+use List::Util 'first';  
 
 # use dictionary to keep track of states and events
 my %states;
