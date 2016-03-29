@@ -874,6 +874,10 @@ Them, for the experiments (from a non-partial paraver trace file):
 1. _Replay with Dimemas_, get the trace from the replay (in prv format)
    - Understand how Dimemas model the Marenostrum machine
    - Get a complete trace from Barcelonians to start working with
+   - Use =prv2pj.pl= script to convert paraver files to CSV (for comparison)
+     #+begin_src sh :results output :session :exports both
+     perl ./prv2pj.pl -f csv -i  ./paraver_traces2/sendrecv1
+     #+end_src
 2. _Platform file for Simgrid_
    - Create a Marenostrum platform file for Simgrid
    - Convert original paraver file to tit with =prv2tit.pl=
