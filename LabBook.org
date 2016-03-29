@@ -857,3 +857,28 @@ wget -q https://www.bsc.es/media/1324.pdf
 
 #+RESULTS:
 
+* 2016-03-29 Plan for next weeks                                      :Lucas:
+
+Here's what I think is missing from the technical side:
+
+- A converter from paraver to =pj_dump=-like. I think Arnaud already did
+  that, but we should merge what he did with the latest changes I have
+  made in the =prv2tit.pl= script.
+- Perhaps some performance improvements in the conversion script
+  - Dump rightaway whenever information is complete, release memory
+  - Today that's not the case, we buffer everything in memory (slow)
+  - This is not strictly necessary (focus on next experimental part)
+
+Them, for the experiments (from a non-partial paraver trace file):
+
+1. _Replay with Dimemas_, get the trace from the replay (in prv format)
+   - Understand how Dimemas model the Marenostrum machine
+   - Get a complete trace from Barcelonians to start working with
+2. _Platform file for Simgrid_
+   - Create a Marenostrum platform file for Simgrid
+   - Convert original paraver file to tit with =prv2tit.pl=
+3. _Replay with SimGrid_, using the tit file
+   - Get the trace, convert with =pj_dump= to the CSV-like
+4. _Find a comparison metric_
+   - It might be a simple gantt-chart with ggplot2
+   - Then evolve proposing a metric (should discuss this with Arnaud)
