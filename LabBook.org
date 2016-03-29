@@ -878,12 +878,11 @@ Them, for the experiments (from a non-partial paraver trace file):
      #+begin_src sh :results output :session :exports both
      perl ./prv2pj.pl -f csv -i  ./paraver_traces2/sendrecv1
      #+end_src
-2. _Platform file for Simgrid_
+2. _Replay with SimGrid_, using the tit file from original paraver
    - Create a Marenostrum platform file for Simgrid
    - Convert original paraver file to tit with =prv2tit.pl=
-3. _Replay with SimGrid_, using the tit file
    - Get the trace, convert with =pj_dump= to the CSV-like
-4. _Find a comparison metric_
+3. _Find a comparison metric_
    - It might be a simple gantt-chart with ggplot2
    - Then evolve proposing a metric (should discuss this with Arnaud)
 
