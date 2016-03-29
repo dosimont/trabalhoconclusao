@@ -888,3 +888,12 @@ Them, for the experiments (from a non-partial paraver trace file):
 
 You might find some information here.
 - http://simgrid.gforge.inria.fr/contrib/smpi-paraver.php
+* TODO 2016-03-29 Replaying with Dimemas to get a CSV for comparison
+
+- How Dimemas CLI works?
+- Receipt to replay with dimemas
+  - With a step by step to get the CSV
+
+* TODO 2016-03-29 Replaying with SimGrid to get a CSV for comparison
+
+- Get inspiration from =smpi2pj.sh=
