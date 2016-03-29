@@ -882,3 +882,6 @@ Them, for the experiments (from a non-partial paraver trace file):
 4. _Find a comparison metric_
    - It might be a simple gantt-chart with ggplot2
    - Then evolve proposing a metric (should discuss this with Arnaud)
+
+You might find some information here.
+- http://simgrid.gforge.inria.fr/contrib/smpi-paraver.php
