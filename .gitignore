@@ -1,5 +1,6 @@
 tmp/
-simgrid/
-paje/
-dimemas/
+simgrid/SimGrid-3.12
+simgrid/pajeng
+dimemas/dimemas-5.2.12
+dimemas/prv2pjdump
 *~

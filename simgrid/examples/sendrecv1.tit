@@ -1,0 +1,40 @@
+0 compute 904089.27653
+1 compute 888987.315974
+2 compute 849055.578601
+3 compute 831541.618548
+1 init
+2 init
+3 init
+0 init
+2 compute 16094.968533
+1 compute 15927.607638
+3 compute 15949.636337
+0 compute 55175.024907
+3 compute 1972.569865
+2 compute 1909.630725
+1 compute 1792.907229
+3 compute 1442.450654
+1 compute 1554.024584
+2 compute 1436.15674
+3 recv 2 4
+2 send 3 4
+1 recv 0 4
+2 compute 9212.0014
+0 compute 1471.059354
+3 compute 8854.678737
+2 finalize
+3 finalize
+3 compute 130254.838926
+2 compute 130052.28933
+0 compute 1916.496813
+0 send 1 4
+0 compute 44893.630301
+1 compute 8445.002153
+1 finalize
+1 compute 69852.146268
+0 finalize
+0 compute 33490.774655
+0 compute 2489.529074
+3 compute 2090.437709
+1 compute 2438.319501
+2 compute 2399.125582

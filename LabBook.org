@@ -910,3 +910,102 @@ ls mercier_traces | grep .tar.gz
 Download here:
 
 https://www.dropbox.com/sh/hnr7rhytapkuwtb/AACvpzo3MvHHm8LkAfklp61Ya?dl=0
+* 2016-03-30 From the ground up
+
+In order to install all the tools needed for this project,
+we start by installing SimGrid.
+
+#+BEGIN_SRC sh
+cd dimemas
+wget https://gforge.inria.fr/frs/download.php/file/35215/SimGrid-3.12.tar.gz
+tar -xvzf SimGrid-3.12.tar.gz
+cd SimGrid-3.12
+cmake -Denable_smpi=on ./
+make
+make install
+#+END_SRC
+ 
+SimGrid is installed. We can try the smpi replay tool with one tit trace to check if the
+simulation is running fine. The script that is executed separate the tit trace into files
+for each task and creates a task mapping for an example machine model =graphene.xml=.
+
+#+BEGIN_SRC sh
+cd ..
+cd examples
+sh simulator.sh
+#+END_SRC
+
+This should output a file out.trace in the PAJE format.
+
+Next we will install Dimemas. I created a directory called dimemas to contain the dimemas installation
+and some examples. On that directory, copy the Dimemas source and execute the following commands.
+
+#+BEGIN_SRC sh
+tar jxf dimemas-5.2.12.tar.bz2
+cd dimemas-5.2.12
+./configure
+make
+make install
+#+END_SRC
+
+Now let`s try some examples.
+First, we will convert a prv trace to the dimemas format.
+
+#+BEGIN_SRC sh
+cd ..
+cd examples
+./../dimemas-5.2.12/prv2dim/prv2dim sendrecv1.prv sendrecv1.dim
+#+END_SRC
+
+We should have a file named sendrecv1.dim with the trace in the dimemas format.
+Now, we will simulate this trace on Dimemas using an example configuration file.
+
+#+BEGIN_SRC sh
+./../dimemas-5.2.12/Simulator/Dimemas -p out.prv 2dc_I_L2mr.cfg
+#+END_SRC
+
+Dimemas will create three files with the result of the simulation.
+
+* 2014-04-03 Closing the cycle
+
+So we got Simgrid and Dimemas working and we have some idea of how to use them.
+It would be nice to have the simulation results in the same format for comparison.
+
+Let`s start with Simgrid.
+We will use the =pj_dump= command available in the PajeNG trace visualization tool.
+We will start by installing this tool.
+
+#+BEGIN_SRC sh
+sudo apt-get install git cmake build-essential libqt4-dev libqt4-opengl-dev libboost-dev freeglut3-dev asciidoc flex bison;
+git clone git://github.com/schnorr/pajeng.git ; mkdir -p pajeng/b ; cd pajeng/b ; cmake .. ; make install
+#+END_SRC
+
+Pjdump should be installed, let`s try it out.
+
+#+BEGIN_SRC sh
+cd ../../examples
+sh simulator
+pj_dump out.trace > out.csv
+#+END_SRC
+
+Great, we have our Simgrid output in a csv format.
+
+We have to to the same with Dimemas output. First, we will install the prv2pjdump tool,
+which will convert the prv file to a csv file in the pjdump format. Then, we will test it
+with the prv file that the Dimemas simulator generated earlier.
+
+#+BEGIN_SRC sh
+cd ../../dimemas
+git clone https://github.com/soctrace-inria/prv2pjdump.git
+cd prv2pjdump
+make
+cd ../examples
+./../prv2pjdump/linux_x64/prv2pjdump out.prv
+#+END_SRC
+
+The file out.pjdump should contain the result of our conversion.
+
+
+
+  
+
