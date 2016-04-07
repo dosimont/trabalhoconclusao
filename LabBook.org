@@ -916,7 +916,7 @@ In order to install all the tools needed for this project,
 we start by installing SimGrid.
 
 #+BEGIN_SRC sh
-cd dimemas
+cd simgrid
 wget https://gforge.inria.fr/frs/download.php/file/35215/SimGrid-3.12.tar.gz
 tar -xvzf SimGrid-3.12.tar.gz
 cd SimGrid-3.12
