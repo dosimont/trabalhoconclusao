@@ -1005,7 +1005,480 @@ cd ../examples
 
 The file out.pjdump should contain the result of our conversion.
 
+* 2016-04-07 Trying to replicate latest entries                 :Lucas:Tiago:
+
+_SimGrid_
+
+#+begin_src sh :results output :session :exports both
+cd simgrid; rm -rf SimGrid-3.12;
+wget https://gforge.inria.fr/frs/download.php/file/35215/SimGrid-3.12.tar.gz
+tar xzf SimGrid-3.12.tar.gz; cd SimGrid-3.12; mkdir build; cd build
+cmake -Denable_smpi=ON -Denable_tracing=ON -Denable_java=OFF -Denable_documentation=OFF ..
+make -j 4
+#+end_src
+
+#+RESULTS:
+#+begin_example
+-- Cmake version 3.4
+-- The C compiler identification is GNU 5.3.1
+-- The CXX compiler identification is GNU 5.3.1
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test HAVE_C_STACK_CLEANER
+-- Performing Test HAVE_C_STACK_CLEANER - Failed
+-- Performing Test COMPILER_SUPPORTS_CXX11
+-- Performing Test COMPILER_SUPPORTS_CXX11 - Success
+-- Performing Test COMPILER_SUPPORTS_C11
+-- Performing Test COMPILER_SUPPORTS_C11 - Success
+-- Found Perl: /usr/bin/perl (found version "5.22.1") 
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Check size of int
+-- Check size of int - done
+-- Check size of long
+-- Check size of long - done
+-- Check size of long long
+-- Check size of long long - done
+-- Check size of void*
+-- Check size of void* - done
+-- System processor: x86_64 (x86_64, 64 bits)
+-- Check if the system is big endian
+-- Searching 16 bit integer
+-- Check size of unsigned short
+-- Check size of unsigned short - done
+-- Using unsigned short
+-- Check if the system is big endian - little endian
+-- Looking for agraph.h
+-- Looking for agraph.h - not found
+-- Looking for cgraph.h
+-- Looking for cgraph.h - found
+-- Looking for graph.h
+-- Looking for graph.h - not found
+-- Looking for lib agraph
+-- Looking for lib agraph - not found
+-- Looking for lib cgraph
+-- Looking for lib cgraph - found
+-- Looking for lib graph
+-- Looking for lib graph - not found
+-- Looking for lib cdt
+-- Looking for lib cdt - found
+-- Looking for sigc++/sigc++.h
+-- Looking for sigc++/sigc++.h - not found
+-- Looking for sigc++config.h
+-- Looking for sigc++config.h - not found
+-- Looking for libsigc++
+-- Looking for libsigc++ - not found
+-- Boost version: 1.58.0
+-- Boost version: 1.58.0
+-- Found the following Boost libraries:
+--   context
+-- Looking for dlopen in dl
+-- Looking for dlopen in dl - found
+-- Looking for backtrace in execinfo
+-- Looking for backtrace in execinfo - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Looking for sem_init in pthread
+-- Looking for sem_init in pthread - found
+-- Looking for sem_open in pthread
+-- Looking for sem_open in pthread - found
+-- Looking for sem_timedwait in pthread
+-- Looking for sem_timedwait in pthread - found
+-- Looking for pthread_mutex_timedlock in pthread
+-- Looking for pthread_mutex_timedlock in pthread - found
+-- Looking for clock_gettime in rt
+-- Looking for clock_gettime in rt - found
+-- Looking for 4 include files stdlib.h, ..., float.h
+-- Looking for 4 include files stdlib.h, ..., float.h - found
+-- Looking for valgrind/valgrind.h
+-- Looking for valgrind/valgrind.h - found
+-- Looking for socket.h
+-- Looking for socket.h - not found
+-- Looking for stat.h
+-- Looking for stat.h - not found
+-- Looking for sys/stat.h
+-- Looking for sys/stat.h - found
+-- Looking for windows.h
+-- Looking for windows.h - not found
+-- Looking for errno.h
+-- Looking for errno.h - found
+-- Looking for unistd.h
+-- Looking for unistd.h - found
+-- Looking for execinfo.h
+-- Looking for execinfo.h - found
+-- Looking for signal.h
+-- Looking for signal.h - found
+-- Looking for sys/time.h
+-- Looking for sys/time.h - found
+-- Looking for sys/param.h
+-- Looking for sys/param.h - found
+-- Looking for sys/sysctl.h
+-- Looking for sys/sysctl.h - found
+-- Looking for time.h
+-- Looking for time.h - found
+-- Looking for string.h
+-- Looking for string.h - found
+-- Looking for ucontext.h
+-- Looking for ucontext.h - found
+-- Looking for stdio.h
+-- Looking for stdio.h - found
+-- Looking for linux/futex.h
+-- Looking for linux/futex.h - found
+-- Looking for gettimeofday
+-- Looking for gettimeofday - found
+-- Looking for nanosleep
+-- Looking for nanosleep - found
+-- Looking for getdtablesize
+-- Looking for getdtablesize - found
+-- Looking for sysconf
+-- Looking for sysconf - found
+-- Looking for readv
+-- Looking for readv - found
+-- Looking for popen
+-- Looking for popen - found
+-- Looking for signal
+-- Looking for signal - found
+-- Looking for snprintf
+-- Looking for snprintf - found
+-- Looking for vsnprintf
+-- Looking for vsnprintf - found
+-- Looking for asprintf
+-- Looking for asprintf - found
+-- Looking for vasprintf
+-- Looking for vasprintf - found
+-- Looking for makecontext
+-- Looking for makecontext - found
+-- Looking for process_vm_readv
+-- Looking for process_vm_readv - found
+-- Looking for mmap
+-- Looking for mmap - found
+-- Looking for bin gfortran
+-- Found gfortran: /usr/bin/gfortran
+-- Looking for dlfcn.h
+-- Looking for dlfcn.h - found
+-- We are using GNU dynamic linker
+-- sem_open is compilable
+-- sem_open is executable
+-- sem_init is compilable
+-- sem_init is executable
+-- timedwait is compilable
+-- timedlock is compilable
+-- #define pth_skaddr_makecontext(skaddr,sksize) ((skaddr))
+-- #define pth_sksize_makecontext(skaddr,sksize) ((sksize))
+-- Found Doxygen: /usr/bin/doxygen (found version "1.8.11") 
+-- Doxygen version: 1.8.11
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/schnorr/svn/bozzetti/simgrid/SimGrid-3.12/build
+#+end_example
+
+_Dimemas_
+
+- Download it manually (version 5.2.12) and put it in =dimemas= dir.
+
+#+begin_src sh :results output :session :exports both
+cd dimemas; rm -rf dimemas-5.2.12
+tar xjf dimemas-5.2.12.tar.bz2
+cd dimemas-5.2.12
+./configure 2>&1 > x
+head x
+#+end_src
+
+#+RESULTS:
+#+begin_example
+configure: error: invalid value: boost_major_version=
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... x86_64-unknown-linux-gnu
+checking target system type... x86_64-unknown-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether configure should try to set CFLAGS... yes
+#+end_example
+
+I have problem with boost, let's try to solve it.
 
 
-  
 
+* 2016-04-07 Let's take a look into the Dimemas and SimGrid traces :Lucas:Tiago:
+
+We have two files that we want to analyze
+
+#+begin_src sh :results output :session :exports both
+find simgrid dimemas | grep pjdump$
+#+end_src
+
+#+RESULTS:
+: simgrid/examples/out-simgrid.pjdump
+: dimemas/examples/out-dimemas.pjdump
+
+Let's prepare them to load into R.
+
+#+begin_src sh :results output :session :exports both
+cat simgrid/examples/out-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > simgrid/examples/out-simgrid-filter.pjdump
+cat simgrid/examples/out-simgrid-filter.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ 3, 0.000000, 0.000000, 0.000000, smpi_replay_run_init
+ 3, 0.000051, 0.000117, 0.000066, action_recv
+ 3, 0.000126, 0.000128, 0.000002, smpi_replay_run_finalize
+ 2, 0.000000, 0.000000, 0.000000, smpi_replay_run_init
+ 2, 0.000052, 0.000052, 0.000000, action_send
+ 2, 0.000061, 0.000128, 0.000067, smpi_replay_run_finalize
+ 1, 0.000000, 0.000000, 0.000000, smpi_replay_run_init
+ 1, 0.000054, 0.000123, 0.000069, action_recv
+ 1, 0.000128, 0.000128, 0.000000, smpi_replay_run_finalize
+ 0, 0.000000, 0.000000, 0.000000, smpi_replay_run_init
+ 0, 0.000058, 0.000058, 0.000000, action_send
+ 0, 0.000063, 0.000128, 0.000065, smpi_replay_run_finalize
+#+end_example
+
+Let's look into the Dimemas converted trace file.
+
+#+begin_src sh :results output :session :exports both
+cat dimemas/examples/out-dimemas.pjdump | grep ^State | cut -d, -f2,4-6,8 | sed -e "s/THREAD 1\.//" -e "s/\.1,/,/" -e "s/\t//" -e "s/1R/R/" -e "s/4B/B/" > dimemas/examples/out-dimemas-filter.pjdump
+cat dimemas/examples/out-dimemas-filter.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+1,0,3,3,Running
+2,0,3,3,Running
+2,0,0,0,Running
+3,0,3,3,Running
+3,0,0,0,Running
+4,0,3,3,Running
+4,0,0,0,Running
+1,3,4,1,Running
+1,3,3,0,Running
+1,3,3,0,Running
+1,3,3,0,Running
+2,3,3,0,Blocked
+2,3,3,0,a message
+2,3,4,1,Running
+2,3,3,0,Running
+2,3,3,0,Running
+2,3,3,0,Running
+2,3,3,0,Running
+3,3,3,0,Blocked
+3,3,4,1,Running
+3,3,3,0,Running
+3,3,3,0,Running
+3,3,3,0,Running
+3,3,3,0,Running
+4,3,3,0,Blocked
+4,3,3,0,a message
+4,3,4,1,Running
+4,3,3,0,Running
+4,3,3,0,Running
+4,3,3,0,Running
+4,3,3,0,Running
+1,4,5,1,created
+1,4,4,0,Running
+1,4,4,0,Running
+1,4,4,0,Running
+1,4,4,0,Running
+2,4,5,1,created
+2,4,4,0,Running
+2,4,4,0,Running
+2,4,4,0,Running
+3,4,5,1,created
+3,4,4,0,Running
+3,4,4,0,Running
+3,4,4,0,Running
+4,4,5,1,created
+4,4,4,0,Running
+4,4,4,0,Running
+4,4,4,0,Running
+#+end_example
+
+Great, let's load them into R.
+
+#+begin_src R :results output :session :exports both
+df_s <- read.csv("simgrid/examples/out-simgrid-filter.pjdump", header=FALSE, sep=",");
+names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
+df_s$Simulator <- "simgrid";
+
+
+df_d <- read.csv("dimemas/examples/out-dimemas-filter.pjdump", header=F, sep=",");
+names(df_d) <- c("Thread", "Start", "End", "Duration", "State");
+df_d$Simulator <- "dimemas";
+
+
+df <- rbind(df_s, df_d);
+df
+#+end_src
+
+#+RESULTS:
+#+begin_example
+   Thread    Start      End Duration                     State Simulator
+1       3 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+2       3 0.000051 0.000117  6.6e-05               action_recv   simgrid
+3       3 0.000126 0.000128  2.0e-06  smpi_replay_run_finalize   simgrid
+4       2 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+5       2 0.000052 0.000052  0.0e+00               action_send   simgrid
+6       2 0.000061 0.000128  6.7e-05  smpi_replay_run_finalize   simgrid
+7       1 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+8       1 0.000054 0.000123  6.9e-05               action_recv   simgrid
+9       1 0.000128 0.000128  0.0e+00  smpi_replay_run_finalize   simgrid
+10      0 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+11      0 0.000058 0.000058  0.0e+00               action_send   simgrid
+12      0 0.000063 0.000128  6.5e-05  smpi_replay_run_finalize   simgrid
+13      1 0.000000 3.000000  3.0e+00                   Running   dimemas
+14      2 0.000000 3.000000  3.0e+00                   Running   dimemas
+15      2 0.000000 0.000000  0.0e+00                   Running   dimemas
+16      3 0.000000 3.000000  3.0e+00                   Running   dimemas
+17      3 0.000000 0.000000  0.0e+00                   Running   dimemas
+18      4 0.000000 3.000000  3.0e+00                   Running   dimemas
+19      4 0.000000 0.000000  0.0e+00                   Running   dimemas
+20      1 3.000000 4.000000  1.0e+00                   Running   dimemas
+21      1 3.000000 3.000000  0.0e+00                   Running   dimemas
+22      1 3.000000 3.000000  0.0e+00                   Running   dimemas
+23      1 3.000000 3.000000  0.0e+00                   Running   dimemas
+24      2 3.000000 3.000000  0.0e+00                   Blocked   dimemas
+25      2 3.000000 3.000000  0.0e+00                 a message   dimemas
+26      2 3.000000 4.000000  1.0e+00                   Running   dimemas
+27      2 3.000000 3.000000  0.0e+00                   Running   dimemas
+28      2 3.000000 3.000000  0.0e+00                   Running   dimemas
+29      2 3.000000 3.000000  0.0e+00                   Running   dimemas
+30      2 3.000000 3.000000  0.0e+00                   Running   dimemas
+31      3 3.000000 3.000000  0.0e+00                   Blocked   dimemas
+32      3 3.000000 4.000000  1.0e+00                   Running   dimemas
+33      3 3.000000 3.000000  0.0e+00                   Running   dimemas
+34      3 3.000000 3.000000  0.0e+00                   Running   dimemas
+35      3 3.000000 3.000000  0.0e+00                   Running   dimemas
+36      3 3.000000 3.000000  0.0e+00                   Running   dimemas
+37      4 3.000000 3.000000  0.0e+00                   Blocked   dimemas
+38      4 3.000000 3.000000  0.0e+00                 a message   dimemas
+39      4 3.000000 4.000000  1.0e+00                   Running   dimemas
+40      4 3.000000 3.000000  0.0e+00                   Running   dimemas
+41      4 3.000000 3.000000  0.0e+00                   Running   dimemas
+42      4 3.000000 3.000000  0.0e+00                   Running   dimemas
+43      4 3.000000 3.000000  0.0e+00                   Running   dimemas
+44      1 4.000000 5.000000  1.0e+00                   created   dimemas
+45      1 4.000000 4.000000  0.0e+00                   Running   dimemas
+46      1 4.000000 4.000000  0.0e+00                   Running   dimemas
+47      1 4.000000 4.000000  0.0e+00                   Running   dimemas
+48      1 4.000000 4.000000  0.0e+00                   Running   dimemas
+49      2 4.000000 5.000000  1.0e+00                   created   dimemas
+50      2 4.000000 4.000000  0.0e+00                   Running   dimemas
+51      2 4.000000 4.000000  0.0e+00                   Running   dimemas
+52      2 4.000000 4.000000  0.0e+00                   Running   dimemas
+53      3 4.000000 5.000000  1.0e+00                   created   dimemas
+54      3 4.000000 4.000000  0.0e+00                   Running   dimemas
+55      3 4.000000 4.000000  0.0e+00                   Running   dimemas
+56      3 4.000000 4.000000  0.0e+00                   Running   dimemas
+57      4 4.000000 5.000000  1.0e+00                   created   dimemas
+58      4 4.000000 4.000000  0.0e+00                   Running   dimemas
+59      4 4.000000 4.000000  0.0e+00                   Running   dimemas
+60      4 4.000000 4.000000  0.0e+00                   Running   dimemas
+#+end_example
+
+How to select part of this dataframe:
+
+#+begin_src R :results output :session :exports both
+df[df$Simulator == "simgrid",];
+#+end_src
+
+#+RESULTS:
+#+begin_example
+   Thread    Start      End Duration                     State Simulator
+1       3 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+2       3 0.000051 0.000117  6.6e-05               action_recv   simgrid
+3       3 0.000126 0.000128  2.0e-06  smpi_replay_run_finalize   simgrid
+4       2 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+5       2 0.000052 0.000052  0.0e+00               action_send   simgrid
+6       2 0.000061 0.000128  6.7e-05  smpi_replay_run_finalize   simgrid
+7       1 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+8       1 0.000054 0.000123  6.9e-05               action_recv   simgrid
+9       1 0.000128 0.000128  0.0e+00  smpi_replay_run_finalize   simgrid
+10      0 0.000000 0.000000  0.0e+00      smpi_replay_run_init   simgrid
+11      0 0.000058 0.000058  0.0e+00               action_send   simgrid
+12      0 0.000063 0.000128  6.5e-05  smpi_replay_run_finalize   simgrid
+#+end_example
+
+
+Let's plot this with a space/time view.
+
+Learn =ggplot2=:
+- http://ggplot2.org/
+
+How to install gpplot2:
+
+#+begin_src R :results output :session :exports both
+install.packages("ggplot2");
+#+end_src
+
+Let's plot only Simgrid.
+
+#+begin_src R :results output graphics :file img/sendrecv-simgrid-0.png :exports both :width 600 :height 200 :session
+library(ggplot2);
+ggplot(df[df$Simulator == "simgrid",], aes(x=Start, y=factor(Thread), color=State)) +
+   theme_bw() +
+   geom_segment (aes(xend=End, yend=factor(Thread)), size=4);
+#+end_src
+
+#+RESULTS:
+[[file:img/sendrecv-simgrid-0.png]]
+
+First problem detected with Simgrid:
+- =action_send= is too fast, should simulator with higher precision
+  - See below how to do it
+
+#+begin_src sh :results output :session :exports both
+/home/schnorr/workspace/simgrid.git/b/examples/smpi/smpi_replay --help | grep precision
+#+end_src
+
+#+RESULTS:
+:    maxmin/precision: Numerical precision used when computing resource sharing (hence this value is expressed in ops/sec or bytes/sec)
+:    surf/precision: Numerical precision used when updating simulation times (hence this value is expressed in seconds)
+:    tracing/precision: Numerical precision used when timestamping events (hence this value is expressed in number of digits after decimal point)
+
+So, you should run =smpi_replay= with =--cfg=tracing/precision:9=.
+
+Let's get back to the plot.
+
+#+begin_src R :results output graphics :file img/sendrecv-simgrid-1.png :exports both :width 600 :height 400 :session
+library(ggplot2);
+ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
+   theme_bw() +
+   geom_segment (aes(xend=End, yend=factor(Thread)), size=4) +
+   facet_wrap(~Simulator, ncol=1, scale="free_x");
+#+end_src
+
+#+RESULTS:
+[[file:img/sendrecv-simgrid-1.png]]
+
+The first four states are from simgrid, others from dimemas
+(paraver). This is a problem because it makes the comparison
+harder. We should check =prv2tit.pl= to try to convert from paraver
+(generated by Dimemas) to CSV exporting MPI states instead of simple
+high-level states such as =Blocked=, =a message=, =created=, and =Running=. We
+
+I suggest Tiago to create a copy of current =prv2tit.pl= and simplify it
+in order to only convert MPI states (and Running) in another perl
+script called =prv2pjdump.pl=.
+
+At the end, Tiago will have three facets in a single plot for each application:
+- Real (behavior of the original paraver trace file)
+- Dimemas (behavior of the trace file after Dimemas simulation)
+- SimGrid (behavior of the trace file after SimGrid simulation based on TIT files)
