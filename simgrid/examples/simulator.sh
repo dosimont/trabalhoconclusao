@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MACHINE_FILE=''
-PLATFORM='graphene.xml'
+PLATFORM='griffon.xml'
 SMPIRUN='smpirun'
 REPLAY='../SimGrid-3.12/examples/smpi/smpi_replay'
 OUTPUT='out.trace'
@@ -72,14 +72,14 @@ if [ -z "$MACHINE_FILE" ]; then
     rm -f $MACHINE_FILE;
     touch $MACHINE_FILE;
     for i in `seq 1 144`; do
-        echo graphene-${i}.nancy.grid5000.fr >> $MACHINE_FILE ;
+        echo griffon-${i}.nancy.grid5000.fr >> $MACHINE_FILE ;
     done
     cp $MACHINE_FILE $MACHINE_FILE.sav
     cat $MACHINE_FILE.sav $MACHINE_FILE.sav $MACHINE_FILE.sav $MACHINE_FILE.sav > $MACHINE_FILE
 fi
 
 # simulate
-$SMPIRUN -ext smpi_replay --cfg=smpi/cpu_threshold:-1 -trace --cfg=tracing/filename:$OUTPUT \
+$SMPIRUN -ext smpi_replay --cfg=tracing/smpi/computing:'yes' --cfg=tracing/precision:9 --cfg=smpi/send_is_detached_thres:2 --cfg=smpi/async_small_thres:0 --cfg=smpi/cpu_threshold:-1 -trace --cfg=tracing/filename:$OUTPUT \
     -hostfile $MACHINE_FILE -platform $PLATFORM -np $NP $REPLAY $REPLAY_INPUT \
     --log=smpi_kernel.thres:warning --cfg=contexts/factory:thread 2>&1
 
@@ -88,3 +88,4 @@ rm task*.tit
 rm $REPLAY_INPUT
 rm $MACHINE_FILE.sav
 rm $MACHINE_FILE
+
