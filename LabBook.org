@@ -1216,7 +1216,6 @@ checking whether configure should try to set CFLAGS... yes
 I have problem with boost, let's try to solve it.
 
 
-
 * 2016-04-07 Let's take a look into the Dimemas and SimGrid traces :Lucas:Tiago:
 
 We have two files that we want to analyze
@@ -1692,4 +1691,449 @@ State, rank-0, MPI_STATE, 3.647678744, 3.647678744, 0.000000000, 1.000000000, sm
   at time "zero" (which is ok) but ends at the highest possible time. All the other states occur while
   the first state is still valid. To properly plot the data, we will have to remove this first state
   for each task.
+
+* 2016-04-10 Comparison between the traces
+
+Once again, we will perform the complete cycle to obtain a =pjdump= file for the Simgrid trace,
+the Dimemas trace and the original trace.
+We will be using the =paraver_traces/sendrecv1.prv= trace. Let`s begin.
+
+#+begin_src sh :results output :exports both
+  cd simgrid/examples/
+  sh simulator.sh
+  pj_dump --float-precision=9 out.trace > ../../simgrid.pjdump
+  cd ../../dimemas/examples/
+  ./../dimemas-5.2.12/prv2dim/prv2dim sendrecv1.prv sendrecv1.dim
+  ./../dimemas-5.2.12/Simulator/Dimemas -p out.prv 2dc_I_L2mr.cfg
+  perl ../../prv2pjdump.pl -i out > ../../dimemas.pjdump
+  cd ../../
+  perl prv2pjdump.pl -i paraver_traces/sendrecv1 > original.pjdump
+#+end_src
+
+Ok. We got our traces.
+
+#+begin_src sh :results output :exports both
+  ls *.pjdump
+#+end_src
+
+#+RESULTS:
+: dimemas.pjdump
+: original.pjdump
+: simgrid.pjdump
+
+Let`s prepare it to load into R
+
+#+begin_src sh :results output :exports both
+cat simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > simgrid-filter.pjdump
+cat simgrid-filter.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ 3, 0.000000000, 3.647678744, 3.647678744, computing
+ 3, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+ 3, 0.000000000, 2.906604000, 2.906604000, computing
+ 3, 2.906604000, 2.962355000, 0.055751000, computing
+ 3, 2.962355000, 2.969250000, 0.006895000, computing
+ 3, 2.969250000, 2.974292000, 0.005042000, computing
+ 3, 2.974292000, 3.035873744, 0.061581744, action_recv
+ 3, 3.035873744, 3.066824744, 0.030951000, computing
+ 3, 3.066824744, 3.522122744, 0.455298000, computing
+ 3, 3.522122744, 3.529429744, 0.007307000, computing
+ 3, 3.529429744, 3.647678744, 0.118249000, smpi_replay_run_finalize
+ 2, 0.000000000, 3.647678744, 3.647678744, computing
+ 2, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+ 2, 0.000000000, 2.967823000, 2.967823000, computing
+ 2, 2.967823000, 3.024082000, 0.056259000, computing
+ 2, 3.024082000, 3.030757000, 0.006675000, computing
+ 2, 3.030757000, 3.035777000, 0.005020000, computing
+ 2, 3.035777000, 3.035873744, 0.000096744, action_send
+ 2, 3.035873744, 3.068073744, 0.032200000, computing
+ 2, 3.068073744, 3.522663744, 0.454590000, computing
+ 2, 3.522663744, 3.531049744, 0.008386000, computing
+ 2, 3.531049744, 3.647678744, 0.116629000, smpi_replay_run_finalize
+ 1, 0.000000000, 3.647678744, 3.647678744, computing
+ 1, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+ 1, 0.000000000, 3.107402000, 3.107402000, computing
+ 1, 3.107402000, 3.163076000, 0.055674000, computing
+ 1, 3.163076000, 3.169343000, 0.006267000, computing
+ 1, 3.169343000, 3.174775000, 0.005432000, computing
+ 1, 3.174775000, 3.364988744, 0.190213744, action_recv
+ 1, 3.364988744, 3.394507744, 0.029519000, computing
+ 1, 3.394507744, 3.638671744, 0.244164000, computing
+ 1, 3.638671744, 3.647194744, 0.008523000, computing
+ 1, 3.647194744, 3.647678744, 0.000484000, smpi_replay_run_finalize
+ 0, 0.000000000, 3.647678744, 3.647678744, computing
+ 0, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+ 0, 0.000000000, 3.160190000, 3.160190000, computing
+ 0, 3.160190000, 3.353051000, 0.192861000, computing
+ 0, 3.353051000, 3.358193000, 0.005142000, computing
+ 0, 3.358193000, 3.364892000, 0.006699000, computing
+ 0, 3.364892000, 3.364988744, 0.000096744, action_send
+ 0, 3.364988744, 3.521911744, 0.156923000, computing
+ 0, 3.521911744, 3.638976744, 0.117065000, computing
+ 0, 3.638976744, 3.647678744, 0.008702000, computing
+ 0, 3.647678744, 3.647678744, 0.000000000, smpi_replay_run_finalize
+#+end_example
+
+As noted in the last entry on the Labbook, the first state of every task
+should not be there. Let`s manually remove them. We hope to have an easier 
+mechanism for doing this in the future.
+This is what the file should look like:
+
+ #+begin_src sh :results output :exports both
+    cat simgrid-filter.pjdump
+   #+end_src
+
+ #+RESULTS:
+ #+begin_example
+  3, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+  3, 0.000000000, 2.906604000, 2.906604000, computing
+  3, 2.906604000, 2.962355000, 0.055751000, computing
+  3, 2.962355000, 2.969250000, 0.006895000, computing
+  3, 2.969250000, 2.974292000, 0.005042000, computing
+  3, 2.974292000, 3.035873744, 0.061581744, action_recv
+  3, 3.035873744, 3.066824744, 0.030951000, computing
+  3, 3.066824744, 3.522122744, 0.455298000, computing
+  3, 3.522122744, 3.529429744, 0.007307000, computing
+  3, 3.529429744, 3.647678744, 0.118249000, smpi_replay_run_finalize
+  2, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+  2, 0.000000000, 2.967823000, 2.967823000, computing
+  2, 2.967823000, 3.024082000, 0.056259000, computing
+  2, 3.024082000, 3.030757000, 0.006675000, computing
+  2, 3.030757000, 3.035777000, 0.005020000, computing
+  2, 3.035777000, 3.035873744, 0.000096744, action_send
+  2, 3.035873744, 3.068073744, 0.032200000, computing
+  2, 3.068073744, 3.522663744, 0.454590000, computing
+  2, 3.522663744, 3.531049744, 0.008386000, computing
+  2, 3.531049744, 3.647678744, 0.116629000, smpi_replay_run_finalize
+  1, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+  1, 0.000000000, 3.107402000, 3.107402000, computing
+  1, 3.107402000, 3.163076000, 0.055674000, computing
+  1, 3.163076000, 3.169343000, 0.006267000, computing
+  1, 3.169343000, 3.174775000, 0.005432000, computing
+  1, 3.174775000, 3.364988744, 0.190213744, action_recv
+  1, 3.364988744, 3.394507744, 0.029519000, computing
+  1, 3.394507744, 3.638671744, 0.244164000, computing
+  1, 3.638671744, 3.647194744, 0.008523000, computing
+  1, 3.647194744, 3.647678744, 0.000484000, smpi_replay_run_finalize
+  0, 0.000000000, 0.000000000, 0.000000000, smpi_replay_run_init
+  0, 0.000000000, 3.160190000, 3.160190000, computing
+  0, 3.160190000, 3.353051000, 0.192861000, computing
+  0, 3.353051000, 3.358193000, 0.005142000, computing
+  0, 3.358193000, 3.364892000, 0.006699000, computing
+  0, 3.364892000, 3.364988744, 0.000096744, action_send
+  0, 3.364988744, 3.521911744, 0.156923000, computing
+  0, 3.521911744, 3.638976744, 0.117065000, computing
+  0, 3.638976744, 3.647678744, 0.008702000, computing
+  0, 3.647678744, 3.647678744, 0.000000000, smpi_replay_run_finalize
+#+end_example
+
+
+We have to to the same with the Dimemas pjdump
+
+#+begin_src sh :results output :exports both
+    cat dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > dimemas-filter.pjdump
+    cat dimemas-filter.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ 0, 0, 0.00316019, 0.00316019, MPI_INIT
+ 1, 0, 0.00001743, 0.00001743, RUNNING
+ 2, 0, 0.000157444, 0.000157444, RUNNING
+ 3, 0, 0.000219304, 0.000219304, RUNNING
+ 1, 0.00001743, 0.003124832, 0.003107402, RUNNING
+ 2, 0.000157444, 0.003125267, 0.002967823, RUNNING
+ 3, 0.000219304, 0.003125908, 0.002906604, RUNNING
+ 1, 0.003124832, 0.00316019, 0.000035358, MPI_INIT
+ 2, 0.003125267, 0.00316019, 0.000034923, MPI_INIT
+ 3, 0.003125908, 0.00316019, 0.000034282, MPI_INIT
+ 0, 0.00316019, 0.003353051, 0.000192861, RUNNING
+ 1, 0.00316019, 0.003215864, 0.000055674, RUNNING
+ 2, 0.00316019, 0.003216449, 0.000056259, RUNNING
+ 3, 0.00316019, 0.003215941, 0.000055751, RUNNING
+ 1, 0.003215864, 0.003222131, 0.000006267, RUNNING
+ 3, 0.003215941, 0.003222836, 0.000006895, RUNNING
+ 2, 0.003216449, 0.003223124, 0.000006675, RUNNING
+ 1, 0.003222131, 0.003227563, 0.000005432, RUNNING
+ 3, 0.003222836, 0.003227878, 0.000005042, RUNNING
+ 2, 0.003223124, 0.003228144, 0.00000502, MPI_SEND
+ 1, 0.003227563, 0.003364892, 0.000137329, MPI_RECV
+ 3, 0.003227878, 0.003228144, 0.000000266, MPI_RECV
+ 2, 0.003228144, 0.003260344, 0.0000322, MPI_FINALIZE
+ 3, 0.003228144, 0.003259095, 0.000030951, MPI_FINALIZE
+ 3, 0.003259095, 0.003714393, 0.000455298, RUNNING
+ 2, 0.003260344, 0.003714934, 0.00045459, RUNNING
+ 0, 0.003353051, 0.003358193, 0.000005142, RUNNING
+ 0, 0.003358193, 0.003364892, 0.000006699, MPI_SEND
+ 0, 0.003364892, 0.003521815, 0.000156923, MPI_FINALIZE
+ 1, 0.003364892, 0.003394411, 0.000029519, MPI_FINALIZE
+ 1, 0.003394411, 0.003638575, 0.000244164, RUNNING
+ 0, 0.003521815, 0.00363888, 0.000117065, RUNNING
+ 1, 0.003638575, 0.003649941, 0.000011366, RUNNING
+ 0, 0.00363888, 0.003649005, 0.000010125, RUNNING
+ 0, 0.003649005, 0.003657463, 0.000008458, RUNNING
+ 1, 0.003649941, 0.003658186, 0.000008245, RUNNING
+ 0, 0.003657463, 0.003657707, 0.000000244, RUNNING
+ 0, 0.003657707, 0.003657708, 0.000000001, NOT CREATED
+ 1, 0.003658186, 0.003658464, 0.000000278, RUNNING
+ 1, 0.003658464, 0.003658465, 0.000000001, NOT CREATED
+ 3, 0.003714393, 0.003725446, 0.000011053, RUNNING
+ 2, 0.003714934, 0.003726998, 0.000012064, RUNNING
+ 3, 0.003725446, 0.003732523, 0.000007077, RUNNING
+ 2, 0.003726998, 0.003735078, 0.00000808, RUNNING
+ 3, 0.003732523, 0.003732753, 0.00000023, RUNNING
+ 3, 0.003732753, 0.003732754, 0.000000001, NOT CREATED
+ 2, 0.003735078, 0.003735384, 0.000000306, RUNNING
+ 2, 0.003735384, 0.003735385, 0.000000001, NOT CREATED
+#+end_example
+
+Now, the original trace
+
+
+#+begin_src sh :results output :exports both
+    cat original.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > original-filter.pjdump
+cat original-filter.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+ 0, 0, 0.00316019, 0.00316019, RUNNING
+ 1, 0, 0.00001743, 0.00001743, NOT CREATED
+ 2, 0, 0.000157444, 0.000157444, NOT CREATED
+ 3, 0, 0.000219304, 0.000219304, NOT CREATED
+ 1, 0.00001743, 0.003124832, 0.003107402, RUNNING
+ 2, 0.000157444, 0.003125267, 0.002967823, RUNNING
+ 3, 0.000219304, 0.003125908, 0.002906604, RUNNING
+ 1, 0.003124832, 0.003170029, 0.000045197, MPI_INIT
+ 2, 0.003125267, 0.003169742, 0.000044475, MPI_INIT
+ 3, 0.003125908, 0.003170472, 0.000044564, MPI_INIT
+ 0, 0.00316019, 0.003170485, 0.000010295, MPI_INIT
+ 2, 0.003169742, 0.003226001, 0.000056259, RUNNING
+ 1, 0.003170029, 0.003225703, 0.000055674, RUNNING
+ 3, 0.003170472, 0.003226223, 0.000055751, RUNNING
+ 0, 0.003170485, 0.003363346, 0.000192861, RUNNING
+ 1, 0.003225703, 0.003389114, 0.000163411, OTHERS
+ 2, 0.003226001, 0.003388687, 0.000162686, OTHERS
+ 3, 0.003226223, 0.003388393, 0.00016217, OTHERS
+ 0, 0.003363346, 0.003483197, 0.000119851, OTHERS
+ 3, 0.003388393, 0.003395288, 0.000006895, RUNNING
+ 2, 0.003388687, 0.003395362, 0.000006675, RUNNING
+ 1, 0.003389114, 0.003395381, 0.000006267, RUNNING
+ 3, 0.003395288, 0.003432306, 0.000037018, OTHERS
+ 2, 0.003395362, 0.003432702, 0.00003734, OTHERS
+ 1, 0.003395381, 0.003432431, 0.00003705, OTHERS
+ 3, 0.003432306, 0.003437348, 0.000005042, RUNNING
+ 1, 0.003432431, 0.003437863, 0.000005432, RUNNING
+ 2, 0.003432702, 0.003437722, 0.00000502, RUNNING
+ 3, 0.003437348, 0.003484691, 0.000047343, MPI_RECV
+ 2, 0.003437722, 0.00348182, 0.000044098, MPI_SEND
+ 1, 0.003437863, 0.00369535, 0.000257487, MPI_RECV
+ 2, 0.00348182, 0.00351402, 0.0000322, RUNNING
+ 0, 0.003483197, 0.003488339, 0.000005142, RUNNING
+ 3, 0.003484691, 0.003515642, 0.000030951, RUNNING
+ 0, 0.003488339, 0.003645036, 0.000156697, OTHERS
+ 2, 0.00351402, 0.003550242, 0.000036222, MPI_FINALIZE
+ 3, 0.003515642, 0.00355024, 0.000034598, MPI_FINALIZE
+ 3, 0.00355024, 0.004005538, 0.000455298, RUNNING
+ 2, 0.003550242, 0.004004832, 0.00045459, RUNNING
+ 0, 0.003645036, 0.003651735, 0.000006699, RUNNING
+ 0, 0.003651735, 0.003693602, 0.000041867, MPI_SEND
+ 0, 0.003693602, 0.003850525, 0.000156923, RUNNING
+ 1, 0.00369535, 0.003724869, 0.000029519, RUNNING
+ 1, 0.003724869, 0.003761334, 0.000036465, MPI_FINALIZE
+ 1, 0.003761334, 0.004005498, 0.000244164, RUNNING
+ 0, 0.003850525, 0.003887338, 0.000036813, MPI_FINALIZE
+ 0, 0.003887338, 0.004004403, 0.000117065, RUNNING
+ 0, 0.004004403, 0.004014528, 0.000010125, I/O
+ 2, 0.004004832, 0.004016896, 0.000012064, I/O
+ 1, 0.004005498, 0.004016864, 0.000011366, I/O
+ 3, 0.004005538, 0.004016591, 0.000011053, I/O
+ 0, 0.004014528, 0.00402323, 0.000008702, RUNNING
+ 3, 0.004016591, 0.004023898, 0.000007307, RUNNING
+ 1, 0.004016864, 0.004025387, 0.000008523, RUNNING
+ 2, 0.004016896, 0.004025282, 0.000008386, RUNNING
+#+end_example
+
+Repeating the steps that we did before.. We will load this data into R.
+
+#+begin_src R 
+df_s <- read.csv("simgrid-filter.pjdump", header=FALSE, sep=",");
+names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
+df_s$Simulator <- "simgrid";
+
+df_d <- read.csv("dimemas-filter.pjdump", header=F, sep=",");
+names(df_d) <- c("Thread", "Start", "End", "Duration", "State");
+df_d$Simulator <- "dimemas";
+
+df_o <- read.csv("original-filter.pjdump", header=F, sep=",");
+names(df_o) <- c("Thread", "Start", "End", "Duration", "State");
+df_o$Simulator <- "original";
+
+df <- rbind(df_s, df_d, df_o);
+df
+#+end_src
+
+#+RESULTS:
+| 3 |           0 |           0 |           0 | smpi_replay_run_init     | simgrid  |
+| 3 |           0 |    2.906604 |    2.906604 | computing              | simgrid  |
+| 3 |    2.906604 |    2.962355 |    0.055751 | computing              | simgrid  |
+| 3 |    2.962355 |     2.96925 |    0.006895 | computing              | simgrid  |
+| 3 |     2.96925 |    2.974292 |    0.005042 | computing              | simgrid  |
+| 3 |    2.974292 | 3.035873744 | 0.061581744 | action_recv             | simgrid  |
+| 3 | 3.035873744 | 3.066824744 |    0.030951 | computing              | simgrid  |
+| 3 | 3.066824744 | 3.522122744 |    0.455298 | computing              | simgrid  |
+| 3 | 3.522122744 | 3.529429744 |    0.007307 | computing              | simgrid  |
+| 3 | 3.529429744 | 3.647678744 |    0.118249 | smpi_replay_run_finalize | simgrid  |
+| 2 |           0 |           0 |           0 | smpi_replay_run_init     | simgrid  |
+| 2 |           0 |    2.967823 |    2.967823 | computing              | simgrid  |
+| 2 |    2.967823 |    3.024082 |    0.056259 | computing              | simgrid  |
+| 2 |    3.024082 |    3.030757 |    0.006675 | computing              | simgrid  |
+| 2 |    3.030757 |    3.035777 |     0.00502 | computing              | simgrid  |
+| 2 |    3.035777 | 3.035873744 |  9.6744e-05 | action_send             | simgrid  |
+| 2 | 3.035873744 | 3.068073744 |      0.0322 | computing              | simgrid  |
+| 2 | 3.068073744 | 3.522663744 |     0.45459 | computing              | simgrid  |
+| 2 | 3.522663744 | 3.531049744 |    0.008386 | computing              | simgrid  |
+| 2 | 3.531049744 | 3.647678744 |    0.116629 | smpi_replay_run_finalize | simgrid  |
+| 1 |           0 |           0 |           0 | smpi_replay_run_init     | simgrid  |
+| 1 |           0 |    3.107402 |    3.107402 | computing              | simgrid  |
+| 1 |    3.107402 |    3.163076 |    0.055674 | computing              | simgrid  |
+| 1 |    3.163076 |    3.169343 |    0.006267 | computing              | simgrid  |
+| 1 |    3.169343 |    3.174775 |    0.005432 | computing              | simgrid  |
+| 1 |    3.174775 | 3.364988744 | 0.190213744 | action_recv             | simgrid  |
+| 1 | 3.364988744 | 3.394507744 |    0.029519 | computing              | simgrid  |
+| 1 | 3.394507744 | 3.638671744 |    0.244164 | computing              | simgrid  |
+| 1 | 3.638671744 | 3.647194744 |    0.008523 | computing              | simgrid  |
+| 1 | 3.647194744 | 3.647678744 |    0.000484 | smpi_replay_run_finalize | simgrid  |
+| 0 |           0 |           0 |           0 | smpi_replay_run_init     | simgrid  |
+| 0 |           0 |     3.16019 |     3.16019 | computing              | simgrid  |
+| 0 |     3.16019 |    3.353051 |    0.192861 | computing              | simgrid  |
+| 0 |    3.353051 |    3.358193 |    0.005142 | computing              | simgrid  |
+| 0 |    3.358193 |    3.364892 |    0.006699 | computing              | simgrid  |
+| 0 |    3.364892 | 3.364988744 |  9.6744e-05 | action_send             | simgrid  |
+| 0 | 3.364988744 | 3.521911744 |    0.156923 | computing              | simgrid  |
+| 0 | 3.521911744 | 3.638976744 |    0.117065 | computing              | simgrid  |
+| 0 | 3.638976744 | 3.647678744 |    0.008702 | computing              | simgrid  |
+| 0 | 3.647678744 | 3.647678744 |           0 | smpi_replay_run_finalize | simgrid  |
+| 0 |           0 |  0.00316019 |  0.00316019 | MPI_INIT                | dimemas  |
+| 1 |           0 |   1.743e-05 |   1.743e-05 | RUNNING                | dimemas  |
+| 2 |           0 | 0.000157444 | 0.000157444 | RUNNING                | dimemas  |
+| 3 |           0 | 0.000219304 | 0.000219304 | RUNNING                | dimemas  |
+| 1 |   1.743e-05 | 0.003124832 | 0.003107402 | RUNNING                | dimemas  |
+| 2 | 0.000157444 | 0.003125267 | 0.002967823 | RUNNING                | dimemas  |
+| 3 | 0.000219304 | 0.003125908 | 0.002906604 | RUNNING                | dimemas  |
+| 1 | 0.003124832 |  0.00316019 |  3.5358e-05 | MPI_INIT                | dimemas  |
+| 2 | 0.003125267 |  0.00316019 |  3.4923e-05 | MPI_INIT                | dimemas  |
+| 3 | 0.003125908 |  0.00316019 |  3.4282e-05 | MPI_INIT                | dimemas  |
+| 0 |  0.00316019 | 0.003353051 | 0.000192861 | RUNNING                | dimemas  |
+| 1 |  0.00316019 | 0.003215864 |  5.5674e-05 | RUNNING                | dimemas  |
+| 2 |  0.00316019 | 0.003216449 |  5.6259e-05 | RUNNING                | dimemas  |
+| 3 |  0.00316019 | 0.003215941 |  5.5751e-05 | RUNNING                | dimemas  |
+| 1 | 0.003215864 | 0.003222131 |   6.267e-06 | RUNNING                | dimemas  |
+| 3 | 0.003215941 | 0.003222836 |   6.895e-06 | RUNNING                | dimemas  |
+| 2 | 0.003216449 | 0.003223124 |   6.675e-06 | RUNNING                | dimemas  |
+| 1 | 0.003222131 | 0.003227563 |   5.432e-06 | RUNNING                | dimemas  |
+| 3 | 0.003222836 | 0.003227878 |   5.042e-06 | RUNNING                | dimemas  |
+| 2 | 0.003223124 | 0.003228144 |    5.02e-06 | MPI_SEND                | dimemas  |
+| 1 | 0.003227563 | 0.003364892 | 0.000137329 | MPI_RECV                | dimemas  |
+| 3 | 0.003227878 | 0.003228144 |    2.66e-07 | MPI_RECV                | dimemas  |
+| 2 | 0.003228144 | 0.003260344 |    3.22e-05 | MPI_FINALIZE            | dimemas  |
+| 3 | 0.003228144 | 0.003259095 |  3.0951e-05 | MPI_FINALIZE            | dimemas  |
+| 3 | 0.003259095 | 0.003714393 | 0.000455298 | RUNNING                | dimemas  |
+| 2 | 0.003260344 | 0.003714934 |  0.00045459 | RUNNING                | dimemas  |
+| 0 | 0.003353051 | 0.003358193 |   5.142e-06 | RUNNING                | dimemas  |
+| 0 | 0.003358193 | 0.003364892 |   6.699e-06 | MPI_SEND                | dimemas  |
+| 0 | 0.003364892 | 0.003521815 | 0.000156923 | MPI_FINALIZE            | dimemas  |
+| 1 | 0.003364892 | 0.003394411 |  2.9519e-05 | MPI_FINALIZE            | dimemas  |
+| 1 | 0.003394411 | 0.003638575 | 0.000244164 | RUNNING                | dimemas  |
+| 0 | 0.003521815 |  0.00363888 | 0.000117065 | RUNNING                | dimemas  |
+| 1 | 0.003638575 | 0.003649941 |  1.1366e-05 | RUNNING                | dimemas  |
+| 0 |  0.00363888 | 0.003649005 |  1.0125e-05 | RUNNING                | dimemas  |
+| 0 | 0.003649005 | 0.003657463 |   8.458e-06 | RUNNING                | dimemas  |
+| 1 | 0.003649941 | 0.003658186 |   8.245e-06 | RUNNING                | dimemas  |
+| 0 | 0.003657463 | 0.003657707 |    2.44e-07 | RUNNING                | dimemas  |
+| 0 | 0.003657707 | 0.003657708 |       1e-09 | NOT CREATED            | dimemas  |
+| 1 | 0.003658186 | 0.003658464 |    2.78e-07 | RUNNING                | dimemas  |
+| 1 | 0.003658464 | 0.003658465 |       1e-09 | NOT CREATED            | dimemas  |
+| 3 | 0.003714393 | 0.003725446 |  1.1053e-05 | RUNNING                | dimemas  |
+| 2 | 0.003714934 | 0.003726998 |  1.2064e-05 | RUNNING                | dimemas  |
+| 3 | 0.003725446 | 0.003732523 |   7.077e-06 | RUNNING                | dimemas  |
+| 2 | 0.003726998 | 0.003735078 |    8.08e-06 | RUNNING                | dimemas  |
+| 3 | 0.003732523 | 0.003732753 |     2.3e-07 | RUNNING                | dimemas  |
+| 3 | 0.003732753 | 0.003732754 |       1e-09 | NOT CREATED            | dimemas  |
+| 2 | 0.003735078 | 0.003735384 |    3.06e-07 | RUNNING                | dimemas  |
+| 2 | 0.003735384 | 0.003735385 |       1e-09 | NOT CREATED            | dimemas  |
+| 0 |           0 |  0.00316019 |  0.00316019 | RUNNING                | original |
+| 1 |           0 |   1.743e-05 |   1.743e-05 | NOT CREATED            | original |
+| 2 |           0 | 0.000157444 | 0.000157444 | NOT CREATED            | original |
+| 3 |           0 | 0.000219304 | 0.000219304 | NOT CREATED            | original |
+| 1 |   1.743e-05 | 0.003124832 | 0.003107402 | RUNNING                | original |
+| 2 | 0.000157444 | 0.003125267 | 0.002967823 | RUNNING                | original |
+| 3 | 0.000219304 | 0.003125908 | 0.002906604 | RUNNING                | original |
+| 1 | 0.003124832 | 0.003170029 |  4.5197e-05 | MPI_INIT                | original |
+| 2 | 0.003125267 | 0.003169742 |  4.4475e-05 | MPI_INIT                | original |
+| 3 | 0.003125908 | 0.003170472 |  4.4564e-05 | MPI_INIT                | original |
+| 0 |  0.00316019 | 0.003170485 |  1.0295e-05 | MPI_INIT                | original |
+| 2 | 0.003169742 | 0.003226001 |  5.6259e-05 | RUNNING                | original |
+| 1 | 0.003170029 | 0.003225703 |  5.5674e-05 | RUNNING                | original |
+| 3 | 0.003170472 | 0.003226223 |  5.5751e-05 | RUNNING                | original |
+| 0 | 0.003170485 | 0.003363346 | 0.000192861 | RUNNING                | original |
+| 1 | 0.003225703 | 0.003389114 | 0.000163411 | OTHERS                 | original |
+| 2 | 0.003226001 | 0.003388687 | 0.000162686 | OTHERS                 | original |
+| 3 | 0.003226223 | 0.003388393 |  0.00016217 | OTHERS                 | original |
+| 0 | 0.003363346 | 0.003483197 | 0.000119851 | OTHERS                 | original |
+| 3 | 0.003388393 | 0.003395288 |   6.895e-06 | RUNNING                | original |
+| 2 | 0.003388687 | 0.003395362 |   6.675e-06 | RUNNING                | original |
+| 1 | 0.003389114 | 0.003395381 |   6.267e-06 | RUNNING                | original |
+| 3 | 0.003395288 | 0.003432306 |  3.7018e-05 | OTHERS                 | original |
+| 2 | 0.003395362 | 0.003432702 |   3.734e-05 | OTHERS                 | original |
+| 1 | 0.003395381 | 0.003432431 |   3.705e-05 | OTHERS                 | original |
+| 3 | 0.003432306 | 0.003437348 |   5.042e-06 | RUNNING                | original |
+| 1 | 0.003432431 | 0.003437863 |   5.432e-06 | RUNNING                | original |
+| 2 | 0.003432702 | 0.003437722 |    5.02e-06 | RUNNING                | original |
+| 3 | 0.003437348 | 0.003484691 |  4.7343e-05 | MPI_RECV                | original |
+| 2 | 0.003437722 |  0.00348182 |  4.4098e-05 | MPI_SEND                | original |
+| 1 | 0.003437863 |  0.00369535 | 0.000257487 | MPI_RECV                | original |
+| 2 |  0.00348182 |  0.00351402 |    3.22e-05 | RUNNING                | original |
+| 0 | 0.003483197 | 0.003488339 |   5.142e-06 | RUNNING                | original |
+| 3 | 0.003484691 | 0.003515642 |  3.0951e-05 | RUNNING                | original |
+| 0 | 0.003488339 | 0.003645036 | 0.000156697 | OTHERS                 | original |
+| 2 |  0.00351402 | 0.003550242 |  3.6222e-05 | MPI_FINALIZE            | original |
+| 3 | 0.003515642 |  0.00355024 |  3.4598e-05 | MPI_FINALIZE            | original |
+| 3 |  0.00355024 | 0.004005538 | 0.000455298 | RUNNING                | original |
+| 2 | 0.003550242 | 0.004004832 |  0.00045459 | RUNNING                | original |
+| 0 | 0.003645036 | 0.003651735 |   6.699e-06 | RUNNING                | original |
+| 0 | 0.003651735 | 0.003693602 |  4.1867e-05 | MPI_SEND                | original |
+| 0 | 0.003693602 | 0.003850525 | 0.000156923 | RUNNING                | original |
+| 1 |  0.00369535 | 0.003724869 |  2.9519e-05 | RUNNING                | original |
+| 1 | 0.003724869 | 0.003761334 |  3.6465e-05 | MPI_FINALIZE            | original |
+| 1 | 0.003761334 | 0.004005498 | 0.000244164 | RUNNING                | original |
+| 0 | 0.003850525 | 0.003887338 |  3.6813e-05 | MPI_FINALIZE            | original |
+| 0 | 0.003887338 | 0.004004403 | 0.000117065 | RUNNING                | original |
+| 0 | 0.004004403 | 0.004014528 |  1.0125e-05 | I/O                    | original |
+| 2 | 0.004004832 | 0.004016896 |  1.2064e-05 | I/O                    | original |
+| 1 | 0.004005498 | 0.004016864 |  1.1366e-05 | I/O                    | original |
+| 3 | 0.004005538 | 0.004016591 |  1.1053e-05 | I/O                    | original |
+| 0 | 0.004014528 |  0.00402323 |   8.702e-06 | RUNNING                | original |
+| 3 | 0.004016591 | 0.004023898 |   7.307e-06 | RUNNING                | original |
+| 1 | 0.004016864 | 0.004025387 |   8.523e-06 | RUNNING                | original |
+| 2 | 0.004016896 | 0.004025282 |   8.386e-06 | RUNNING                | original |
+
+  
+Now let's plot it.
+
+#+begin_src R :results output graphics :file img/sendrecv-simgrid-2.png :exports both :width 600 :height 400 :session
+library(ggplot2);
+ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
+   theme_bw() +
+   geom_segment (aes(xend=End, yend=factor(Thread)), size=4) +
+   facet_wrap(~Simulator, ncol=1, scale="free_x");
+#+end_src
+
+#+RESULTS:
+[[file:img/sendrecv-simgrid-2.png]]
+
+ The first state in the Simgrid trace is MPI_init and the last one is MPI_Finalize for all tasks.
+The tit trace had computing stages before the MPI_init and after the MPI_Finalize, i will take a look at that now.
 
