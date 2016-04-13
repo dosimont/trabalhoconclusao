@@ -2137,3 +2137,13 @@ ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
  The first state in the Simgrid trace is MPI_init and the last one is MPI_Finalize for all tasks.
 The tit trace had computing stages before the MPI_init and after the MPI_Finalize, i will take a look at that now.
 
+* 2016-04-13 Next steps
+
+After talking to professor Lucas, here are the next steps:
+1. Repeat the comparison with the big traces we have access.
+2. Build identical platform descriptions to be used as input to Simgrid and Dimemas.
+3. Simulate the large traces with these identical platform descriptions and compare them.
+4. Generate some new paraver traces of benchmarks using EXTRAE.
+
+Step 2 is specially important since we want to compare traces using the same
+machine model. In this case, we can disregard the original trace.
