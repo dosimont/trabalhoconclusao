@@ -2194,16 +2194,22 @@ the simulated power is relative to the instrumented speed ratio (we say how much
 the simulation should be faster/slower than the original trace). We can easily calculate the
 value the we should use in Dimemas by dividing the Simgrid simulation Flops with the
 original Flops value.
+
 t_simgrid = ops_original / Flops_simgrid
+
 t_simgrid = (t_original * Flops_original) / Flops_simgrid
+
 t_dimemas = t_original/c
+
 We want t_simgrid = t_dimemas
+
 (t_original * Flops_original) / Flops_simgrid = t_original/c
+
 Flops_original / Flops_simgrid = 1/c
+
 c = Flops_simgrid / Flops_original
-Where,
-t_simgrid = the simulated time on Simgrid,
-t_dimemas = the simulated time on Dimemas,
+
+Where, t_simgrid = the simulated time on Simgrid, t_dimemas = the simulated time on Dimemas,
 c = the relative processor speed (the input we should use on Dimemas)
 
 We made a simple MPI application trace to test the power parameter in
