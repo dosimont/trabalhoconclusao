@@ -63,8 +63,7 @@ sub getTime {
     return $timeValue;
 }
 
-sub pjdump
-{
+sub pjdump {
 
     foreach (@pjdump_containers) {
         my $action = $_;
@@ -91,14 +90,14 @@ sub pjdump
     }
 
     foreach (@pjdump_states) {
-        my $action = $_;
-	my $container = $action->{"container"};
-	my $type = $action->{"type"};
-        my $startTime = getTime($action->{"startTime"});
-        my $endTime = getTime($action->{"endTime"});
-        my $duration = getTime($action->{"duration"});
-        my $imbrication = $action->{"imbrication"};
-        my $value = $action->{"value"};
+        my $state = $_;
+	my $container = $state->{"container"};
+	my $type = $state->{"type"};
+        my $startTime = getTime($state->{"startTime"});
+        my $endTime = getTime($state->{"endTime"});
+        my $duration = getTime($state->{"duration"});
+        my $imbrication = $state->{"imbrication"};
+        my $value = $state->{"value"};
 	print "State, $container, $type, $startTime, $endTime, $duration, $imbrication, $value\n";
     }
 
@@ -222,7 +221,7 @@ sub parse_prv_lucas {
         push @pjdump_containers, \%container;
 
         # initialize current state value for each task
-	@task_current_state_value = (0) x $number_of_tasks;
+	@task_current_state_value = (0) x $number_of_tasks;;
 
         # initiate an empty event buffer for each task
 	@task_events_buffer = (0);
@@ -233,7 +232,7 @@ sub parse_prv_lucas {
             my %container;
             $container{"parent"} = "0";
             $container{"type"} = "TASK";
-            $container{"name"} = "rank-" . ($task - 1);
+            $container{"name"} = ($task - 1);
             $container{"startTime"} = "0";
             push @pjdump_containers, \%container;
         }
@@ -265,7 +264,7 @@ sub parse_prv_lucas {
             push @pjdump_states, \%state;
 
             # update the reference to the value of the current state of this task
-            $task_current_state_value[$task - 1] = \$state{"value"};
+            #$task_current_state_value[$task - 1] = \$state{"value"};
 
 	    if ($end_time + 0 > $app_end_time + 0) {
 		$app_end_time = $end_time;
@@ -285,14 +284,14 @@ sub parse_prv_lucas {
 
                 # create event
                 my %event;
-                $event{"container"} = "rank-" . ($task - 1);
+                $event{"container"} = ($task - 1);
                 $event{"name"} = "MPI_CALL";
                 $event{"time"} = $time;
                 $event{"value"} = uc($mpi_call);
                 push @pjdump_events, \%event;
 
-                my $a = $task_current_state_value[$task - 1];
-                $$a = uc($mpi_call);
+                #my $a = $task_current_state_value[$task - 1];
+                #$$a = uc($mpi_call);
 	    }     
         }
 
@@ -312,8 +311,8 @@ sub parse_prv_lucas {
 	   $link{"endTime"} = $atime_recv;
            $link{"duration"} = $atime_recv - $atime_send;
            $link{"value"} = "LINK";
-           $link{"startContainer"} = "rank-" . ($task_send - 1);
-           $link{"endContainer"} = "rank-" . ($task_recv - 1);
+           $link{"startContainer"} = ($task_send - 1);
+           $link{"endContainer"} = ($task_recv - 1);
            push @pjdump_links, \%link;
         }
     }

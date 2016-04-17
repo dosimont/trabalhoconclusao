@@ -2147,3 +2147,537 @@ After talking to professor Lucas, here are the next steps:
 
 Step 2 is specially important since we want to compare traces using the same
 machine model. In this case, we can disregard the original trace.
+* 2016-04-14 Platform descriptions
+As discussed earlier, it is important to have identical platform descriptions for
+Simgrid and Dimemas for us to compare the traces.
+First of all, I made an adjustment in the =prv2pjdump.pl= script. It no longer
+replaces the state name with the mpi call that occurs during the state. The reason
+for that is that some states may contain more than one mpi call.
+
+The format of the platform description in Simgrid and Dimemas is very different. Parameters
+with the same name do not necessarily mean the same thing or work the same way. After reading
+the documentation for building a platform description in Simgrid and Dimemas, we made our first
+attempt. We made a very simple platform and we will try to approach each parameters individually,
+so we can have a better understaing of how it works.
+
+The platform we will build contains 2 nodes, each node contains 2 cores. Each core has a
+processing power of =P= (flops). The nodes can communicate with each other with latency =L=
+(seconds) and a bandwidth of =B= (MBps). Also, each flow going through the link between the
+nodes will be provided with the complete bandwidth =B= (to make it simple). Other parameters
+will be discussed later. We will be calling this platform "small".
+
+Here is how it looks in the Simgrid format:
+#+begin_src sh :results output :exports both
+  cat simgrid/examples/small.xml
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid.dtd">
+<platform version="3">
+<AS  id="AS_small"  routing="Full">
+     <host id="host1" power="286.087kf" core="2"/>
+     <host id="host2" power="286.087kf" core="2"/>
+     <link id="link1" bandwidth="10000GBps" latency="0s" sharing_policy="FATPIPE"/>
+     <route src="host1" dst="host2"><link_ctn id="link1"/></route>
+</AS>
+</platform>
+
+#+end_example
+
+Very short, very simple. The values used for bandwidth, latency and power can be ignored,
+since we will be changing those for the following tests.
+
+One important note is that the power in Simgrid is expressed as Flops, however, on Dimemas,
+the simulated power is relative to the instrumented speed ratio (we say how much times
+the simulation should be faster/slower than the original trace). We can easily calculate the
+value the we should use in Dimemas by dividing the Simgrid simulation Flops with the
+original Flops value.
+\begin{multline}
+\begin{aligned}
+t_\text{simgrid} = ops_\text{original} / Flops_\text{simgrid} \\
+t_\text{simgrid} = (t_\text{original} * Flops_\text{original}) / Flops_\text{simgrid} \\
+t_\text{dimemas} = t_\text{original}/c \\
+\text{We want } t_\text{simgrid} = t_\text{dimemas} \\
+(t_\text{original} * Flops_\text{original}) / Flops_\text{simgrid} = t_\text{original}/c \\
+Flops_\text{original} / Flops_\text{simgrid} = 1/c \\
+c = Flops_\text{simgrid} / Flops_\text{original} \\
+t_\text{simgrid} = \text{the simulated time on Simgrid,} \\
+t_\text{dimemas} = \text{the simulated time on Dimemas,} \\
+c = \text{the relative processor speed (the input we should use on Dimemas)}
+\end{aligned}
+\end{multline}
+
+We made a simple MPI application trace to test the power parameter in
+both platform descriptions.
+Here is the application
+#+begin_src sh :results output :exports both
+  cat computation/computation.c
+#+end_src
+
+#+RESULTS:
+#+begin_example
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <mpi.h>
+
+int main(int argc, char **argv) {
+    MPI_Init(&argc, &argv);
+
+    int rank, num_procs;
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if(num_procs < 2 || num_procs % 2 != 0) {
+      MPI_Finalize();
+      return 1;
+    }
+
+		int i;
+		int computationSize = 1000000;
+		float value = 1.12435433421;
+     for (i = 0; i < computationSize; i++) {
+			value = ((((value * 3.1415985934) / 2.42433453) + 0.00000324234) * 1.002134667345) / 1.00042542214;
+		}
+
+    MPI_Finalize();
+}
+#+end_example
+
+The MPI app creates n tasks and each task has the same amount of
+computation. We traced this application with EXTRAE and we executed
+the cycle to obtain the simgrid trace and Dimemas trace in the pjdump
+format using the platform description that we showed earlier with a
+power =P= of 286.087KFlops, =L= of 0 seconds and =B= of 1000 GBps.
+The app was traced with 4 tasks, task 0 and 1 were assigned to the
+first node, task 2 and 3 to the second.
+Here are the final traces for Simgrid and Dimemas:
+#+begin_src sh :results output :exports both
+  cat computation/computation-simgrid.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Container, 0, 0, 0, 24.9563, 24.9563, 0
+Container, 0, MPI, 0, 24.9563, 24.9563, rank-3
+State, rank-3, MPI_STATE, 0.000000000, 24.956309000, 24.956309000, 0.000000000, computing
+State, rank-3, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-3, MPI_STATE, 0.000000000, 2.879051000, 2.879051000, 1.000000000, computing
+State, rank-3, MPI_STATE, 2.879051000, 2.946167000, 0.067116000, 1.000000000, computing
+State, rank-3, MPI_STATE, 2.946167000, 2.952132000, 0.005965000, 1.000000000, computing
+State, rank-3, MPI_STATE, 2.952132000, 21.636174000, 18.684042000, 1.000000000, computing
+State, rank-3, MPI_STATE, 21.636174000, 24.888875000, 3.252701000, 1.000000000, computing
+State, rank-3, MPI_STATE, 24.888875000, 24.894258000, 0.005383000, 1.000000000, computing
+State, rank-3, MPI_STATE, 24.894258000, 24.956309000, 0.062051000, 1.000000000, smpi_replay_run_finalize
+Container, 0, MPI, 0, 24.9563, 24.9563, rank-2
+State, rank-2, MPI_STATE, 0.000000000, 24.956309000, 24.956309000, 0.000000000, computing
+State, rank-2, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-2, MPI_STATE, 0.000000000, 2.808296000, 2.808296000, 1.000000000, computing
+State, rank-2, MPI_STATE, 2.808296000, 2.875053000, 0.066757000, 1.000000000, computing
+State, rank-2, MPI_STATE, 2.875053000, 2.881127000, 0.006074000, 1.000000000, computing
+State, rank-2, MPI_STATE, 2.881127000, 20.948396000, 18.067269000, 1.000000000, computing
+State, rank-2, MPI_STATE, 20.948396000, 24.823476000, 3.875080000, 1.000000000, computing
+State, rank-2, MPI_STATE, 24.823476000, 24.829214000, 0.005738000, 1.000000000, computing
+State, rank-2, MPI_STATE, 24.829214000, 24.956309000, 0.127095000, 1.000000000, smpi_replay_run_finalize
+Container, 0, MPI, 0, 24.9563, 24.9563, rank-1
+State, rank-1, MPI_STATE, 0.000000000, 24.956309000, 24.956309000, 0.000000000, computing
+State, rank-1, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-1, MPI_STATE, 0.000000000, 2.557289000, 2.557289000, 1.000000000, computing
+State, rank-1, MPI_STATE, 2.557289000, 2.625715000, 0.068426000, 1.000000000, computing
+State, rank-1, MPI_STATE, 2.625715000, 2.632033000, 0.006318000, 1.000000000, computing
+State, rank-1, MPI_STATE, 2.632033000, 24.347424000, 21.715391000, 1.000000000, computing
+State, rank-1, MPI_STATE, 24.347424000, 24.564885000, 0.217461000, 1.000000000, computing
+State, rank-1, MPI_STATE, 24.564885000, 24.571351000, 0.006466000, 1.000000000, computing
+State, rank-1, MPI_STATE, 24.571351000, 24.956309000, 0.384958000, 1.000000000, smpi_replay_run_finalize
+Container, 0, MPI, 0, 24.9563, 24.9563, rank-0
+State, rank-0, MPI_STATE, 0.000000000, 24.956309000, 24.956309000, 0.000000000, computing
+State, rank-0, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-0, MPI_STATE, 0.000000000, 2.885332000, 2.885332000, 1.000000000, computing
+State, rank-0, MPI_STATE, 2.885332000, 3.008576000, 0.123244000, 1.000000000, computing
+State, rank-0, MPI_STATE, 3.008576000, 3.014496000, 0.005920000, 1.000000000, computing
+State, rank-0, MPI_STATE, 3.014496000, 22.493663000, 19.479167000, 1.000000000, computing
+State, rank-0, MPI_STATE, 22.493663000, 24.950293000, 2.456630000, 1.000000000, computing
+State, rank-0, MPI_STATE, 24.950293000, 24.956309000, 0.006016000, 1.000000000, computing
+State, rank-0, MPI_STATE, 24.956309000, 24.956309000, 0.000000000, 1.000000000, smpi_replay_run_finalize
+#+end_example
+
+#+begin_src sh :results output :exports both
+  cat computation/computation-dimemas.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Container, 0, APP, 0, 25.002551001, 25.002551001, 0
+Container, 0, TASK, 0, 25.002551001, 25.002551001, 0
+Container, 0, TASK, 0, 25.002551001, 25.002551001, 1
+Container, 0, TASK, 0, 25.002551001, 25.002551001, 2
+Container, 0, TASK, 0, 25.002551001, 25.002551001, 3
+State, rank-0, RUNNING, 0, 0.034298, 0.034298, 0, RUNNING
+State, rank-1, RUNNING, 0, 0.320785, 0.320785, 0, RUNNING
+State, rank-2, RUNNING, 0, 0.069523, 0.069523, 0, RUNNING
+State, rank-3, RUNNING, 0, 2.879051, 2.879051, 0, RUNNING
+State, rank-0, RUNNING, 0.034298, 2.91963, 2.885332, 0, RUNNING
+State, rank-2, RUNNING, 0.069523, 2.877819, 2.808296, 0, RUNNING
+State, rank-1, RUNNING, 0.320785, 2.878074, 2.557289, 0, RUNNING
+State, rank-2, BLOCKED, 2.877819, 2.91963, 0.041811, 0, BLOCKED
+State, rank-1, BLOCKED, 2.878074, 2.91963, 0.041556, 0, BLOCKED
+State, rank-3, BLOCKED, 2.879051, 2.91963, 0.040579, 0, BLOCKED
+State, rank-0, RUNNING, 2.91963, 3.042874, 0.123244, 0, RUNNING
+State, rank-1, RUNNING, 2.91963, 2.988056, 0.068426, 0, RUNNING
+State, rank-2, RUNNING, 2.91963, 2.986387, 0.066757, 0, RUNNING
+State, rank-3, RUNNING, 2.91963, 2.986746, 0.067116, 0, RUNNING
+State, rank-2, RUNNING, 2.986387, 2.992461, 0.006074, 0, RUNNING
+State, rank-3, RUNNING, 2.986746, 2.992711, 0.005965, 0, RUNNING
+State, rank-1, RUNNING, 2.988056, 2.994374, 0.006318, 0, RUNNING
+State, rank-2, RUNNING, 2.992461, 21.05973, 18.067269, 0, RUNNING
+State, rank-3, RUNNING, 2.992711, 21.676753, 18.684042, 0, RUNNING
+State, rank-1, RUNNING, 2.994374, 24.709765, 21.715391, 0, RUNNING
+State, rank-0, RUNNING, 3.042874, 3.048794, 0.00592, 0, RUNNING
+State, rank-0, RUNNING, 3.048794, 22.527961, 19.479167, 0, RUNNING
+State, rank-2, RUNNING, 21.05973, 24.93481, 3.87508, 0, RUNNING
+State, rank-3, RUNNING, 21.676753, 24.929454, 3.252701, 0, RUNNING
+State, rank-0, RUNNING, 22.527961, 24.984591, 2.45663, 0, RUNNING
+State, rank-1, RUNNING, 24.709765, 24.927226, 0.217461, 0, RUNNING
+State, rank-1, RUNNING, 24.927226, 24.940695, 0.013469, 0, RUNNING
+State, rank-3, RUNNING, 24.929454, 24.941998, 0.012544, 0, RUNNING
+State, rank-2, RUNNING, 24.93481, 24.947975, 0.013165, 0, RUNNING
+State, rank-1, RUNNING, 24.940695, 24.946954, 0.006259, 0, RUNNING
+State, rank-3, RUNNING, 24.941998, 24.94715, 0.005152, 0, RUNNING
+State, rank-1, RUNNING, 24.946954, 24.947161, 0.000207, 0, RUNNING
+State, rank-3, RUNNING, 24.94715, 24.947381, 0.000231, 0, RUNNING
+State, rank-1, NOT CREATED, 24.947161, 24.947161001, 0.000000001, 0, NOT CREATED
+State, rank-3, NOT CREATED, 24.947381, 24.947381001, 0.000000001, 0, NOT CREATED
+State, rank-2, RUNNING, 24.947975, 24.953528, 0.005553, 0, RUNNING
+State, rank-2, RUNNING, 24.953528, 24.953713, 0.000185, 0, RUNNING
+State, rank-2, NOT CREATED, 24.953713, 24.953713001, 0.000000001, 0, NOT CREATED
+State, rank-0, RUNNING, 24.984591, 24.996535, 0.011944, 0, RUNNING
+State, rank-0, RUNNING, 24.996535, 25.002277, 0.005742, 0, RUNNING
+State, rank-0, RUNNING, 25.002277, 25.002551, 0.000274, 0, RUNNING
+State, rank-0, NOT CREATED, 25.002551, 25.002551001, 0.000000001, 0, NOT CREATED
+Event, 2, MPI_CALL, 2.877819, MPI_INIT
+Event, 1, MPI_CALL, 2.878074, MPI_INIT
+Event, 3, MPI_CALL, 2.879051, MPI_INIT
+Event, 0, MPI_CALL, 2.91963, MPI_INIT
+Event, 2, MPI_CALL, 21.05973, MPI_FINALIZE
+Event, 3, MPI_CALL, 21.676753, MPI_FINALIZE
+Event, 0, MPI_CALL, 22.527961, MPI_FINALIZE
+Event, 1, MPI_CALL, 24.709765, MPI_FINALIZE
+#+end_example
+
+We can observe that both simulations end at approximately the same
+time.
+
+Let`s change the bandwidth in the platforms to 1MBps and test if the
+output of the simulators will be different. For that, we will use
+another MPI application:
+#+begin_src sh :results output :exports both
+  cat sendrecv/sendrecv.c
+#+end_src
+
+#+RESULTS:
+#+begin_example
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <mpi.h>
+
+int main(int argc, char **argv) {
+    MPI_Init(&argc, &argv);
+
+    int rank, num_procs;
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if(num_procs < 2 || num_procs % 2 != 0) {
+      MPI_Finalize();
+      return 1;
+    }
+
+		int sending = 0;
+		if (rank % 2 == 0) {
+			sending = 1;
+		}
+
+    int i;
+		int *msg;
+		int messageSize = 10000000;
+    msg = malloc(messageSize * sizeof(int));
+
+		if (sending) {
+     	MPI_Send(msg, messageSize, MPI_INT, rank + 1, 1234, MPI_COMM_WORLD);
+     	printf("process %d sent message of size %d to process %d\n", rank, messageSize, rank + 1);
+		}
+		else {
+     	MPI_Status status;
+     	MPI_Recv(msg, messageSize, MPI_INT, rank - 1, 1234, MPI_COMM_WORLD, &status);
+     	printf("process %d received a message of size %d from process %d\n", rank, messageSize, rank - 1);
+		}
+
+		free(msg);
+
+    MPI_Finalize();
+}
+#+end_example
+Each even MPI task send a message of 40MB to its odd neighbor.
+We traced the application with EXTRAE and we executed
+the cycle to obtain the simgrid trace and Dimemas trace in the pjdump
+format. The receiving tasks were assigned to the node 1 and the
+sending tasks were sent to the node 2.
+Here are the final traces for Simgrid and Dimemas:
+#+begin_src sh :results output :exports both
+  cat sendrecv/sendrecv-simgrid.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Container, 0, 0, 0, 52.2366, 52.2366, 0
+Link, 0, MPI_LINK, 3.083936000, 45.663638737, 42.579702737, PTP, rank-0, rank-1
+Link, 0, MPI_LINK, 3.046690000, 45.870591737, 42.823901737, PTP, rank-2, rank-3
+Container, 0, MPI, 0, 52.2366, 52.2366, rank-3
+State, rank-3, MPI_STATE, 0.000000000, 52.236646737, 52.236646737, 0.000000000, computing
+State, rank-3, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-3, MPI_STATE, 0.000000000, 3.058568000, 3.058568000, 1.000000000, computing
+State, rank-3, MPI_STATE, 3.058568000, 3.336736000, 0.278168000, 1.000000000, computing
+State, rank-3, MPI_STATE, 3.336736000, 3.340047000, 0.003311000, 1.000000000, computing
+State, rank-3, MPI_STATE, 3.340047000, 3.348794000, 0.008747000, 1.000000000, computing
+State, rank-3, MPI_STATE, 3.348794000, 45.870591737, 42.521797737, 1.000000000, action_recv
+State, rank-3, MPI_STATE, 45.870591737, 46.257293737, 0.386702000, 1.000000000, computing
+State, rank-3, MPI_STATE, 46.257293737, 52.225005737, 5.967712000, 1.000000000, computing
+State, rank-3, MPI_STATE, 52.225005737, 52.236646737, 0.011641000, 1.000000000, computing
+State, rank-3, MPI_STATE, 52.236646737, 52.236646737, 0.000000000, 1.000000000, smpi_replay_run_finalize
+Container, 0, MPI, 0, 52.2366, 52.2366, rank-2
+State, rank-2, MPI_STATE, 0.000000000, 52.236646737, 52.236646737, 0.000000000, computing
+State, rank-2, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-2, MPI_STATE, 0.000000000, 2.953014000, 2.953014000, 1.000000000, computing
+State, rank-2, MPI_STATE, 2.953014000, 3.027902000, 0.074888000, 1.000000000, computing
+State, rank-2, MPI_STATE, 3.027902000, 3.033616000, 0.005714000, 1.000000000, computing
+State, rank-2, MPI_STATE, 3.033616000, 3.046690000, 0.013074000, 1.000000000, computing
+State, rank-2, MPI_STATE, 3.046690000, 45.870591737, 42.823901737, 1.000000000, action_send
+State, rank-2, MPI_STATE, 45.870591737, 45.968918737, 0.098327000, 1.000000000, computing
+State, rank-2, MPI_STATE, 45.968918737, 52.212202737, 6.243284000, 1.000000000, computing
+State, rank-2, MPI_STATE, 52.212202737, 52.223213737, 0.011011000, 1.000000000, computing
+State, rank-2, MPI_STATE, 52.223213737, 52.236646737, 0.013433000, 1.000000000, smpi_replay_run_finalize
+Container, 0, MPI, 0, 52.2366, 52.2366, rank-1
+State, rank-1, MPI_STATE, 0.000000000, 52.236646737, 52.236646737, 0.000000000, computing
+State, rank-1, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-1, MPI_STATE, 0.000000000, 3.050659000, 3.050659000, 1.000000000, computing
+State, rank-1, MPI_STATE, 3.050659000, 3.124837000, 0.074178000, 1.000000000, computing
+State, rank-1, MPI_STATE, 3.124837000, 3.129655000, 0.004818000, 1.000000000, computing
+State, rank-1, MPI_STATE, 3.129655000, 3.141841000, 0.012186000, 1.000000000, computing
+State, rank-1, MPI_STATE, 3.141841000, 45.663638737, 42.521797737, 1.000000000, action_recv
+State, rank-1, MPI_STATE, 45.663638737, 46.003718737, 0.340080000, 1.000000000, computing
+State, rank-1, MPI_STATE, 46.003718737, 46.232323737, 0.228605000, 1.000000000, computing
+State, rank-1, MPI_STATE, 46.232323737, 46.240393737, 0.008070000, 1.000000000, computing
+State, rank-1, MPI_STATE, 46.240393737, 52.236646737, 5.996253000, 1.000000000, smpi_replay_run_finalize
+Container, 0, MPI, 0, 52.2366, 52.2366, rank-0
+State, rank-0, MPI_STATE, 0.000000000, 52.236646737, 52.236646737, 0.000000000, computing
+State, rank-0, MPI_STATE, 0.000000000, 0.000000000, 0.000000000, 1.000000000, smpi_replay_run_init
+State, rank-0, MPI_STATE, 0.000000000, 2.986926000, 2.986926000, 1.000000000, computing
+State, rank-0, MPI_STATE, 2.986926000, 3.069610000, 0.082684000, 1.000000000, computing
+State, rank-0, MPI_STATE, 3.069610000, 3.074111000, 0.004501000, 1.000000000, computing
+State, rank-0, MPI_STATE, 3.074111000, 3.083936000, 0.009825000, 1.000000000, computing
+State, rank-0, MPI_STATE, 3.083936000, 45.663638737, 42.579702737, 1.000000000, action_send
+State, rank-0, MPI_STATE, 45.663638737, 45.893635737, 0.229997000, 1.000000000, computing
+State, rank-0, MPI_STATE, 45.893635737, 46.226374737, 0.332739000, 1.000000000, computing
+State, rank-0, MPI_STATE, 46.226374737, 46.236190737, 0.009816000, 1.000000000, computing
+State, rank-0, MPI_STATE, 46.236190737, 52.236646737, 6.000456000, 1.000000000, smpi_replay_run_finalize
+#+end_example
+
+#+begin_src sh :results output :exports both
+  cat sendrecv/sendrecv-dimemas.pjdump
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Container, 0, APP, 0, 47.915151657, 47.915151657, 0
+Container, 0, TASK, 0, 47.915151657, 47.915151657, 0
+Container, 0, TASK, 0, 47.915151657, 47.915151657, 1
+Container, 0, TASK, 0, 47.915151657, 47.915151657, 2
+Container, 0, TASK, 0, 47.915151657, 47.915151657, 3
+Link, 0, LINK, 3.387382, 41.534354656, 38.146972656, LINK, 2, 3
+Link, 0, LINK, 3.194166, 41.341138656, 38.146972656, LINK, 0, 1
+State, rank-0, RUNNING, 0, 0.11023, 0.11023, 0, RUNNING
+State, rank-1, RUNNING, 0, 0.006585, 0.006585, 0, RUNNING
+State, rank-2, RUNNING, 0, 0.105474, 0.105474, 0, RUNNING
+State, rank-3, RUNNING, 0, 3.058568, 3.058568, 0, RUNNING
+State, rank-1, RUNNING, 0.006585, 3.057244, 3.050659, 0, RUNNING
+State, rank-2, RUNNING, 0.105474, 3.058488, 2.953014, 0, RUNNING
+State, rank-0, RUNNING, 0.11023, 3.097156, 2.986926, 0, RUNNING
+State, rank-1, BLOCKED, 3.057244, 3.097156, 0.039912, 0, BLOCKED
+State, rank-2, BLOCKED, 3.058488, 3.097156, 0.038668, 0, BLOCKED
+State, rank-3, BLOCKED, 3.058568, 3.097156, 0.038588, 0, BLOCKED
+State, rank-0, RUNNING, 3.097156, 3.17984, 0.082684, 0, RUNNING
+State, rank-1, RUNNING, 3.097156, 3.171334, 0.074178, 0, RUNNING
+State, rank-2, RUNNING, 3.097156, 3.172044, 0.074888, 0, RUNNING
+State, rank-3, RUNNING, 3.097156, 3.375324, 0.278168, 0, RUNNING
+State, rank-1, RUNNING, 3.171334, 3.176152, 0.004818, 0, RUNNING
+State, rank-2, RUNNING, 3.172044, 3.177758, 0.005714, 0, RUNNING
+State, rank-1, RUNNING, 3.176152, 3.188338, 0.012186, 0, RUNNING
+State, rank-2, RUNNING, 3.177758, 3.190832, 0.013074, 0, RUNNING
+State, rank-0, RUNNING, 3.17984, 3.184341, 0.004501, 0, RUNNING
+State, rank-0, RUNNING, 3.184341, 3.194166, 0.009825, 0, RUNNING
+State, rank-1, WAITING A MESSAGE, 3.188338, 41.341138656, 38.152800656, 0, WAITING A MESSAGE
+State, rank-2, WAITING A MESSAGE, 3.190832, 3.387382, 0.19655, 0, WAITING A MESSAGE
+State, rank-0, RUNNING, 3.194166, 3.424163, 0.229997, 0, RUNNING
+State, rank-3, RUNNING, 3.375324, 3.378635, 0.003311, 0, RUNNING
+State, rank-3, RUNNING, 3.378635, 3.387382, 0.008747, 0, RUNNING
+State, rank-2, RUNNING, 3.387382, 3.485709, 0.098327, 0, RUNNING
+State, rank-3, WAITING A MESSAGE, 3.387382, 41.534354656, 38.146972656, 0, WAITING A MESSAGE
+State, rank-0, RUNNING, 3.424163, 3.756902, 0.332739, 0, RUNNING
+State, rank-2, RUNNING, 3.485709, 9.728993, 6.243284, 0, RUNNING
+State, rank-0, RUNNING, 3.756902, 3.769042, 0.01214, 0, RUNNING
+State, rank-0, RUNNING, 3.769042, 3.778641, 0.009599, 0, RUNNING
+State, rank-0, RUNNING, 3.778641, 3.778858, 0.000217, 0, RUNNING
+State, rank-0, NOT CREATED, 3.778858, 3.778858001, 0.000000001, 0, NOT CREATED
+State, rank-2, RUNNING, 9.728993, 9.743934, 0.014941, 0, RUNNING
+State, rank-2, RUNNING, 9.743934, 9.754673, 0.010739, 0, RUNNING
+State, rank-2, RUNNING, 9.754673, 9.754945, 0.000272, 0, RUNNING
+State, rank-2, NOT CREATED, 9.754945, 9.754945001, 0.000000001, 0, NOT CREATED
+State, rank-1, RUNNING, 41.341138656, 41.681218656, 0.34008, 0, RUNNING
+State, rank-3, RUNNING, 41.534354656, 41.921056656, 0.386702, 0, RUNNING
+State, rank-1, RUNNING, 41.681218656, 41.909823656, 0.228605, 0, RUNNING
+State, rank-1, RUNNING, 41.909823656, 41.922359656, 0.012536, 0, RUNNING
+State, rank-3, RUNNING, 41.921056656, 47.888768656, 5.967712, 0, RUNNING
+State, rank-1, RUNNING, 41.922359656, 41.930222656, 0.007863, 0, RUNNING
+State, rank-1, RUNNING, 41.930222656, 41.930429656, 0.000207, 0, RUNNING
+State, rank-1, NOT CREATED, 41.930429656, 41.930429657, 0.000000001, 0, NOT CREATED
+State, rank-3, RUNNING, 47.888768656, 47.903510656, 0.014742, 0, RUNNING
+State, rank-3, RUNNING, 47.903510656, 47.914924656, 0.011414, 0, RUNNING
+State, rank-3, RUNNING, 47.914924656, 47.915151656, 0.000227, 0, RUNNING
+State, rank-3, NOT CREATED, 47.915151656, 47.915151657, 0.000000001, 0, NOT CREATED
+Event, 1, MPI_CALL, 3.057244, MPI_INIT
+Event, 2, MPI_CALL, 3.058488, MPI_INIT
+Event, 3, MPI_CALL, 3.058568, MPI_INIT
+Event, 0, MPI_CALL, 3.097156, MPI_INIT
+Event, 1, MPI_CALL, 3.188338, MPI_RECV
+Event, 2, MPI_CALL, 3.190832, MPI_SEND
+Event, 0, MPI_CALL, 3.194166, MPI_SEND
+Event, 3, MPI_CALL, 3.387382, MPI_RECV
+Event, 0, MPI_CALL, 3.424163, MPI_FINALIZE
+Event, 2, MPI_CALL, 3.485709, MPI_FINALIZE
+Event, 1, MPI_CALL, 41.681218656, MPI_FINALIZE
+Event, 3, MPI_CALL, 41.921056656, MPI_FINALIZE
+#+end_example
+
+There are somethings we can note at this stage. The simulation on
+Dimemas takes about 4 seconds less than the Simgrid simulation. Also,
+os Dimemas, the processes that sent the message were not blocked until the
+message was sent (and they finished much earlier).
+Let's plot to have a better idea on what is going on.
+
+
+#+begin_src sh :results output :exports both
+cat sendrecv/sendrecv-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-7,8 | sed -n "/^[^,]*,[^,]*,[^,]*,[^,]*, 0/!p" | cut -d, -f1-4,6 > sendrecv/sendrecv-simgrid-filter.pjdump
+cat sendrecv/sendrecv-dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > sendrecv/sendrecv-dimemas-filter.pjdump
+#+end_src
+
+#+begin_src R :results output graphics :file img/sendrecv-1.png :exports both :width 1500 :height 400 :session
+df_s <- read.csv("sendrecv/sendrecv-simgrid-filter.pjdump", header=FALSE, sep=",");
+names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
+df_s$Simulator <- "simgrid";
+
+df_d <- read.csv("sendrecv/sendrecv-dimemas-filter.pjdump", header=F, sep=",");
+names(df_d) <- c("Thread", "Start", "End", "Duration", "State");
+df_d$Simulator <- "dimemas";
+
+df <- rbind(df_s, df_d);
+df
+
+library(ggplot2);
+ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
+   theme_bw() +
+   geom_segment (aes(xend=End, yend=factor(Thread)), size=4) +
+   facet_wrap(~Simulator, ncol=1);
+#+end_src
+
+#+RESULTS:
+[[file:img/sendrecv-1.png]]
+
+Some notes:
+On the Dimemas side, the processes that sent the message are not
+blocked and, therefore, they finish much earlier. Also, the waiting
+time for the message on Dimemas is approximately 4 sencond lower than
+the waiting time on Simgrid. 
+
+Something interesting is that process 2 and 3 have a five second computing time after the message was
+sent/received (this happens in both simulations). This delay was also
+observed in the original trace.
+
+
+* 2016-04-16 Platform description part 2
+
+The last result on Dimemas showed that the processes that sent
+the message were not blocked until the message was sent.
+We created a variation on the previous application so that we have
+late receivers. 
+
+Let`s do it all over again.
+
+#+begin_src sh :results output :exports both
+cat sendrecv2/sendrecv2-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-7,8 | sed -n "/^[^,]*,[^,]*,[^,]*,[^,]*, 0/!p" | cut -d, -f1-4,6 > sendrecv2/sendrecv2-simgrid-filter.pjdump
+cat sendrecv2/sendrecv2-dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > sendrecv2/sendrecv2-dimemas-filter.pjdump
+#+end_src
+
+#+begin_src R :results output graphics :file img/sendrecv-2.png :exports both :width 1500 :height 400 :session
+df_s <- read.csv("sendrecv2/sendrecv2-simgrid-filter.pjdump", header=FALSE, sep=",");
+names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
+df_s$Simulator <- "simgrid";
+
+df_d <- read.csv("sendrecv2/sendrecv2-dimemas-filter.pjdump", header=F, sep=",");
+names(df_d) <- c("Thread", "Start", "End", "Duration", "State");
+df_d$Simulator <- "dimemas";
+
+df <- rbind(df_s, df_d);
+df
+
+library(ggplot2);
+ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
+   theme_bw() +
+   geom_segment (aes(xend=End, yend=factor(Thread)), size=4) +
+   facet_wrap(~Simulator, ncol=1);
+#+end_src
+
+#+RESULTS:
+[[file:img/sendrecv-2.png]]
+
+Now the sending processes are blocked until the receivers start to
+receive the data. But they do not wait until the message is sent.
+
+Let`s add a latency of 1s in the link between the nodes and set the
+bandwidth to infinity to see how the latency affects the simulation.
+
+#+begin_src sh :results output :exports both
+cat latency/sendrecv-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-7,8 | sed -n "/^[^,]*,[^,]*,[^,]*,[^,]*, 0/!p" | cut -d, -f1-4,6 > latency/sendrecv-simgrid-filter.pjdump
+cat latency/sendrecv-dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > latency/sendrecv-dimemas-filter.pjdump
+#+end_src
+
+#+begin_src R :results output graphics :file img/sendrecv-3.png :exports both :width 1500 :height 400 :session
+df_s <- read.csv("latency/sendrecv-simgrid-filter.pjdump", header=FALSE, sep=",");
+names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
+df_s$Simulator <- "simgrid";
+
+df_d <- read.csv("latency/sendrecv-dimemas-filter.pjdump", header=F, sep=",");
+names(df_d) <- c("Thread", "Start", "End", "Duration", "State");
+df_d$Simulator <- "dimemas";
+
+df <- rbind(df_s, df_d);
+df
+
+library(ggplot2);
+ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
+   theme_bw() +
+   geom_segment (aes(xend=End, yend=factor(Thread)), size=4) +
+   facet_wrap(~Simulator, ncol=1);
+#+end_src
+
+#+RESULTS:
+[[file:img/sendrecv-3.png]]
+
+The result of the simulation from Simgrid and Dimemas is very very
+different here. On Dimemas, before the actual communication, there is
+a startup latency of 2s for each task and during the communication,
+there is a delay of 1s. For Simgrid, however, it takes 30s for the
+message to be sent. The network model being used for the simulators
+are not the same, I will take a look at that.
+
+
