@@ -2684,3 +2684,135 @@ message to be sent. The network model being used for the simulators
 are not the same, I will take a look at that.
 
 
+* 2016-04-18 Script for executing the cycle
+There is a new shell script that executes the complete cycle for a prv trace.
+It converts a prv trace to the tit format, creates a platform description, a deployment
+file and simulate the tit trace on Simgrid. It converts the result to the pjdump format
+and filter it for plotting the data later. It also creates a configuration file for Dimemas
+that models the same platform and simulate using Dimemas. It converts the resulting prv trace
+to pjdump and filter it for plotting the data later.
+The script also calls an R script that load the filtered data and plot a chart for us to
+compare the result.
+Before using it, we need to configure some option.
+On the top of the file, you will find these parameters:
+
+#+begin_src sh :results output :exports both
+head -14 getpjdump/getpjdump.sh
+#+end_src
+
+#+RESULTS:
+#+begin_example
+#!/bin/bash
+
+TRACE_NAME='sendrecv6'
+
+# general options
+NTASKS=4
+BANDWIDTH=1000000 # in bytes/s
+LATENCY=1 # in seconds
+CORES=4
+ORIGINAL_FLOPS=286087000.0 # in flops/s
+SIMULATED_FLOPS=286087.0 # in flops/s
+TASK_MAPPING=(0 1 0 1)
+PLATFORM_FILE='small'
+
+#+end_example
+
+These are all the options available for the script:
+=TRACE_NAME= is the original prv trace.
+=NTASKS= is the number of tasks in the trace.
+=BANDWIDTH= is the simulated bandwidth in bytes/s.
+=LATENCY= is the simulated latency in seconds.
+=CORES= is the number of cores in each node.
+=ORIGINAL_FLOPS= is the original flops.
+=SIMULATED_FLOPS= is the simulated flops of each core.
+=PLATFORM_FILE= is the platform that will be used for the simulation (currently, there is only
+one platform available and it is called small).
+=TASK_MAPPING= maps the tasks to the nodes.
+
+Set these parameters and run it: =./getpjdump.sh=
+
+* 2016-04-20 Simgrid latency and bandwidth factors
+
+In the last experiments, we were having different timings for all the messages exchanges
+between the processes. It turns out that Simgrid uses a factor to calculate the real bandwidth
+and latency used for a certain size of message. These parameters are given by the option
+=smpi/bw_factor= and =smpi/lat_factor=. Below, we are plotting the simulation result using
+Dimemas and Simgrid of the same application that was used in the previous experiment.
+This time, using a bandwidth of 1Mbps, a latency of 1s and a processing power of 286KFlops.
+
+We will be using the script =getpjdump.sh= that executes the complete cycle and plot the chart.
+We configures the script with these values:
+
+#+begin_src sh :results output :exports both
+head -14 getpjdump/getpjdump.sh
+#+end_src
+
+#+RESULTS:
+#+begin_example
+#!/bin/bash
+
+TRACE_NAME='sendrecv6'
+
+# general options
+NTASKS=4
+BANDWIDTH=1000000 # in bytes/s
+LATENCY=1 # in seconds
+CORES=4
+ORIGINAL_FLOPS=286087000.0 # in flops/s
+SIMULATED_FLOPS=286087.0 # in flops/s
+TASK_MAPPING=(0 1 0 1)
+PLATFORM_FILE='small'
+
+#+end_example
+
+And we run it.
+
+#+begin_src sh :results output :exports both
+cd getpjdump
+./getpjdump.sh
+#+end_src
+
+#+RESULTS:
+#+begin_example
+prv trace converted to the dim format
+created dimemas config file
+-> Simulator configuration to be read /tmp/tmp.Hkps6FjiQC/small-dimemas.cfg
+-> Loading default random values
+-> Loading default scheduler configuration
+   * Machine 0. Policy: FIFO
+   * Loading default communications configuration
+-> Loding initial memory status
+-> Loding initial semaphores status
+-> Loading default file sytem configuration
+
+50.000000000: END SIMULATION
+
+Output Paraver trace "sendrecv6-dimemas.prv" generated
+
+dimemas simulation is done
+got dimemas pjdump trace
+prv trace converted to the tit format
+created simgrid platform file
+create simgrid deployment file
+[rank 0] -> host0
+[rank 1] -> host1
+[rank 2] -> host0
+[rank 3] -> host1
+simgrid simulation is done
+got simgrid pjdump trace
+pjdumps filtered
+#+end_example
+
+Magnificent.
+Here is the chart.
+
+[[file:img/sendrecv-4.pdf]]
+
+Note that the processes that received the message and the processes the sent the message
+(on Simgrid only) are blocked for the same period of time since we are now effectively
+using the same values for bandwidth and latency.
+
+
+
+
