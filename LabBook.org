@@ -2734,15 +2734,18 @@ Set these parameters and run it: =./getpjdump.sh=
 
 * 2016-04-20 Simgrid latency and bandwidth factors
 
-In the last experiments, we were having different timings for all the messages exchanges
-between the processes. It turns out that Simgrid uses a factor to calculate the real bandwidth
-and latency used for a certain size of message. These parameters are given by the option
-=smpi/bw_factor= and =smpi/lat_factor=. Below, we are plotting the simulation result using
-Dimemas and Simgrid of the same application that was used in the previous experiment.
-This time, using a bandwidth of 1Mbps, a latency of 1s and a processing power of 286KFlops.
+In the last experiments, we were having different timings for all the
+messages exchanges between the processes. It turns out that Simgrid
+uses a factor to calculate the real bandwidth and latency used for a
+certain size of message. These parameters are given by the option
+=smpi/bw_factor= and =smpi/lat_factor=. Below, we are plotting the
+simulation result using Dimemas and Simgrid of the same application
+that was used in the previous experiment.  This time, using a
+bandwidth of 1Mbps, a latency of 1s and a processing power of
+286KFlops.
 
-We will be using the script =getpjdump.sh= that executes the complete cycle and plot the chart.
-We configures the script with these values:
+We will be using the script =getpjdump.sh= that executes the complete
+cycle and plot the chart.  We configures the script with these values:
 
 #+begin_src sh :results output :exports both
 head -14 getpjdump/getpjdump.sh
@@ -2809,9 +2812,12 @@ Here is the chart.
 
 [[file:img/sendrecv-4.pdf]]
 
-Note that the processes that received the message and the processes the sent the message
-(on Simgrid only) are blocked for the same period of time since we are now effectively
-using the same values for bandwidth and latency.
+Note that the processes that received the message and the processes
+the sent the message (on Simgrid only) are blocked for the same period
+of time since we are now effectively using the same values for
+bandwidth and latency.
+
+
 
 
 
