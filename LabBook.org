@@ -2817,8 +2817,59 @@ the sent the message (on Simgrid only) are blocked for the same period
 of time since we are now effectively using the same values for
 bandwidth and latency.
 
+* 2016-04-28 Meeting with Tiago                                 :Lucas:Tiago:
 
+_Creating a Marenostrum Model_
 
+A marenostrum model for Simgrid is needed for quite a while. See this:
+- http://simgrid.gforge.inria.fr/contrib/smpi-paraver.php#orgheadline9
 
+We'll ask Judit about this to see if she has one Dimemas model for
+Marenostrum available. There is some documentation about it here:
+http://www.jorditorres.org/wp-content/uploads/2014/02/16.CaseStudy.marenostrum.pdf
 
+We took a look at this file:
+- There are 3048 compute nodes
+  - Each compute node is equiped with 2CPUs, 8 cores each (see slide 2)
+- It is based on an Infiniband FDR10 non-blocking fat tree network
+  - The three has two levels
+    - First level is a _bunch of MLX FDR10 36-port_ (only 18 compute
+      nodes are connected to one equipement like this)
+    - Second level is _six MLX SX6535_ (522 ports - only 507 used on
+      each)
+    - The problem is understand exactly how the interconnection is
+      made between the root level (the six MLX SX6535) and the
+      switches connected to the computer nodes. It looks like one
+      bottom network swith has 18 optical uplinks, 3 to each top
+      switches in the root level.
+  - See slide 13 for details
 
+With this information in hand, we are already able to write a rough
+sketch of SimGrid platform model for Marenostrum. Modeling Marenostrum
+in Simgrid should be relatively easy to do. We shall pay attention to
+SimGrid performance modeling all that.
+
+- _Task #1_: Create a SimGrid model of marenostrum.
+- _Task #2_: Ask Judit for a Dimemas model of marenostrum.
+
+_Regarding small scale trace file comparison_
+
+Tiago made some comparisons between SimGrid and Dimemas and observed
+that sends are asynchronous no matter the message size in Dimemas
+until the beginning of the corresponding receive. In SimGrid, they act
+as expected being blocked, i.e., so the send keeps blocking the
+process until the receive is done on the receiver side. Tiago tested
+with messages up to 40 megabytes, but tests were carried out in a
+multicore machine instead of a cluster. The comparisons only show
+Dimemas and SimGrid, so one task is to represent also the real paraver
+trace file, since we think that the behavior of Dimemas might be
+influenced by something in the paraver trace file that we disregard
+when we convert prv to tit to replay with smpi.
+
+- _Task #3_: Always put the real execution trace represention when
+  comparing Dimemas and SimGrid.
+
+_Get a G5K account for Tiago_
+
+We'll contact Arnaud to try to get an account in G5K so Tiago can
+control experimental and obtain traces himself.
