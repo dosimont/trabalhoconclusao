@@ -2936,4 +2936,117 @@ correct MPI installation when compiling MPI codes.
 export PATH=$HOME/install/stow/bin:$PATH
 #+END_EXAMPLE
 
+* 2016-05-06 Compiling and instrumenting Ondes3D for Draco            :Lucas:
 
+I have a copy of Ondes3D in MPI, thanks to Fabrice Dupros from BRGM.
+
+#+begin_src R :results output :session :exports both
+git clone https://bitbucket.org/schnorr/ondes3d.git
+cd ondes3d/Ondes3d-1.0/
+#+end_src
+
+In the =Makefile=, I disable the flag =-DOMP= and =-fopenmp= to disable
+OpenMP. I keep only the flag =-DMPI= so we have a pure MPI
+implementation of Ondes3D. I need to manually copy the input files
+=NICE-XML= which is approximately 970 Megabytes.
+
+#+begin_src sh :results output :session :exports both
+rsync --progress --recursive NICE-XML draco1:./ondes3d/Ondes3d-1.0/
+#+end_src
+
+A dry run proves successfully.
+
+Now I need to trace it with Extrae.
+
+Here's my =extrae.xml= configuration file.
+
+#+begin_src xml :results output :session :exports both :tangle extrae.xml
+<?xml version='1.0'?>
+
+<trace enabled="yes"
+ home="/home/schnorr/install/extrae-3.3.0"
+ initial-mode="detail"
+ type="paraver"
+ xml-parser-id="Id: xml-parse.c 3918 2016-03-11 14:59:01Z harald $"
+>
+
+  <mpi enabled="yes">
+    <counters enabled="yes" />
+  </mpi>
+
+  <openmp enabled="no"/>
+  <pthread enabled="no"/>
+
+  <callers enabled="yes">
+    <mpi enabled="yes">1-3</mpi>
+    <sampling enabled="no">1-5</sampling>
+    <dynamic-memory enabled="no">1-3</dynamic-memory>
+  </callers>
+
+  <user-functions enabled="no" list="/home/bsc41/bsc41273/user-functions.dat" exclude-automatic-functions="no">
+    <counters enabled="yes" />
+  </user-functions>
+
+  <counters enabled="no"/>
+  <storage enabled="no"/>
+  <buffer enabled="yes">
+    <size enabled="yes">500000</size>
+    <circular enabled="no" />
+  </buffer>
+
+  <trace-control enabled="no">
+    <file enabled="no" frequency="5M">/gpfs/scratch/bsc41/bsc41273/control</file>
+    <global-ops enabled="no"></global-ops>
+  </trace-control>
+
+  <others enabled="yes">
+    <minimum-time enabled="no">10M</minimum-time>
+    <finalize-on-signal enabled="yes" 
+      SIGUSR1="no" SIGUSR2="no" SIGINT="yes"
+      SIGQUIT="yes" SIGTERM="yes" SIGXCPU="yes"
+      SIGFPE="yes" SIGSEGV="yes" SIGABRT="yes"
+    />
+    <flush-sampling-buffer-at-instrumentation-point enabled="yes" />
+  </others>
+
+  <bursts enabled="no"/>
+  <sampling enabled="no" type="default" period="50m" variability="10m" />
+  <dynamic-memory enabled="no"/>
+  <input-output enabled="no"/>
+
+  <merge enabled="yes" 
+    synchronization="default"
+    tree-fan-out="16"
+    max-memory="512"
+    joint-states="yes"
+    keep-mpits="yes"
+    sort-addresses="yes"
+    overwrite="yes"
+  />
+
+</trace>
+#+end_src
+
+Capturing using =LD_PRELOAD=.
+
+#+begin_src sh :results output :session :exports both
+export EXTRAE_CONFIG_FILE=/home/schnorr/ondes3d/Ondes3d-1.0/extrae.xml
+export EXTRAE_HOME=/home/schnorr/install/stow/
+export LD_PRELOAD=${EXTRAE_HOME}/lib/libmpitrace.so
+mpirun -np 4 ./ondes3d
+#+end_src
+
+A local run worked.
+
+Now, let's try a distributed one.
+
+Contents of the machine file:
+
+#+BEGIN_EXAMPLE
+draco1
+draco2
+draco3
+draco4
+#+END_EXAMPLE
+
+This is working in progress (WIP).
