@@ -2873,3 +2873,57 @@ _Get a G5K account for Tiago_
 
 We'll contact Arnaud to try to get an account in G5K so Tiago can
 control experimental and obtain traces himself.
+* 2016-05-06 Installing OpenMPI + Extrae on Draco                     :Lucas:
+
+I have download OpenMPI 1.10.2
+
+#+begin_src sh :results output :session :exports both
+wget https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2
+#+end_src
+
+Configured, compile it this way:
+
+#+begin_src sh :results output :session :exports both
+./configure --prefix=/home/schnorr/install/openmpi-1.10.2/
+make
+make install
+#+end_src
+
+Then, download latest extrae 3.3.0, configure it this way:
+
+Note that my stow directory has symlinks to the my openmpi installation.
+
+#+begin_src sh :results output :session :exports both
+MPICC=/home/schnorr/install/stow/bin/mpicc ./configure --prefix=/home/schnorr/install/extrae-3.3.0/ \
+   --with-mpi=/home/schnorr/install/stow/lib/openmpi/ \
+   --with-mpi-headers=/home/schnorr/install/stow/include/ \
+   --with-mpi-libs=/home/schnorr/install/stow/lib/ \
+   --without-unwind \
+   --without-dyninst \
+   --without-papi \
+   --disable-openmp \
+   --disable-online
+make
+make install
+#+end_src
+
+It worked! Now I just copy the openmpi and extrae installations to the
+other draco nodes manually, since they do not have NFS.
+
+#+begin_src R :results output :session :exports both
+rsync --recursive --progress --links install draco2:.
+rsync --recursive --progress --links install draco3:.
+rsync --recursive --progress --links install draco4:.
+#+end_src
+
+I do not have access to draco[5678] since they are reserved for
+someone else as of this moment. Should play with four nodes to start.
+
+I have to put the following line to all =.bashrc= files, so we can use
+the correct MPI installation when compiling MPI codes.
+
+#+BEGIN_EXAMPLE
+export PATH=$HOME/install/stow/bin:$PATH
+#+END_EXAMPLE
+
+
