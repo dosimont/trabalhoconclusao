@@ -3059,7 +3059,8 @@ I stumble upon in a bunch of problems. Here's what I did (summary):
 - then run MPI like this in your $HOME
 
 #+BEGIN_EXAMPLE
-mpirun  -mca plm_rsh_no_tree_spawn 1  \ # to avoid failing host key verification
+mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self # use tcp, through the =em1= interface
+        -mca plm_rsh_no_tree_spawn 1  \ # to avoid failing host key verification
         -mca oob_base_verbose 20   \    # to understand errors
         -mca plm_rsh_agent ssh \        # to let MPI use ssh
         --machinefile ./ondes3d-dir/Ondes3d-1.0/machinefile \
