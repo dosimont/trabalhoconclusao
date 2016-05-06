@@ -2884,7 +2884,9 @@ wget https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.b
 Configured, compile it this way:
 
 #+begin_src sh :results output :session :exports both
-./configure --prefix=/home/schnorr/install/openmpi-1.10.2/
+./configure --prefix=/home/schnorr/install/openmpi-1.10.2/ \
+   --enable-static \ #so we can statically link mpi apps
+   --without-cuda #because of cuda dependencies
 make
 make install
 #+end_src
@@ -2916,11 +2918,19 @@ rsync --recursive --progress --links install draco3:.
 rsync --recursive --progress --links install draco4:.
 #+end_src
 
+I just found out that I have to run the configure/make/make install
+steps for openmpi in all machines, without =rsync=. Machines are
+configured differently, and it looks like some hardware is also
+different. Another option would be to statically compile the
+application, but I've found some problems with that also.
+
 I do not have access to draco[5678] since they are reserved for
 someone else as of this moment. Should play with four nodes to start.
 
-I have to put the following line to all =.bashrc= files, so we can use
-the correct MPI installation when compiling MPI codes.
+I have to put the following line to all =.bashrc= files (make sure this
+is placed before any decision about interactive or non-interactive
+shells, especially in an ubuntu installation), so we can use the
+correct MPI installation when compiling MPI codes.
 
 #+BEGIN_EXAMPLE
 export PATH=$HOME/install/stow/bin:$PATH
