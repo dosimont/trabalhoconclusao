@@ -3043,10 +3043,26 @@ Now, let's try a distributed one.
 Contents of the machine file:
 
 #+BEGIN_EXAMPLE
-draco1
-draco2
-draco3
-draco4
+draco1 slots=1 max_slots=1
+draco2 slots=1 max_slots=1
+draco3 slots=1 max_slots=1
+draco4 slots=1 max_slots=1
 #+END_EXAMPLE
 
 This is working in progress (WIP).
+
+I stumble upon in a bunch of problems. Here's what I did (summary):
+- configure and compiled openmpi in each machine
+- have to manually copy input (NICE-XML) to all machines
+- have to manually create output directory (NICE-OUTPUT)
+- manually copy the binary =ondes3d= to $HOME
+- then run MPI like this in your $HOME
+
+#+BEGIN_EXAMPLE
+mpirun  -mca plm_rsh_no_tree_spawn 1  \ # to avoid failing host key verification
+        -mca oob_base_verbose 20   \    # to understand errors
+        -mca plm_rsh_agent ssh \        # to let MPI use ssh
+        --machinefile ./ondes3d-dir/Ondes3d-1.0/machinefile \
+        -np 4 \
+        /home/schnorr/ondes3d
+#+END_EXAMPLE
