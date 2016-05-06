@@ -3062,3 +3062,211 @@ mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self # use tcp, through the =e
         -np 64 \
         /home/schnorr/ondes3d
 #+END_EXAMPLE
+
+Now let's try a remote run with tracing.
+
+I put the env vars below in my =.bashrc=, before the check for
+non-interactive shells. Copy that =.bashrc= to all hosts involved in the
+execution. Have also to copy the =extrae.xml= file to all hosts
+manually.
+
+#+begin_src sh :results output :session :exports both
+export EXTRAE_CONFIG_FILE=/home/schnorr/extrae.xml
+export EXTRAE_HOME=/home/schnorr/install/extrae-3.3.0/
+export LD_PRELOAD=${EXTRAE_HOME}/lib/libmpitrace.so
+#+end_src
+
+Since I don't have NFS on this cluster, I have to disable the
+intermediate automatic merge so I can do it manually later on after
+the execution. My =extrae.xml= reflects that (see =merge= tag below),
+with:
+
+#+begin_src xml :results output :session :exports both :tangle extrae-mpi-draco.xml
+<?xml version='1.0'?>
+
+<trace enabled="yes"
+ home="/home/schnorr/install/extrae-3.3.0"
+ initial-mode="detail"
+ type="paraver"
+ xml-parser-id="Id: xml-parse.c 3918 2016-03-11 14:59:01Z harald $"
+>
+
+  <mpi enabled="yes">
+    <counters enabled="yes" />
+  </mpi>
+
+  <openmp enabled="no"/>
+  <pthread enabled="no"/>
+
+  <callers enabled="yes">
+    <mpi enabled="yes">1-3</mpi>
+    <sampling enabled="no">1-5</sampling>
+    <dynamic-memory enabled="no">1-3</dynamic-memory>
+  </callers>
+
+  <user-functions enabled="no" list="/home/bsc41/bsc41273/user-functions.dat" exclude-automatic-functions="no">
+    <counters enabled="yes" />
+  </user-functions>
+
+  <counters enabled="no"/>
+  <storage enabled="no"/>
+  <buffer enabled="yes">
+    <size enabled="yes">500000</size>
+    <circular enabled="no" />
+  </buffer>
+
+  <trace-control enabled="no">
+    <file enabled="no" frequency="5M">/gpfs/scratch/bsc41/bsc41273/control</file>
+    <global-ops enabled="no"></global-ops>
+  </trace-control>
+
+  <others enabled="yes">
+    <minimum-time enabled="no">10M</minimum-time>
+    <finalize-on-signal enabled="yes" 
+      SIGUSR1="no" SIGUSR2="no" SIGINT="yes"
+      SIGQUIT="yes" SIGTERM="yes" SIGXCPU="yes"
+      SIGFPE="yes" SIGSEGV="yes" SIGABRT="yes"
+    />
+    <flush-sampling-buffer-at-instrumentation-point enabled="yes" />
+  </others>
+
+  <bursts enabled="no"/>
+  <sampling enabled="no"/>
+  <dynamic-memory enabled="no"/>
+  <input-output enabled="no"/>
+  <merge enabled="no"/>
+
+</trace>
+#+end_src
+
+Copy the =extrae.xml= and =.bashrc= with the =LD_PRELOAD= to all nodes:
+
+#+begin_src sh :results output :session :exports both
+for i in `seq 1 4`; do scp extrae.xml .bashrc  draco$i:./; done
+#+end_src
+
+Run the program, I got a bunch of =mpit= files. Put all of them on
+=draco1= (run the code below from =draco1=):
+
+#+begin_src sh :results output :session :exports both
+for i in `seq 2 4`; do rsync draco$i:./set-0/* ./set-0/; done
+#+end_src
+
+Now I need to convert this to a single =prv= file, so like this:
+
+See:
+- https://www.bsc.es/computer-sciences/performance-tools/trace-generation/extrae/extrae-user-guide#SECTION00430000000000000000
+
+#+begin_src sh :results output :session :exports both
+${EXTRAE_HOME}/bin/mpi2prv -f TRACE*.mpit -o output.prv
+#+end_src
+
+Great, I have these three files now:
+
+#+BEGIN_EXAMPLE
+schnorr@draco1:~/set-0$ ls -larth output-ondes3d-64p-draco_1-4.*
+-rw-rw-r-- 1 schnorr schnorr 112M May  6 17:46 output-ondes3d-64p-draco_1-4.prv
+-rw-rw-r-- 1 schnorr schnorr 2.8K May  6 17:46 output-ondes3d-64p-draco_1-4.row
+-rw-rw-r-- 1 schnorr schnorr 5.4K May  6 17:46 output-ondes3d-64p-draco_1-4.pcf
+#+END_EXAMPLE
+
+I have copied these to:
+https://dl.dropboxusercontent.com/u/1119921/output-ondes3d-64p-draco_1-4.tar.gz
+
+Tiago will take a look to see what he can do it.
+
+There are 64 procs; each host got 16 procs (one per physical core not pinned).
+
+Remember next time to pin MPI processes.
+
+Hosts have the same hardware; network is ethernet/tcp. Running =iperf=, got:
+
+From draco2 (client) to draco1 (server)
+
+#+BEGIN_EXAMPLE
+schnorr@draco2:~$ iperf -c draco1
+------------------------------------------------------------
+Client connecting to draco1, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 143.54.12.43 port 47169 connected with 143.54.12.246 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.10 GBytes   943 Mbits/sec
+#+END_EXAMPLE
+
+From draco1 (client) to draco2 (server)
+
+#+BEGIN_EXAMPLE
+schnorr@draco1:~$ iperf -c draco2
+------------------------------------------------------------
+Client connecting to draco2, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 143.54.12.246 port 34310 connected with 143.54.12.43 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.10 GBytes   943 Mbits/sec
+#+END_EXAMPLE
+
+Result of ping from draco1 to draco2:
+
+#+BEGIN_EXAMPLE
+schnorr@draco1:~$ ping draco2
+PING draco2.inf.ufrgs.br (143.54.12.43) 56(84) bytes of data.
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=1 ttl=64 time=0.231 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=2 ttl=64 time=0.202 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=3 ttl=64 time=0.216 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=4 ttl=64 time=0.192 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=5 ttl=64 time=0.157 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=6 ttl=64 time=0.197 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=7 ttl=64 time=0.164 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=8 ttl=64 time=0.212 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=9 ttl=64 time=0.198 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=10 ttl=64 time=0.218 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=11 ttl=64 time=0.256 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=12 ttl=64 time=0.178 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=13 ttl=64 time=0.220 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=14 ttl=64 time=0.207 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=15 ttl=64 time=0.200 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=16 ttl=64 time=0.215 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=17 ttl=64 time=0.187 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=18 ttl=64 time=0.210 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=19 ttl=64 time=0.171 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=20 ttl=64 time=0.180 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=21 ttl=64 time=0.186 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=22 ttl=64 time=0.187 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=23 ttl=64 time=0.177 ms
+#+END_EXAMPLE
+
+Results of ping from draco2 to draco1:
+
+#+BEGIN_EXAMPLE
+schnorr@draco2:~$ ping draco1
+PING draco1.inf.ufrgs.br (143.54.12.246) 56(84) bytes of data.
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=1 ttl=64 time=0.212 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=2 ttl=64 time=0.241 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=3 ttl=64 time=0.206 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=4 ttl=64 time=0.201 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=5 ttl=64 time=0.211 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=6 ttl=64 time=0.173 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=7 ttl=64 time=0.201 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=8 ttl=64 time=0.222 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=9 ttl=64 time=0.183 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=10 ttl=64 time=0.192 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=11 ttl=64 time=0.176 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=12 ttl=64 time=0.176 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=13 ttl=64 time=0.195 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=14 ttl=64 time=0.216 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=15 ttl=64 time=0.195 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=16 ttl=64 time=0.203 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=17 ttl=64 time=0.198 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=18 ttl=64 time=0.173 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=19 ttl=64 time=0.211 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=20 ttl=64 time=0.167 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=21 ttl=64 time=0.176 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=22 ttl=64 time=0.177 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=23 ttl=64 time=0.183 ms
+#+END_EXAMPLE
+
+Consider these to define latency and bandwidth.
+
+If I remember correctly, latency is the time reported by ping divided by 2.
