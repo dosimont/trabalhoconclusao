@@ -3270,3 +3270,23 @@ PING draco1.inf.ufrgs.br (143.54.12.246) 56(84) bytes of data.
 Consider these to define latency and bandwidth.
 
 If I remember correctly, latency is the time reported by ping divided by 2.
+* 2016-05-11 Regarding asynchronous/block message send/recv    :Lucas:Arnaud:
+
+We have written this:
+
+#+BEGIN_EXAMPLE
+> Tiago made some comparisons between SimGrid and Dimemas and observed
+> that sends are asynchronous no matter the message size in Dimemas
+> until the beginning of the corresponding receive. In SimGrid, they
+> act as expected being blocked, i.e., so the send keeps blocking the
+> process until the receive is done on the receiver side. 
+#+END_EXAMPLE
+
+Arnaud just reminded us on how it works in SimGrid's SMPI:
+
+This depends on the configuration of SMPI:
+- http://simgrid.gforge.inria.fr/simgrid/latest/doc/options.html#options_smpi
+Have a look at:
+- http://simgrid.gforge.inria.fr/simgrid/latest/doc/options.html#options_model_smpi_detached
+
+Tiago will have to consider this.
