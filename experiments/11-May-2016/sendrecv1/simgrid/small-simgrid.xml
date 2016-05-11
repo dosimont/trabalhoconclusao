@@ -1,0 +1,11 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid.dtd">
+<platform version="3">
+<AS  id="AS_small"  routing="Full">
+     <host id="host0" power="0286087.0" core="2"/>
+     <host id="host1" power="0286087.0" core="2"/>
+     <link id="link0" bandwidth="1000000" latency="0.001s" sharing_policy="FATPIPE"/>
+     <route src="host0" dst="host1"><link_ctn id="link0"/></route>
+</AS>
+</platform>
+

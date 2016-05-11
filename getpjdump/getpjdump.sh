@@ -1,18 +1,11 @@
 #!/bin/bash
 
-# general options
-NTASKS=4
-BANDWIDTH=1000000 # in bytes/s
-LATENCY=1 # in seconds
-CORES=4
-ORIGINAL_FLOPS=286087000.0 # in flops/s
-SIMULATED_FLOPS=286087.0 # in flops/s
-TASK_MAPPING=(0 1 0 1)
-PLATFORM_FILE='small'
+source config.conf
 
 TRACE=$1
 TRACE_NAME=$(basename $TRACE)
 
+EXECDIR=$(pwd)
 BASEDIR=$(dirname "$0")
 
 #########################################################
@@ -61,7 +54,7 @@ echo 'created dimemas config file'
 
 # dimemas simulation
 cd dimemas
-./../../dimemas/dimemas-5.2.12/Simulator/Dimemas -p $TRACE_NAME-dimemas.prv $PLATFORM_FILE'-dimemas.cfg'
+./../../dimemas/dimemas-5.2.12/Simulator/Dimemas $DIMEMAS_OPTS -p $TRACE_NAME-dimemas.prv $PLATFORM_FILE'-dimemas.cfg'
 echo 'dimemas simulation is done'
 cd ..
 
@@ -106,7 +99,7 @@ echo $SIMGRID_TASK_MAPPING | sed 's/,/\n/g' > $simgriddir'/deployment-simgrid.tx
 echo 'create simgrid deployment file'
 
 # simgrid simulation
-smpirun -ext smpi_replay -map --cfg=tracing/smpi/computing:'yes' --cfg=tracing/precision:9 --cfg=network/model:SMPI --cfg=smpi/bw_factor:'65472:1.0;15424:1.0;9376:1.0;5776:1.0;3484:1.0;1426:1.0;732:1.0;257:1.0;0:1.0' --cfg=smpi/lat_factor:'65472:1.0;15424:1.0;9376:1.0;5776:1.0;3484:1.0;1426:1.0;732:1.0;257:1.0;0:1.0' --cfg=smpi/send_is_detached_thres:2 --cfg=smpi/async_small_thres:0 --cfg=smpi/cpu_threshold:-1 -trace --cfg=tracing/filename:$simgriddir'/'$TRACE_NAME-simgrid.trace -hostfile $simgriddir'/deployment-simgrid.txt' -platform $simgriddir'/'$PLATFORM_FILE'-simgrid.xml' -np $NTASKS ../simgrid/SimGrid-3.12/examples/smpi/smpi_replay $SIMGRID_INPUT --log=smpi_kernel.thres:warning --cfg=contexts/factory:thread
+smpirun -ext smpi_replay $SIMGRID_OPTS -trace --cfg=tracing/filename:$simgriddir'/'$TRACE_NAME-simgrid.trace -hostfile $simgriddir'/deployment-simgrid.txt' -platform $simgriddir'/'$PLATFORM_FILE'-simgrid.xml' -np $NTASKS ../simgrid/SimGrid-3.12/examples/smpi/smpi_replay $SIMGRID_INPUT
 echo 'simgrid simulation is done'
 
 # convert the simgrid trace to pjdump
@@ -128,6 +121,15 @@ echo 'pjdumps filtered'
 
 cd $plotdir
 Rscript ../getcharts.R $TRACE_NAME-dimemas-filter.pjdump $TRACE_NAME-simgrid-filter.pjdump
+cd ..
+
+##############################################
+# copy simulator and other relevant files
+cp -r dimemas $EXECDIR
+cp -r simgrid $EXECDIR
+cp -r original $EXECDIR
+cp -r plot $EXECDIR
+
 
 
 
