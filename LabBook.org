@@ -1429,7 +1429,7 @@ install.packages("ggplot2");
 
 Let's plot only Simgrid.
 
-#+begin_src R :results output graphics :file results/old/img/sendrecv-simgrid-0.png :exports both :width 600 :height 200 :session
+#+begin_src R :results output graphics :file experiments/old/img/sendrecv-simgrid-0.png :exports both :width 600 :height 200 :session
 library(ggplot2);
 ggplot(df[df$Simulator == "simgrid",], aes(x=Start, y=factor(Thread), color=State)) +
    theme_bw() +
@@ -1437,7 +1437,7 @@ ggplot(df[df$Simulator == "simgrid",], aes(x=Start, y=factor(Thread), color=Stat
 #+end_src
 
 #+RESULTS:
-[[file:results/old/img/sendrecv-simgrid-0.png]]
+[[file:experiments/old/img/sendrecv-simgrid-0.png]]
 
 First problem detected with Simgrid:
 - =action_send= is too fast, should simulator with higher precision
@@ -1456,7 +1456,7 @@ So, you should run =smpi_replay= with =--cfg=tracing/precision:9=.
 
 Let's get back to the plot.
 
-#+begin_src R :results output graphics :file results/old/img/sendrecv-simgrid-1.png :exports both :width 600 :height 400 :session
+#+begin_src R :results output graphics :file experiments/old/img/sendrecv-simgrid-1.png :exports both :width 600 :height 400 :session
 library(ggplot2);
 ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
    theme_bw() +
@@ -1465,7 +1465,7 @@ ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
 #+end_src
 
 #+RESULTS:
-[[file:results/old/img/sendrecv-simgrid-1.png]]
+[[file:experiments/old/img/sendrecv-simgrid-1.png]]
 
 The first four states are from simgrid, others from dimemas
 (paraver). This is a problem because it makes the comparison
@@ -2123,7 +2123,7 @@ df
   
 Now let's plot it.
 
-#+begin_src R :results output graphics :file results/old/img/sendrecv-simgrid-2.png :exports both :width 600 :height 400 :session
+#+begin_src R :results output graphics :file experiments/old/img/sendrecv-simgrid-2.png :exports both :width 600 :height 400 :session
 library(ggplot2);
 ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
    theme_bw() +
@@ -2132,7 +2132,7 @@ ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
 #+end_src
 
 #+RESULTS:
-[[file:results/old/img/sendrecv-simgrid-2.png]]
+[[file:experiments/old/img/sendrecv-simgrid-2.png]]
 
  The first state in the Simgrid trace is MPI_init and the last one is MPI_Finalize for all tasks.
 The tit trace had computing stages before the MPI_init and after the MPI_Finalize, i will take a look at that now.
@@ -2574,7 +2574,7 @@ cat sendrecv/sendrecv-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -
 cat sendrecv/sendrecv-dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > sendrecv/sendrecv-dimemas-filter.pjdump
 #+end_src
 
-#+begin_src R :results output graphics :file results/old/img/sendrecv-1.png :exports both :width 1500 :height 400 :session
+#+begin_src R :results output graphics :file experiments/old/img/sendrecv-1.png :exports both :width 1500 :height 400 :session
 df_s <- read.csv("sendrecv/sendrecv-simgrid-filter.pjdump", header=FALSE, sep=",");
 names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
 df_s$Simulator <- "simgrid";
@@ -2594,7 +2594,7 @@ ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
 #+end_src
 
 #+RESULTS:
-[[file:results/old/img/sendrecv-1.png]]
+[[file:experiments/old/img/sendrecv-1.png]]
 
 Some notes:
 On the Dimemas side, the processes that sent the message are not
@@ -2621,7 +2621,7 @@ cat sendrecv2/sendrecv2-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d,
 cat sendrecv2/sendrecv2-dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > sendrecv2/sendrecv2-dimemas-filter.pjdump
 #+end_src
 
-#+begin_src R :results output graphics :file results/old/img/sendrecv-2.png :exports both :width 1500 :height 400 :session
+#+begin_src R :results output graphics :file experiments/old/img/sendrecv-2.png :exports both :width 1500 :height 400 :session
 df_s <- read.csv("sendrecv2/sendrecv2-simgrid-filter.pjdump", header=FALSE, sep=",");
 names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
 df_s$Simulator <- "simgrid";
@@ -2641,7 +2641,7 @@ ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
 #+end_src
 
 #+RESULTS:
-[[file:results/old/img/sendrecv-2.png]]
+[[file:experiments/old/img/sendrecv-2.png]]
 
 Now the sending processes are blocked until the receivers start to
 receive the data. But they do not wait until the message is sent.
@@ -2654,7 +2654,7 @@ cat latency/sendrecv-simgrid.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f
 cat latency/sendrecv-dimemas.pjdump | grep ^State | sed "s/rank-//" | cut -d, -f2,4-6,8 > latency/sendrecv-dimemas-filter.pjdump
 #+end_src
 
-#+begin_src R :results output graphics :file results/old/img/sendrecv-3.png :exports both :width 1500 :height 400 :session
+#+begin_src R :results output graphics :file experiments/old/img/sendrecv-3.png :exports both :width 1500 :height 400 :session
 df_s <- read.csv("latency/sendrecv-simgrid-filter.pjdump", header=FALSE, sep=",");
 names(df_s) <- c("Thread", "Start", "End", "Duration", "State");
 df_s$Simulator <- "simgrid";
@@ -2674,7 +2674,7 @@ ggplot(df, aes(x=Start, y=factor(Thread), color=State)) +
 #+end_src
 
 #+RESULTS:
-[[file:results/old/img/sendrecv-3.png]]
+[[file:experiments/old/img/sendrecv-3.png]]
 
 The result of the simulation from Simgrid and Dimemas is very very
 different here. On Dimemas, before the actual communication, there is
@@ -2810,7 +2810,7 @@ pjdumps filtered
 Magnificent.
 Here is the chart.
 
-[[file:results/old/img/sendrecv-4.pdf]]
+[[file:experiments/old/img/sendrecv-4.pdf]]
 
 Note that the processes that received the message and the processes
 the sent the message (on Simgrid only) are blocked for the same period
