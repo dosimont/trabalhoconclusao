@@ -744,20 +744,240 @@ cd ~/install/dimemas-5.2.12/
 #+RESULTS:
 #+begin_example
 INITIALIZING PARSER... OK!
-SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 002 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 010 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 030 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 048 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 051 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 058 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 084 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 092 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+
+SPLITTING COMMUNICATIONS 000 %
+SPLITTING COMMUNICATIONS 002 %
+SPLITTING COMMUNICATIONS 003 %
+SPLITTING COMMUNICATIONS 004 %
+SPLITTING COMMUNICATIONS 005 %
+SPLITTING COMMUNICATIONS 006 %
+SPLITTING COMMUNICATIONS 007 %
+SPLITTING COMMUNICATIONS 008 %
+SPLITTING COMMUNICATIONS 009 %
+SPLITTING COMMUNICATIONS 010 %
+SPLITTING COMMUNICATIONS 011 %
+SPLITTING COMMUNICATIONS 012 %
+SPLITTING COMMUNICATIONS 013 %
+SPLITTING COMMUNICATIONS 014 %
+SPLITTING COMMUNICATIONS 015 %
+SPLITTING COMMUNICATIONS 016 %
+SPLITTING COMMUNICATIONS 017 %
+SPLITTING COMMUNICATIONS 018 %
+SPLITTING COMMUNICATIONS 019 %
+SPLITTING COMMUNICATIONS 020 %
+SPLITTING COMMUNICATIONS 021 %
+SPLITTING COMMUNICATIONS 022 %
+SPLITTING COMMUNICATIONS 023 %
+SPLITTING COMMUNICATIONS 024 %
+SPLITTING COMMUNICATIONS 025 %
+SPLITTING COMMUNICATIONS 026 %
+SPLITTING COMMUNICATIONS 027 %
+SPLITTING COMMUNICATIONS 028 %
+SPLITTING COMMUNICATIONS 029 %
+SPLITTING COMMUNICATIONS 030 %
+SPLITTING COMMUNICATIONS 031 %
+SPLITTING COMMUNICATIONS 032 %
+SPLITTING COMMUNICATIONS 033 %
+SPLITTING COMMUNICATIONS 034 %
+SPLITTING COMMUNICATIONS 035 %
+SPLITTING COMMUNICATIONS 036 %
+SPLITTING COMMUNICATIONS 037 %
+SPLITTING COMMUNICATIONS 038 %
+SPLITTING COMMUNICATIONS 039 %
+SPLITTING COMMUNICATIONS 040 %
+SPLITTING COMMUNICATIONS 041 %
+SPLITTING COMMUNICATIONS 042 %
+SPLITTING COMMUNICATIONS 043 %
+SPLITTING COMMUNICATIONS 044 %
+SPLITTING COMMUNICATIONS 045 %
+SPLITTING COMMUNICATIONS 046 %
+SPLITTING COMMUNICATIONS 047 %
+SPLITTING COMMUNICATIONS 048 %
+SPLITTING COMMUNICATIONS 049 %
+SPLITTING COMMUNICATIONS 050 %
+SPLITTING COMMUNICATIONS 051 %
+SPLITTING COMMUNICATIONS 052 %
+SPLITTING COMMUNICATIONS 053 %
+SPLITTING COMMUNICATIONS 054 %
+SPLITTING COMMUNICATIONS 055 %
+SPLITTING COMMUNICATIONS 056 %
+SPLITTING COMMUNICATIONS 057 %
+SPLITTING COMMUNICATIONS 058 %
+SPLITTING COMMUNICATIONS 059 %
+SPLITTING COMMUNICATIONS 060 %
+SPLITTING COMMUNICATIONS 061 %
+SPLITTING COMMUNICATIONS 062 %
+SPLITTING COMMUNICATIONS 063 %
+SPLITTING COMMUNICATIONS 064 %
+SPLITTING COMMUNICATIONS 065 %
+SPLITTING COMMUNICATIONS 066 %
+SPLITTING COMMUNICATIONS 067 %
+SPLITTING COMMUNICATIONS 068 %
+SPLITTING COMMUNICATIONS 069 %
+SPLITTING COMMUNICATIONS 070 %
+SPLITTING COMMUNICATIONS 071 %
+SPLITTING COMMUNICATIONS 072 %
+SPLITTING COMMUNICATIONS 073 %
+SPLITTING COMMUNICATIONS 074 %
+SPLITTING COMMUNICATIONS 075 %
+SPLITTING COMMUNICATIONS 076 %
+SPLITTING COMMUNICATIONS 077 %
+SPLITTING COMMUNICATIONS 078 %
+SPLITTING COMMUNICATIONS 079 %
+SPLITTING COMMUNICATIONS 080 %
+SPLITTING COMMUNICATIONS 081 %
+SPLITTING COMMUNICATIONS 082 %
+SPLITTING COMMUNICATIONS 083 %
+SPLITTING COMMUNICATIONS 084 %
+SPLITTING COMMUNICATIONS 085 %
+SPLITTING COMMUNICATIONS 086 %
+SPLITTING COMMUNICATIONS 087 %
+SPLITTING COMMUNICATIONS 088 %
+SPLITTING COMMUNICATIONS 089 %
+SPLITTING COMMUNICATIONS 090 %
+SPLITTING COMMUNICATIONS 091 %
+SPLITTING COMMUNICATIONS 092 %
+SPLITTING COMMUNICATIONS 093 %
+SPLITTING COMMUNICATIONS 094 %
+SPLITTING COMMUNICATIONS 095 %
+SPLITTING COMMUNICATIONS 096 %
+SPLITTING COMMUNICATIONS 097 %
+SPLITTING COMMUNICATIONS 098 %
+SPLITTING COMMUNICATIONS 099 %
+SPLITTING COMMUNICATIONS 100 %
 -> Trace first pass finished (communications split)
    * Records parsed:          210
    * Splitted communications 30
 SORTING PARTIAL COMMUNICATIONS
 COMMUNICATIONS SORTED
 INITIALIZING TRANSLATION...  OK
-CREATING TRANSLATION STRUCTURES  001/010CREATING TRANSLATION STRUCTURES  002/010CREATING TRANSLATION STRUCTURES  003/010CREATING TRANSLATION STRUCTURES  004/010CREATING TRANSLATION STRUCTURES  005/010CREATING TRANSLATION STRUCTURES  006/010CREATING TRANSLATION STRUCTURES  007/010CREATING TRANSLATION STRUCTURES  008/010CREATING TRANSLATION STRUCTURES  009/010CREATING TRANSLATION STRUCTURES  010/010CREATING TRANSLATION STRUCTURES  010/010
+
+CREATING TRANSLATION STRUCTURES  001/010
+CREATING TRANSLATION STRUCTURES  002/010
+CREATING TRANSLATION STRUCTURES  003/010
+CREATING TRANSLATION STRUCTURES  004/010
+CREATING TRANSLATION STRUCTURES  005/010
+CREATING TRANSLATION STRUCTURES  006/010
+CREATING TRANSLATION STRUCTURES  007/010
+CREATING TRANSLATION STRUCTURES  008/010
+CREATING TRANSLATION STRUCTURES  009/010
+CREATING TRANSLATION STRUCTURES  010/010
+CREATING TRANSLATION STRUCTURES  010/010
 WRITING HEADER... OK
 TRANSLATING COMMUNICATORS... OK
 RECORD TRANSLATION
-TRANSLATING RECORDS 000 %TRANSLATING RECORDS 002 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 010 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 030 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 048 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 051 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 054 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 058 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 063 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 084 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 092 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+
+TRANSLATING RECORDS 000 %
+TRANSLATING RECORDS 002 %
+TRANSLATING RECORDS 003 %
+TRANSLATING RECORDS 004 %
+TRANSLATING RECORDS 005 %
+TRANSLATING RECORDS 006 %
+TRANSLATING RECORDS 007 %
+TRANSLATING RECORDS 008 %
+TRANSLATING RECORDS 009 %
+TRANSLATING RECORDS 010 %
+TRANSLATING RECORDS 011 %
+TRANSLATING RECORDS 012 %
+TRANSLATING RECORDS 013 %
+TRANSLATING RECORDS 014 %
+TRANSLATING RECORDS 015 %
+TRANSLATING RECORDS 016 %
+TRANSLATING RECORDS 017 %
+TRANSLATING RECORDS 018 %
+TRANSLATING RECORDS 019 %
+TRANSLATING RECORDS 020 %
+TRANSLATING RECORDS 021 %
+TRANSLATING RECORDS 022 %
+TRANSLATING RECORDS 023 %
+TRANSLATING RECORDS 024 %
+TRANSLATING RECORDS 025 %
+TRANSLATING RECORDS 026 %
+TRANSLATING RECORDS 027 %
+TRANSLATING RECORDS 028 %
+TRANSLATING RECORDS 029 %
+TRANSLATING RECORDS 030 %
+TRANSLATING RECORDS 031 %
+TRANSLATING RECORDS 032 %
+TRANSLATING RECORDS 033 %
+TRANSLATING RECORDS 034 %
+TRANSLATING RECORDS 035 %
+TRANSLATING RECORDS 036 %
+TRANSLATING RECORDS 037 %
+TRANSLATING RECORDS 038 %
+TRANSLATING RECORDS 039 %
+TRANSLATING RECORDS 040 %
+TRANSLATING RECORDS 041 %
+TRANSLATING RECORDS 042 %
+TRANSLATING RECORDS 043 %
+TRANSLATING RECORDS 044 %
+TRANSLATING RECORDS 045 %
+TRANSLATING RECORDS 046 %
+TRANSLATING RECORDS 047 %
+TRANSLATING RECORDS 048 %
+TRANSLATING RECORDS 049 %
+TRANSLATING RECORDS 050 %
+TRANSLATING RECORDS 051 %
+TRANSLATING RECORDS 052 %
+TRANSLATING RECORDS 053 %
+TRANSLATING RECORDS 054 %
+TRANSLATING RECORDS 055 %
+TRANSLATING RECORDS 056 %
+TRANSLATING RECORDS 057 %
+TRANSLATING RECORDS 058 %
+TRANSLATING RECORDS 059 %
+TRANSLATING RECORDS 060 %
+TRANSLATING RECORDS 061 %
+TRANSLATING RECORDS 062 %
+TRANSLATING RECORDS 063 %
+TRANSLATING RECORDS 064 %
+TRANSLATING RECORDS 065 %
+TRANSLATING RECORDS 066 %
+TRANSLATING RECORDS 067 %
+TRANSLATING RECORDS 069 %
+TRANSLATING RECORDS 070 %
+TRANSLATING RECORDS 071 %
+TRANSLATING RECORDS 072 %
+TRANSLATING RECORDS 073 %
+TRANSLATING RECORDS 074 %
+TRANSLATING RECORDS 075 %
+TRANSLATING RECORDS 076 %
+TRANSLATING RECORDS 077 %
+TRANSLATING RECORDS 078 %
+TRANSLATING RECORDS 079 %
+TRANSLATING RECORDS 080 %
+TRANSLATING RECORDS 081 %
+TRANSLATING RECORDS 082 %
+TRANSLATING RECORDS 083 %
+TRANSLATING RECORDS 084 %
+TRANSLATING RECORDS 085 %
+TRANSLATING RECORDS 086 %
+TRANSLATING RECORDS 087 %
+TRANSLATING RECORDS 088 %
+TRANSLATING RECORDS 089 %
+TRANSLATING RECORDS 090 %
+TRANSLATING RECORDS 091 %
+TRANSLATING RECORDS 092 %
+TRANSLATING RECORDS 093 %
+TRANSLATING RECORDS 094 %
+TRANSLATING RECORDS 095 %
+TRANSLATING RECORDS 096 %
+TRANSLATING RECORDS 097 %
+TRANSLATING RECORDS 098 %
+TRANSLATING RECORDS 099 %
+TRANSLATING RECORDS 100 %
 MERGING PARTIAL OUTPUT TRACES
-   * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * Merging task    5 100 %   * Merging task    6 100 %   * Merging task    7 100 %   * Merging task    8 100 %   * Merging task    9 100 %   * Merging task   10 100 %   * All task merged!         
+
+   * Merging task    1 100 %
+   * Merging task    2 100 %
+   * Merging task    3 100 %
+   * Merging task    4 100 %
+   * Merging task    5 100 %
+   * Merging task    6 100 %
+   * Merging task    7 100 %
+   * Merging task    8 100 %
+   * Merging task    9 100 %
+   * Merging task   10 100 %   * All task merged!         
 
 ********************************************************************************
  *                               WARNING                                        *
@@ -2873,6 +3093,7 @@ _Get a G5K account for Tiago_
 
 We'll contact Arnaud to try to get an account in G5K so Tiago can
 control experimental and obtain traces himself.
+<<<<<<< HEAD
 
 * 2016-04-30 Organizing the repository
 
@@ -3080,20 +3301,146 @@ Finally, lets use getpjdump
 #+RESULTS:
 #+begin_example
 INITIALIZING PARSER... OK!
-SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+
+SPLITTING COMMUNICATIONS 000 %
+SPLITTING COMMUNICATIONS 003 %
+SPLITTING COMMUNICATIONS 004 %
+SPLITTING COMMUNICATIONS 006 %
+SPLITTING COMMUNICATIONS 007 %
+SPLITTING COMMUNICATIONS 008 %
+SPLITTING COMMUNICATIONS 009 %
+SPLITTING COMMUNICATIONS 011 %
+SPLITTING COMMUNICATIONS 013 %
+SPLITTING COMMUNICATIONS 016 %
+SPLITTING COMMUNICATIONS 018 %
+SPLITTING COMMUNICATIONS 019 %
+SPLITTING COMMUNICATIONS 021 %
+SPLITTING COMMUNICATIONS 022 %
+SPLITTING COMMUNICATIONS 024 %
+SPLITTING COMMUNICATIONS 026 %
+SPLITTING COMMUNICATIONS 028 %
+SPLITTING COMMUNICATIONS 031 %
+SPLITTING COMMUNICATIONS 033 %
+SPLITTING COMMUNICATIONS 034 %
+SPLITTING COMMUNICATIONS 036 %
+SPLITTING COMMUNICATIONS 038 %
+SPLITTING COMMUNICATIONS 039 %
+SPLITTING COMMUNICATIONS 042 %
+SPLITTING COMMUNICATIONS 043 %
+SPLITTING COMMUNICATIONS 045 %
+SPLITTING COMMUNICATIONS 047 %
+SPLITTING COMMUNICATIONS 049 %
+SPLITTING COMMUNICATIONS 050 %
+SPLITTING COMMUNICATIONS 052 %
+SPLITTING COMMUNICATIONS 053 %
+SPLITTING COMMUNICATIONS 055 %
+SPLITTING COMMUNICATIONS 057 %
+SPLITTING COMMUNICATIONS 060 %
+SPLITTING COMMUNICATIONS 062 %
+SPLITTING COMMUNICATIONS 063 %
+SPLITTING COMMUNICATIONS 064 %
+SPLITTING COMMUNICATIONS 066 %
+SPLITTING COMMUNICATIONS 067 %
+SPLITTING COMMUNICATIONS 068 %
+SPLITTING COMMUNICATIONS 070 %
+SPLITTING COMMUNICATIONS 072 %
+SPLITTING COMMUNICATIONS 074 %
+SPLITTING COMMUNICATIONS 077 %
+SPLITTING COMMUNICATIONS 078 %
+SPLITTING COMMUNICATIONS 079 %
+SPLITTING COMMUNICATIONS 082 %
+SPLITTING COMMUNICATIONS 083 %
+SPLITTING COMMUNICATIONS 085 %
+SPLITTING COMMUNICATIONS 086 %
+SPLITTING COMMUNICATIONS 088 %
+SPLITTING COMMUNICATIONS 089 %
+SPLITTING COMMUNICATIONS 091 %
+SPLITTING COMMUNICATIONS 093 %
+SPLITTING COMMUNICATIONS 095 %
+SPLITTING COMMUNICATIONS 096 %
+SPLITTING COMMUNICATIONS 097 %
+SPLITTING COMMUNICATIONS 099 %
+SPLITTING COMMUNICATIONS 100 %
 -> Trace first pass finished (communications split)
    * Records parsed:          68
    * Splitted communications 6
 SORTING PARTIAL COMMUNICATIONS
 COMMUNICATIONS SORTED
 INITIALIZING TRANSLATION...  OK
-CREATING TRANSLATION STRUCTURES  001/004CREATING TRANSLATION STRUCTURES  002/004CREATING TRANSLATION STRUCTURES  003/004CREATING TRANSLATION STRUCTURES  004/004CREATING TRANSLATION STRUCTURES  004/004
+
+CREATING TRANSLATION STRUCTURES  001/004
+CREATING TRANSLATION STRUCTURES  002/004
+CREATING TRANSLATION STRUCTURES  003/004
+CREATING TRANSLATION STRUCTURES  004/004
+CREATING TRANSLATION STRUCTURES  004/004
 WRITING HEADER... OK
 TRANSLATING COMMUNICATORS... OK
 RECORD TRANSLATION
-TRANSLATING RECORDS 000 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 068 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+
+TRANSLATING RECORDS 000 %
+TRANSLATING RECORDS 003 %
+TRANSLATING RECORDS 004 %
+TRANSLATING RECORDS 006 %
+TRANSLATING RECORDS 007 %
+TRANSLATING RECORDS 008 %
+TRANSLATING RECORDS 009 %
+TRANSLATING RECORDS 011 %
+TRANSLATING RECORDS 013 %
+TRANSLATING RECORDS 016 %
+TRANSLATING RECORDS 018 %
+TRANSLATING RECORDS 019 %
+TRANSLATING RECORDS 021 %
+TRANSLATING RECORDS 022 %
+TRANSLATING RECORDS 024 %
+TRANSLATING RECORDS 026 %
+TRANSLATING RECORDS 028 %
+TRANSLATING RECORDS 031 %
+TRANSLATING RECORDS 033 %
+TRANSLATING RECORDS 034 %
+TRANSLATING RECORDS 036 %
+TRANSLATING RECORDS 038 %
+TRANSLATING RECORDS 039 %
+TRANSLATING RECORDS 042 %
+TRANSLATING RECORDS 043 %
+TRANSLATING RECORDS 045 %
+TRANSLATING RECORDS 047 %
+TRANSLATING RECORDS 049 %
+TRANSLATING RECORDS 050 %
+TRANSLATING RECORDS 052 %
+TRANSLATING RECORDS 053 %
+TRANSLATING RECORDS 055 %
+TRANSLATING RECORDS 057 %
+TRANSLATING RECORDS 060 %
+TRANSLATING RECORDS 062 %
+TRANSLATING RECORDS 064 %
+TRANSLATING RECORDS 066 %
+TRANSLATING RECORDS 067 %
+TRANSLATING RECORDS 068 %
+TRANSLATING RECORDS 070 %
+TRANSLATING RECORDS 072 %
+TRANSLATING RECORDS 074 %
+TRANSLATING RECORDS 077 %
+TRANSLATING RECORDS 078 %
+TRANSLATING RECORDS 079 %
+TRANSLATING RECORDS 082 %
+TRANSLATING RECORDS 083 %
+TRANSLATING RECORDS 085 %
+TRANSLATING RECORDS 086 %
+TRANSLATING RECORDS 088 %
+TRANSLATING RECORDS 089 %
+TRANSLATING RECORDS 091 %
+TRANSLATING RECORDS 093 %
+TRANSLATING RECORDS 095 %
+TRANSLATING RECORDS 096 %
+TRANSLATING RECORDS 097 %
+TRANSLATING RECORDS 099 %
+TRANSLATING RECORDS 100 %
 MERGING PARTIAL OUTPUT TRACES
-   * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * All task merged!         
+
+   * Merging task    1 100 %
+   * Merging task    2 100 %
+   * Merging task    3 100 %
+   * Merging task    4 100 %   * All task merged!         
 TRANSLATION FINISHED
 GENERATING PCF
    * Input PCF original/sendrecv.pcf correctly copied to dimemas/sendrecv.pcf
@@ -3166,4 +3513,422 @@ Here is the plot getpjdump generated:
 We can see that the processes that sent the message were not blocked
 even though the messages had a size of 1MB and the minimum rendez-vouz
 message size for Dimemas was 32K.
+
+* 2016-05-06 Installing OpenMPI + Extrae on Draco                     :Lucas:
+
+I have download OpenMPI 1.10.2
+
+#+begin_src sh :results output :session :exports both
+wget https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2
+#+end_src
+
+Configured, compile it this way:
+
+#+begin_src sh :results output :session :exports both
+./configure --prefix=/home/schnorr/install/openmpi-1.10.2/ \
+   --enable-static \ #so we can statically link mpi apps
+   --without-cuda #because of cuda dependencies
+make
+make install
+#+end_src
+
+Then, download latest extrae 3.3.0, configure it this way:
+
+Note that my stow directory has symlinks to the my openmpi installation.
+
+#+begin_src sh :results output :session :exports both
+MPICC=/home/schnorr/install/stow/bin/mpicc ./configure --prefix=/home/schnorr/install/extrae-3.3.0/ \
+   --with-mpi=/home/schnorr/install/stow/lib/openmpi/ \
+   --with-mpi-headers=/home/schnorr/install/stow/include/ \
+   --with-mpi-libs=/home/schnorr/install/stow/lib/ \
+   --without-unwind \
+   --without-dyninst \
+   --without-papi \
+   --disable-openmp \
+   --disable-online
+make
+make install
+#+end_src
+
+It worked! Now I just copy the openmpi and extrae installations to the
+other draco nodes manually, since they do not have NFS.
+
+#+begin_src R :results output :session :exports both
+rsync --recursive --progress --links install draco2:.
+rsync --recursive --progress --links install draco3:.
+rsync --recursive --progress --links install draco4:.
+#+end_src
+
+I just found out that I have to run the configure/make/make install
+steps for openmpi in all machines, without =rsync=. Machines are
+configured differently, and it looks like some hardware is also
+different. Another option would be to statically compile the
+application, but I've found some problems with that also.
+
+I do not have access to draco[5678] since they are reserved for
+someone else as of this moment. Should play with four nodes to start.
+
+I have to put the following line to all =.bashrc= files (make sure this
+is placed before any decision about interactive or non-interactive
+shells, especially in an ubuntu installation), so we can use the
+correct MPI installation when compiling MPI codes.
+
+#+BEGIN_EXAMPLE
+export PATH=$HOME/install/stow/bin:$PATH
+#+END_EXAMPLE
+
+* 2016-05-06 Compiling and instrumenting Ondes3D for Draco            :Lucas:
+
+I have a copy of Ondes3D in MPI, thanks to Fabrice Dupros from BRGM.
+
+#+begin_src R :results output :session :exports both
+git clone https://bitbucket.org/schnorr/ondes3d.git
+cd ondes3d/Ondes3d-1.0/
+#+end_src
+
+In the =Makefile=, I disable the flag =-DOMP= and =-fopenmp= to disable
+OpenMP. I keep only the flag =-DMPI= so we have a pure MPI
+implementation of Ondes3D. I need to manually copy the input files
+=NICE-XML= which is approximately 970 Megabytes.
+
+#+begin_src sh :results output :session :exports both
+rsync --progress --recursive NICE-XML draco1:./ondes3d/Ondes3d-1.0/
+#+end_src
+
+A dry run proves successfully.
+
+Now I need to trace it with Extrae.
+
+Here's my =extrae.xml= configuration file.
+
+#+begin_src xml :results output :session :exports both :tangle extrae.xml
+<?xml version='1.0'?>
+
+<trace enabled="yes"
+ home="/home/schnorr/install/extrae-3.3.0"
+ initial-mode="detail"
+ type="paraver"
+ xml-parser-id="Id: xml-parse.c 3918 2016-03-11 14:59:01Z harald $"
+>
+
+  <mpi enabled="yes">
+    <counters enabled="yes" />
+  </mpi>
+
+  <openmp enabled="no"/>
+  <pthread enabled="no"/>
+
+  <callers enabled="yes">
+    <mpi enabled="yes">1-3</mpi>
+    <sampling enabled="no">1-5</sampling>
+    <dynamic-memory enabled="no">1-3</dynamic-memory>
+  </callers>
+
+  <user-functions enabled="no" list="/home/bsc41/bsc41273/user-functions.dat" exclude-automatic-functions="no">
+    <counters enabled="yes" />
+  </user-functions>
+
+  <counters enabled="no"/>
+  <storage enabled="no"/>
+  <buffer enabled="yes">
+    <size enabled="yes">500000</size>
+    <circular enabled="no" />
+  </buffer>
+
+  <trace-control enabled="no">
+    <file enabled="no" frequency="5M">/gpfs/scratch/bsc41/bsc41273/control</file>
+    <global-ops enabled="no"></global-ops>
+  </trace-control>
+
+  <others enabled="yes">
+    <minimum-time enabled="no">10M</minimum-time>
+    <finalize-on-signal enabled="yes" 
+      SIGUSR1="no" SIGUSR2="no" SIGINT="yes"
+      SIGQUIT="yes" SIGTERM="yes" SIGXCPU="yes"
+      SIGFPE="yes" SIGSEGV="yes" SIGABRT="yes"
+    />
+    <flush-sampling-buffer-at-instrumentation-point enabled="yes" />
+  </others>
+
+  <bursts enabled="no"/>
+  <sampling enabled="no" type="default" period="50m" variability="10m" />
+  <dynamic-memory enabled="no"/>
+  <input-output enabled="no"/>
+
+  <merge enabled="yes" 
+    synchronization="default"
+    tree-fan-out="16"
+    max-memory="512"
+    joint-states="yes"
+    keep-mpits="yes"
+    sort-addresses="yes"
+    overwrite="yes"
+  />
+
+</trace>
+#+end_src
+
+Capturing using =LD_PRELOAD=.
+
+#+begin_src sh :results output :session :exports both
+export EXTRAE_CONFIG_FILE=/home/schnorr/ondes3d/Ondes3d-1.0/extrae.xml
+export EXTRAE_HOME=/home/schnorr/install/stow/
+export LD_PRELOAD=${EXTRAE_HOME}/lib/libmpitrace.so
+mpirun -np 4 ./ondes3d
+#+end_src
+
+A local run worked with tracing.
+
+Now, let's try a distributed one.
+
+Contents of the machine file:
+
+#+BEGIN_EXAMPLE
+draco1 slots=16 max_slots=16
+draco2 slots=16 max_slots=16
+draco3 slots=16 max_slots=16
+draco4 slots=16 max_slots=16
+#+END_EXAMPLE
+
+I stumble upon in a bunch of problems. Here's what I did (summary):
+- configure and compiled openmpi in each machine
+- have to manually copy input (NICE-XML) to all machines
+- have to manually create output directory (NICE-OUTPUT)
+- manually copy the binary =ondes3d= to $HOME
+- then run MPI like this in your $HOME
+
+#+BEGIN_EXAMPLE
+mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self # use tcp, through the =em1= interface
+        --machinefile machinefile \
+        -np 64 \
+        /home/schnorr/ondes3d
+#+END_EXAMPLE
+
+Now let's try a remote run with tracing.
+
+I put the env vars below in my =.bashrc=, before the check for
+non-interactive shells. Copy that =.bashrc= to all hosts involved in the
+execution. Have also to copy the =extrae.xml= file to all hosts
+manually.
+
+#+begin_src sh :results output :session :exports both
+export EXTRAE_CONFIG_FILE=/home/schnorr/extrae.xml
+export EXTRAE_HOME=/home/schnorr/install/extrae-3.3.0/
+export LD_PRELOAD=${EXTRAE_HOME}/lib/libmpitrace.so
+#+end_src
+
+Since I don't have NFS on this cluster, I have to disable the
+intermediate automatic merge so I can do it manually later on after
+the execution. My =extrae.xml= reflects that (see =merge= tag below),
+with:
+
+#+begin_src xml :results output :session :exports both :tangle extrae-mpi-draco.xml
+<?xml version='1.0'?>
+
+<trace enabled="yes"
+ home="/home/schnorr/install/extrae-3.3.0"
+ initial-mode="detail"
+ type="paraver"
+ xml-parser-id="Id: xml-parse.c 3918 2016-03-11 14:59:01Z harald $"
+>
+
+  <mpi enabled="yes">
+    <counters enabled="yes" />
+  </mpi>
+
+  <openmp enabled="no"/>
+  <pthread enabled="no"/>
+
+  <callers enabled="yes">
+    <mpi enabled="yes">1-3</mpi>
+    <sampling enabled="no">1-5</sampling>
+    <dynamic-memory enabled="no">1-3</dynamic-memory>
+  </callers>
+
+  <user-functions enabled="no" list="/home/bsc41/bsc41273/user-functions.dat" exclude-automatic-functions="no">
+    <counters enabled="yes" />
+  </user-functions>
+
+  <counters enabled="no"/>
+  <storage enabled="no"/>
+  <buffer enabled="yes">
+    <size enabled="yes">500000</size>
+    <circular enabled="no" />
+  </buffer>
+
+  <trace-control enabled="no">
+    <file enabled="no" frequency="5M">/gpfs/scratch/bsc41/bsc41273/control</file>
+    <global-ops enabled="no"></global-ops>
+  </trace-control>
+
+  <others enabled="yes">
+    <minimum-time enabled="no">10M</minimum-time>
+    <finalize-on-signal enabled="yes" 
+      SIGUSR1="no" SIGUSR2="no" SIGINT="yes"
+      SIGQUIT="yes" SIGTERM="yes" SIGXCPU="yes"
+      SIGFPE="yes" SIGSEGV="yes" SIGABRT="yes"
+    />
+    <flush-sampling-buffer-at-instrumentation-point enabled="yes" />
+  </others>
+
+  <bursts enabled="no"/>
+  <sampling enabled="no"/>
+  <dynamic-memory enabled="no"/>
+  <input-output enabled="no"/>
+  <merge enabled="no"/>
+
+</trace>
+#+end_src
+
+Copy the =extrae.xml= and =.bashrc= with the =LD_PRELOAD= to all nodes:
+
+#+begin_src sh :results output :session :exports both
+for i in `seq 1 4`; do scp extrae.xml .bashrc  draco$i:./; done
+#+end_src
+
+Run the program, I got a bunch of =mpit= files. Put all of them on
+=draco1= (run the code below from =draco1=):
+
+#+begin_src sh :results output :session :exports both
+for i in `seq 2 4`; do rsync draco$i:./set-0/* ./set-0/; done
+#+end_src
+
+Now I need to convert this to a single =prv= file, so like this:
+
+See:
+- https://www.bsc.es/computer-sciences/performance-tools/trace-generation/extrae/extrae-user-guide#SECTION00430000000000000000
+
+#+begin_src sh :results output :session :exports both
+${EXTRAE_HOME}/bin/mpi2prv -f TRACE*.mpit -o output.prv
+#+end_src
+
+Great, I have these three files now:
+
+#+BEGIN_EXAMPLE
+schnorr@draco1:~/set-0$ ls -larth output-ondes3d-64p-draco_1-4.*
+-rw-rw-r-- 1 schnorr schnorr 112M May  6 17:46 output-ondes3d-64p-draco_1-4.prv
+-rw-rw-r-- 1 schnorr schnorr 2.8K May  6 17:46 output-ondes3d-64p-draco_1-4.row
+-rw-rw-r-- 1 schnorr schnorr 5.4K May  6 17:46 output-ondes3d-64p-draco_1-4.pcf
+#+END_EXAMPLE
+
+I have copied these to:
+https://dl.dropboxusercontent.com/u/1119921/output-ondes3d-64p-draco_1-4.tar.gz
+
+Tiago will take a look to see what he can do it.
+
+There are 64 procs; each host got 16 procs (one per physical core not pinned).
+
+Remember next time to pin MPI processes.
+
+Hosts have the same hardware; network is ethernet/tcp. Running =iperf=, got:
+
+From draco2 (client) to draco1 (server)
+
+#+BEGIN_EXAMPLE
+schnorr@draco2:~$ iperf -c draco1
+------------------------------------------------------------
+Client connecting to draco1, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 143.54.12.43 port 47169 connected with 143.54.12.246 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.10 GBytes   943 Mbits/sec
+#+END_EXAMPLE
+
+From draco1 (client) to draco2 (server)
+
+#+BEGIN_EXAMPLE
+schnorr@draco1:~$ iperf -c draco2
+------------------------------------------------------------
+Client connecting to draco2, TCP port 5001
+TCP window size: 85.0 KByte (default)
+------------------------------------------------------------
+[  3] local 143.54.12.246 port 34310 connected with 143.54.12.43 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  1.10 GBytes   943 Mbits/sec
+#+END_EXAMPLE
+
+Result of ping from draco1 to draco2:
+
+#+BEGIN_EXAMPLE
+schnorr@draco1:~$ ping draco2
+PING draco2.inf.ufrgs.br (143.54.12.43) 56(84) bytes of data.
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=1 ttl=64 time=0.231 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=2 ttl=64 time=0.202 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=3 ttl=64 time=0.216 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=4 ttl=64 time=0.192 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=5 ttl=64 time=0.157 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=6 ttl=64 time=0.197 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=7 ttl=64 time=0.164 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=8 ttl=64 time=0.212 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=9 ttl=64 time=0.198 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=10 ttl=64 time=0.218 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=11 ttl=64 time=0.256 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=12 ttl=64 time=0.178 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=13 ttl=64 time=0.220 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=14 ttl=64 time=0.207 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=15 ttl=64 time=0.200 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=16 ttl=64 time=0.215 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=17 ttl=64 time=0.187 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=18 ttl=64 time=0.210 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=19 ttl=64 time=0.171 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=20 ttl=64 time=0.180 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=21 ttl=64 time=0.186 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=22 ttl=64 time=0.187 ms
+64 bytes from draco2.inf.ufrgs.br (143.54.12.43): icmp_seq=23 ttl=64 time=0.177 ms
+#+END_EXAMPLE
+
+Results of ping from draco2 to draco1:
+
+#+BEGIN_EXAMPLE
+schnorr@draco2:~$ ping draco1
+PING draco1.inf.ufrgs.br (143.54.12.246) 56(84) bytes of data.
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=1 ttl=64 time=0.212 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=2 ttl=64 time=0.241 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=3 ttl=64 time=0.206 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=4 ttl=64 time=0.201 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=5 ttl=64 time=0.211 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=6 ttl=64 time=0.173 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=7 ttl=64 time=0.201 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=8 ttl=64 time=0.222 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=9 ttl=64 time=0.183 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=10 ttl=64 time=0.192 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=11 ttl=64 time=0.176 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=12 ttl=64 time=0.176 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=13 ttl=64 time=0.195 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=14 ttl=64 time=0.216 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=15 ttl=64 time=0.195 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=16 ttl=64 time=0.203 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=17 ttl=64 time=0.198 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=18 ttl=64 time=0.173 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=19 ttl=64 time=0.211 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=20 ttl=64 time=0.167 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=21 ttl=64 time=0.176 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=22 ttl=64 time=0.177 ms
+64 bytes from draco1.inf.ufrgs.br (143.54.12.246): icmp_seq=23 ttl=64 time=0.183 ms
+#+END_EXAMPLE
+
+Consider these to define latency and bandwidth.
+
+If I remember correctly, latency is the time reported by ping divided by 2.
+* 2016-05-11 Regarding asynchronous/block message send/recv    :Lucas:Arnaud:
+
+We have written this:
+
+#+BEGIN_EXAMPLE
+> Tiago made some comparisons between SimGrid and Dimemas and observed
+> that sends are asynchronous no matter the message size in Dimemas
+> until the beginning of the corresponding receive. In SimGrid, they
+> act as expected being blocked, i.e., so the send keeps blocking the
+> process until the receive is done on the receiver side. 
+#+END_EXAMPLE
+
+Arnaud just reminded us on how it works in SimGrid's SMPI:
+
+This depends on the configuration of SMPI:
+- http://simgrid.gforge.inria.fr/simgrid/latest/doc/options.html#options_smpi
+Have a look at:
+- http://simgrid.gforge.inria.fr/simgrid/latest/doc/options.html#options_model_smpi_detached
+
+Tiago will have to consider this.
 
