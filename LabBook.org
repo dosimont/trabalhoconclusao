@@ -3933,7 +3933,6 @@ Have a look at:
 Tiago will have to consider this.
 
 * 2016-05-13 Message by Judit with MN3 Dimemas configuration file + more :Lucas:
-
 * 2016-05-13 Meeting with Tiago                                 :Lucas:Tiago:
 
 _Tasks_
@@ -4996,3 +4995,265 @@ Our feeling is that the input trace file Lucas has obtained is somehow
 corrupted, or at least missing information from task 16. We should
 re-run the MPI application again, and do everything (=prv2dim= and
 =Dimemas= simulation) once again.
+* 2016-05-13 Executing Ondes3D in =draco= cluster with four nodes       :Lucas:
+
+We have observed previously (see entry below) something strange with
+traces I have collected in draco machine. I'll try to reproduce the
+experiment in a more controlled way (using =:dir= in sh code source
+blocks).
+
+First, check the contents of the =Makefile= in =draco1=.
+
+#+begin_src R :results output :session :exports both
+
+#+end_src
+
+#+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
+cat Makefile
+#+end_src
+
+#+RESULTS:
+#+begin_example
+CC		= scorep --pomp --nocompiler --nocuda --noonline-access --nopdt --nouser  --noopencl mpicc
+CC = mpicc
+
+#List of Path to search sources files
+VPATH		= .:../src
+#Ansi conformity
+#TESTFLAGS	+= -Xs
+
+#######################################################
+## DEBUG PARAMETERS
+TESTFLAGS       += -DVERBOSE=0
+
+# lecture
+#TESTFLAGS	+= -DDEBUG_READ
+# allocation  
+#TESTFLAGS	+= -DDEBUG_ALLO
+# no velocity computation
+#TESTFLAGS      += -DNOVELOCITY
+# no stress computation
+#TESTFLAGS      += -DNOSTRESS
+# no intermediates computation
+#TESTFLAGS      += -DNOINTERMEDIATES
+# no absorbing condition computation
+#TESTFLAGS       += -DNOABS
+# no anelasticity computation
+#TESTFLAGS      += -DNOANELASTICITY
+###################################################
+
+####################################################
+#EXECUTION FLAG
+TESTFLAGS	+= -DMPI
+MPI_FLAGS	=	
+#TESTFLAGS	+= -DOMP
+#OMP_FLAGS	= -fopenmp
+# COMM=1 : persistant / COMM=2 : blocking
+TESTFLAGS	+= -DCOMM=1
+# with MPI topologie file (topologie.in)
+#TESTFLAGS	+= -DTOPO_MPI
+#####################################################
+
+
+
+
+
+####################################################
+#PROFILING FLAG
+
+# TIMER=1 : standard / TIMER = 2 : timer vith MPI barriers
+TESTFLAGS       += -DTIMER=2
+#TAU detailed profiling
+#TESTFLAGS	+= -DPROFILE1
+#TAU global profiling
+#TESTFLAGS       += -DPROFILE2
+#FLOPS based on top of PAPI library
+#TESTFLAGS       += -DFLOPS
+#PAPI counters (cache misses) using PAPI library
+#TESTFLAGS       += -DMISS
+
+#######################################################
+# OUTPUT
+#Write VTK files
+#TESTFLAGS	+= -DVTK
+#Write geological model
+#TESTFLAGS	+= -DOUT_HOGE
+
+########################################################
+
+
+
+#########################################################"
+## OPTIMISATION PARAMETERS
+OPTI 		+=  -O3
+###########################################################
+
+
+#MODEL parameters; default values are in options.h
+CFLAGS		=   $(TESTFLAGS)  $(OPTI)  $(MODEL) 
+PREFIX =ondes3d$(POST)
+OBJS = main.o nrutil.o  computeVeloAndSource.o computeStress.o computeIntermediates.o alloAndInit.o IO.o alloAndInit_LayerModel.o
+HEADERS=struct.h inlineFunctions.h options.h
+
+
+all: $(PREFIX)
+$(PREFIX): $(OBJS)
+	$(CC)  $(MPI_FLAGS) $(OMP_FLAGS) -o $@ $^ -lm
+%.o: %.c
+	$(CC) $(MPI_FLAGS) $(OMP_FLAGS) $(CFLAGS) -c $<
+
+clean:
+	rm -f *.o  *~
+#+end_example
+
+So, MPI is available. Let's compile it again, and copy the compiled
+binary to the $HOME directory of all draco machines that will be
+involved in the experiment execution.
+
+#+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
+which mpicc
+which mpirun
+mpicc --version
+mpirun --version
+make clean
+make
+for i in 1 2 3 4; do
+  echo "Copying ondes3d binary to draco${i}"
+  scp -v ondes3d draco${i}:$HOME
+  echo "Check if it is there"
+  ssh draco${i} ls -lh $HOME/ondes3d
+  ssh draco${i} "which mpirun"
+  ssh draco${i} "mpirun --version"
+done
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/install/stow/bin/mpicc
+/home/schnorr/install/stow/bin/mpirun
+gcc (Ubuntu 4.8.4-2ubuntu1~14.04.1) 4.8.4
+Copyright (C) 2013 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+mpirun (Open MPI) 1.10.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+rm -f *.o  *~
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c main.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c nrutil.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c computeVeloAndSource.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c computeStress.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c computeIntermediates.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c alloAndInit.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c IO.c
+mpicc   -DVERBOSE=0 -DMPI -DCOMM=1 -DTIMER=2  -O3    -c alloAndInit_LayerModel.c
+mpicc    -o ondes3d main.o nrutil.o computeVeloAndSource.o computeStress.o computeIntermediates.o alloAndInit.o IO.o alloAndInit_LayerModel.o -lm
+Copying ondes3d binary to draco1
+ondes3d                                         0%    0     0.0KB/s   --:-- ETAondes3d                                       100%  151KB 151.5KB/s   00:00    
+Check if it is there
+-rwxrwxr-x 1 schnorr schnorr 152K May 13 15:41 /home/schnorr/ondes3d
+/home/schnorr/install/stow/bin/mpirun
+mpirun (Open MPI) 1.10.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+Copying ondes3d binary to draco2
+ondes3d                                         0%    0     0.0KB/s   --:-- ETAondes3d                                       100%  151KB 151.5KB/s   00:00    
+Check if it is there
+-rwxrwxr-x 1 schnorr schnorr 152K May 13 15:41 /home/schnorr/ondes3d
+/home/schnorr/install/stow/bin/mpirun
+mpirun (Open MPI) 1.10.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+Copying ondes3d binary to draco3
+ondes3d                                         0%    0     0.0KB/s   --:-- ETAondes3d                                       100%  151KB 151.5KB/s   00:00    
+Check if it is there
+-rwxrwxr-x 1 schnorr schnorr 152K May 13 15:42 /home/schnorr/ondes3d
+/home/schnorr/install/stow/bin/mpirun
+mpirun (Open MPI) 1.10.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+Copying ondes3d binary to draco4
+ondes3d                                         0%    0     0.0KB/s   --:-- ETAondes3d                                       100%  151KB 151.5KB/s   00:00    
+Check if it is there
+-rwxrwxr-x 1 schnorr schnorr 152K May 13 15:33 /home/schnorr/ondes3d
+/home/schnorr/install/stow/bin/mpirun
+mpirun (Open MPI) 1.10.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+#+end_example
+
+Great, all set. I have previously installed =Open MPI 1.10.2= in all
+machines, in my $HOME directory and stowed them in =stow/bin=.
+
+Let's proceed with the execution, tracing it with Extrae.
+
+The contents of the machine file are:
+
+#+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
+cat machinefile
+#+end_src
+
+#+RESULTS:
+: draco1 slots=16 max_slots=16
+: draco2 slots=16 max_slots=16
+: draco3 slots=16 max_slots=16
+: draco4 slots=16 max_slots=16
+
+Execute without extrae tracing.
+
+_Ondes3D Configuration_
+
+Ondes3D is hard-coded to simulate the =NICE= Earthquake. Here's how:
+
+#+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
+grep PRMFILE *.h
+#+end_src
+
+I have two directory in my $HOME with the Ondes3D input:
+- NICE-XML
+- NICE-OUTPUT
+
+Here's the parameters that drive how long it takes the execution:
+
+#+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
+cat $HOME/NICE-XML/nice.prm
+#+end_src
+
+I'm simulating only two timesteps to make it faster.
+
+See the entry below to understand the parameters for the next call to =mpirun=:
+- [[*2016-05-06 Compiling and instrumenting Ondes3D for Draco][2016-05-06 Compiling and instrumenting Ondes3D for Draco]]
+
+#+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
+unset LD_PRELOAD
+unset EXTRAE_CONFIG_FILE
+unset EXTRAE_HOME
+pwd
+mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self \
+        --machinefile machinefile \
+        -np 64 \
+        /home/schnorr/ondes3d
+#+end_src
+
+#+RESULTS:
+: /home/schnorr/ondes3d-dir/Ondes3d-1.0
+
+Great, it looks like it worked.
+
+Extrae configuration is also described here:
+- [[*2016-05-06 Compiling and instrumenting Ondes3D for Draco][2016-05-06 Compiling and instrumenting Ondes3D for Draco]]
+
+Now let's proceed with the tracing:
+
+#+BEGIN_EXAMPLE
+export EXTRAE_CONFIG_FILE=/home/schnorr/extrae.xml
+export EXTRAE_HOME=/home/schnorr/install/extrae-3.3.0/
+export LD_PRELOAD=${EXTRAE_HOME}/lib/libmpitrace.so
+mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self \
+        --machinefile machinefile \
+        -np 64 \
+        /home/schnorr/ondes3d
+#+END_EXAMPLE
+
+Will have to wait =draco[1-4]= be free again, someone has locked the machine.
