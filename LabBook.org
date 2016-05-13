@@ -3932,3 +3932,1067 @@ Have a look at:
 
 Tiago will have to consider this.
 
+* 2016-05-13 Message by Judit with MN3 Dimemas configuration file + more :Lucas:
+
+* 2016-05-13 Meeting with Tiago                                 :Lucas:Tiago:
+
+_Tasks_
+- From the =MN3.cfg= configuration file sent by Judit
+  - Create a XML platform file for SimGrid
+
+- Concerning =lulesh2_27p_12ppn_default= traces (just sent by Judit)
+  - Replay this with Dimemas using =-S 32K= as Judit suggested (and =MN3.cfg=)
+  - Convert the =prv= file to =tit=, so we can replay with SimGrid
+
+- Get yourself _acquainted_ with G5K platform
+  - See [[*2016-05-06 Installing OpenMPI + Extrae on Draco][2016-05-06 Installing OpenMPI + Extrae on Draco]] on how to
+    install OpenMPI + Extrae there (you may adapt some commands)
+- Depending on which cluster you have selected in G5K, you do:
+  - SimGrid's XML platform for it
+  - Dimemas platform configuration
+
+- Resolve the conversion problem of the trace obtained in =draco=
+  - Four machines involved: from draco1 to draco4
+  - The problem is this:
+    #+BEGIN_EXAMPLE
+    $ time perl ../getpjdump/prv2tit.pl  -i output-ondes3d-64p-draco_1-4
+Can't use an undefined value as a HASH reference at ../getpjdump/prv2tit.pl line 202, <INPUT> line 1860723.
+
+real	0m49.905s
+user	0m49.728s
+sys	0m0.160s
+    #+END_EXAMPLE
+  - Tiago may modified the conversion script to dump all the times we
+    have complete =tit= events. As of today, the script keeps everything
+    in memory and dumps only in the end. Since we won't reach the end
+    because of the error, we loose everything.
+
+- Do =draco= SimGrid's XML platform file and the same for Dimemas
+  - Replay =output-ondes3d-64p-draco_1-4= in SimGrid and Dimemas
+  - Compare the results with real trace
+
+Here's how to convert from prv to dim in order to replay with Dimemas:
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+~/install/dimemas-5.2.12/bin/prv2dim output-ondes3d-64p-draco_1-4.prv output-ondes3d-64p-draco_1-4.dim
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+INITIALIZING PARSER... OK!
+SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 001 %SPLITTING COMMUNICATIONS 002 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 010 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 030 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 048 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 051 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 058 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 084 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 092 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+-> Trace first pass finished (communications split)
+   * Records parsed:          971792
+   * Splitted communications 248760
+SORTING PARTIAL COMMUNICATIONS
+COMMUNICATIONS SORTED
+INITIALIZING TRANSLATION...  OK
+CREATING TRANSLATION STRUCTURES  001/064CREATING TRANSLATION STRUCTURES  002/064CREATING TRANSLATION STRUCTURES  003/064CREATING TRANSLATION STRUCTURES  004/064CREATING TRANSLATION STRUCTURES  005/064CREATING TRANSLATION STRUCTURES  006/064CREATING TRANSLATION STRUCTURES  007/064CREATING TRANSLATION STRUCTURES  008/064CREATING TRANSLATION STRUCTURES  009/064CREATING TRANSLATION STRUCTURES  010/064CREATING TRANSLATION STRUCTURES  011/064CREATING TRANSLATION STRUCTURES  012/064CREATING TRANSLATION STRUCTURES  013/064CREATING TRANSLATION STRUCTURES  014/064CREATING TRANSLATION STRUCTURES  015/064CREATING TRANSLATION STRUCTURES  016/064CREATING TRANSLATION STRUCTURES  017/064CREATING TRANSLATION STRUCTURES  018/064CREATING TRANSLATION STRUCTURES  019/064CREATING TRANSLATION STRUCTURES  020/064CREATING TRANSLATION STRUCTURES  021/064CREATING TRANSLATION STRUCTURES  022/064CREATING TRANSLATION STRUCTURES  023/064CREATING TRANSLATION STRUCTURES  024/064CREATING TRANSLATION STRUCTURES  025/064CREATING TRANSLATION STRUCTURES  026/064CREATING TRANSLATION STRUCTURES  027/064CREATING TRANSLATION STRUCTURES  028/064CREATING TRANSLATION STRUCTURES  029/064CREATING TRANSLATION STRUCTURES  030/064CREATING TRANSLATION STRUCTURES  031/064CREATING TRANSLATION STRUCTURES  032/064CREATING TRANSLATION STRUCTURES  033/064CREATING TRANSLATION STRUCTURES  034/064CREATING TRANSLATION STRUCTURES  035/064CREATING TRANSLATION STRUCTURES  036/064CREATING TRANSLATION STRUCTURES  037/064CREATING TRANSLATION STRUCTURES  038/064CREATING TRANSLATION STRUCTURES  039/064CREATING TRANSLATION STRUCTURES  040/064CREATING TRANSLATION STRUCTURES  041/064CREATING TRANSLATION STRUCTURES  042/064CREATING TRANSLATION STRUCTURES  043/064CREATING TRANSLATION STRUCTURES  044/064CREATING TRANSLATION STRUCTURES  045/064CREATING TRANSLATION STRUCTURES  046/064CREATING TRANSLATION STRUCTURES  047/064CREATING TRANSLATION STRUCTURES  048/064CREATING TRANSLATION STRUCTURES  049/064CREATING TRANSLATION STRUCTURES  050/064CREATING TRANSLATION STRUCTURES  051/064CREATING TRANSLATION STRUCTURES  052/064CREATING TRANSLATION STRUCTURES  053/064CREATING TRANSLATION STRUCTURES  054/064CREATING TRANSLATION STRUCTURES  055/064CREATING TRANSLATION STRUCTURES  056/064CREATING TRANSLATION STRUCTURES  057/064CREATING TRANSLATION STRUCTURES  058/064CREATING TRANSLATION STRUCTURES  059/064CREATING TRANSLATION STRUCTURES  060/064CREATING TRANSLATION STRUCTURES  061/064CREATING TRANSLATION STRUCTURES  062/064CREATING TRANSLATION STRUCTURES  063/064CREATING TRANSLATION STRUCTURES  064/064CREATING TRANSLATION STRUCTURES  064/064
+WRITING HEADER... OK
+TRANSLATING COMMUNICATORS... OK
+RECORD TRANSLATION
+TRANSLATING RECORDS 000 %TRANSLATING RECORDS 001 %TRANSLATING RECORDS 002 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 010 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 030 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 048 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 051 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 054 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 058 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 063 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 068 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 084 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 092 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+MERGING PARTIAL OUTPUT TRACES
+   * Merging task    1 026 %   * Merging task    1 053 %   * Merging task    1 079 %   * Merging task    1 100 %   * Merging task    2 064 %   * Merging task    2 100 %   * Merging task    3 064 %   * Merging task    3 100 %   * Merging task    4 064 %   * Merging task    4 100 %   * Merging task    5 065 %   * Merging task    5 100 %   * Merging task    6 064 %   * Merging task    6 100 %   * Merging task    7 065 %   * Merging task    7 100 %   * Merging task    8 085 %   * Merging task    8 100 %   * Merging task    9 068 %   * Merging task    9 100 %   * Merging task   10 051 %   * Merging task   10 100 %   * Merging task   11 049 %   * Merging task   11 099 %   * Merging task   11 100 %   * Merging task   12 049 %   * Merging task   12 099 %   * Merging task   12 100 %   * Merging task   13 049 %   * Merging task   13 099 %   * Merging task   13 100 %   * Merging task   14 049 %   * Merging task   14 098 %   * Merging task   14 100 %   * Merging task   15 049 %   * Merging task   15 099 %   * Merging task   15 100 %   * Merging task   16 062 %   * Merging task   16 100 %   * Merging task   17 100 %   * Merging task   18 100 %   * Merging task   19 097 %   * Merging task   19 100 %   * Merging task   20 097 %   * Merging task   20 100 %   * Merging task   21 097 %   * Merging task   21 100 %   * Merging task   22 096 %   * Merging task   22 100 %   * Merging task   23 097 %   * Merging task   23 100 %   * Merging task   24 100 %   * Merging task   25 100 %   * Merging task   26 091 %   * Merging task   26 100 %   * Merging task   27 095 %   * Merging task   27 100 %   * Merging task   28 096 %   * Merging task   28 100 %   * Merging task   29 097 %   * Merging task   29 100 %   * Merging task   30 096 %   * Merging task   30 100 %   * Merging task   31 097 %   * Merging task   31 100 %   * Merging task   32 100 %   * Merging task   33 062 %   * Merging task   33 100 %   * Merging task   34 047 %   * Merging task   34 094 %   * Merging task   34 100 %   * Merging task   35 046 %   * Merging task   35 091 %   * Merging task   35 100 %   * Merging task   36 048 %   * Merging task   36 096 %   * Merging task   36 100 %   * Merging task   37 049 %   * Merging task   37 098 %   * Merging task   37 100 %   * Merging task   38 049 %   * Merging task   38 098 %   * Merging task   38 100 %   * Merging task   39 049 %   * Merging task   39 099 %   * Merging task   39 100 %   * Merging task   40 062 %   * Merging task   40 100 %   * Merging task   41 060 %   * Merging task   41 100 %   * Merging task   42 045 %   * Merging task   42 091 %   * Merging task   42 100 %   * Merging task   43 046 %   * Merging task   43 092 %   * Merging task   43 100 %   * Merging task   44 047 %   * Merging task   44 095 %   * Merging task   44 100 %   * Merging task   45 046 %   * Merging task   45 093 %   * Merging task   45 100 %   * Merging task   46 047 %   * Merging task   46 093 %   * Merging task   46 100 %   * Merging task   47 048 %   * Merging task   47 096 %   * Merging task   47 100 %   * Merging task   48 060 %   * Merging task   48 100 %   * Merging task   49 060 %   * Merging task   49 100 %   * Merging task   50 047 %   * Merging task   50 095 %   * Merging task   50 100 %   * Merging task   51 049 %   * Merging task   51 097 %   * Merging task   51 100 %   * Merging task   52 048 %   * Merging task   52 096 %   * Merging task   52 100 %   * Merging task   53 048 %   * Merging task   53 096 %   * Merging task   53 100 %   * Merging task   54 046 %   * Merging task   54 092 %   * Merging task   54 100 %   * Merging task   55 047 %   * Merging task   55 095 %   * Merging task   55 100 %   * Merging task   56 060 %   * Merging task   56 100 %   * Merging task   57 078 %   * Merging task   57 100 %   * Merging task   58 059 %   * Merging task   58 100 %   * Merging task   59 060 %   * Merging task   59 100 %   * Merging task   60 060 %   * Merging task   60 100 %   * Merging task   61 059 %   * Merging task   61 100 %   * Merging task   62 056 %   * Merging task   62 100 %   * Merging task   63 058 %   * Merging task   63 100 %   * Merging task   64 078 %   * Merging task   64 100 %   * All task merged!         
+********************************************************************************
+ *                               ERROR                                          *
+********************************************************************************
+ERROR: The 'MPI_Init' primitive does not appear at the beggining of the all
+ERROR: tasks in this trace. Current translation will fail
+
+ERROR: Please, re-run the translator using the '-s' flags
+********************************************************************************
+
+TRANSLATION FINISHED
+GENERATING PCF
+-> Input PCF and ouput PCF have the same name. Please use it in your simulations
+COPYING ROW FILE
+-> Input and ouput ROW files have the same name. Please use it in your simulations
+#+end_example
+
+There is a problem (see =ERROR= above). So, let's use the =-s= flag as
+recommended.
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+~/install/dimemas-5.2.12/bin/prv2dim -s output-ondes3d-64p-draco_1-4.prv output-ondes3d-64p-draco_1-4.dim
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+INITIALIZING PARSER... OK!
+SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 001 %SPLITTING COMMUNICATIONS 002 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 010 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 030 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 048 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 051 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 058 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 084 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 092 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+-> Trace first pass finished (communications split)
+   * Records parsed:          971792
+   * Splitted communications 248760
+SORTING PARTIAL COMMUNICATIONS
+COMMUNICATIONS SORTED
+INITIALIZING TRANSLATION...  OK
+CREATING TRANSLATION STRUCTURES  001/064CREATING TRANSLATION STRUCTURES  002/064CREATING TRANSLATION STRUCTURES  003/064CREATING TRANSLATION STRUCTURES  004/064CREATING TRANSLATION STRUCTURES  005/064CREATING TRANSLATION STRUCTURES  006/064CREATING TRANSLATION STRUCTURES  007/064CREATING TRANSLATION STRUCTURES  008/064CREATING TRANSLATION STRUCTURES  009/064CREATING TRANSLATION STRUCTURES  010/064CREATING TRANSLATION STRUCTURES  011/064CREATING TRANSLATION STRUCTURES  012/064CREATING TRANSLATION STRUCTURES  013/064CREATING TRANSLATION STRUCTURES  014/064CREATING TRANSLATION STRUCTURES  015/064CREATING TRANSLATION STRUCTURES  016/064CREATING TRANSLATION STRUCTURES  017/064CREATING TRANSLATION STRUCTURES  018/064CREATING TRANSLATION STRUCTURES  019/064CREATING TRANSLATION STRUCTURES  020/064CREATING TRANSLATION STRUCTURES  021/064CREATING TRANSLATION STRUCTURES  022/064CREATING TRANSLATION STRUCTURES  023/064CREATING TRANSLATION STRUCTURES  024/064CREATING TRANSLATION STRUCTURES  025/064CREATING TRANSLATION STRUCTURES  026/064CREATING TRANSLATION STRUCTURES  027/064CREATING TRANSLATION STRUCTURES  028/064CREATING TRANSLATION STRUCTURES  029/064CREATING TRANSLATION STRUCTURES  030/064CREATING TRANSLATION STRUCTURES  031/064CREATING TRANSLATION STRUCTURES  032/064CREATING TRANSLATION STRUCTURES  033/064CREATING TRANSLATION STRUCTURES  034/064CREATING TRANSLATION STRUCTURES  035/064CREATING TRANSLATION STRUCTURES  036/064CREATING TRANSLATION STRUCTURES  037/064CREATING TRANSLATION STRUCTURES  038/064CREATING TRANSLATION STRUCTURES  039/064CREATING TRANSLATION STRUCTURES  040/064CREATING TRANSLATION STRUCTURES  041/064CREATING TRANSLATION STRUCTURES  042/064CREATING TRANSLATION STRUCTURES  043/064CREATING TRANSLATION STRUCTURES  044/064CREATING TRANSLATION STRUCTURES  045/064CREATING TRANSLATION STRUCTURES  046/064CREATING TRANSLATION STRUCTURES  047/064CREATING TRANSLATION STRUCTURES  048/064CREATING TRANSLATION STRUCTURES  049/064CREATING TRANSLATION STRUCTURES  050/064CREATING TRANSLATION STRUCTURES  051/064CREATING TRANSLATION STRUCTURES  052/064CREATING TRANSLATION STRUCTURES  053/064CREATING TRANSLATION STRUCTURES  054/064CREATING TRANSLATION STRUCTURES  055/064CREATING TRANSLATION STRUCTURES  056/064CREATING TRANSLATION STRUCTURES  057/064CREATING TRANSLATION STRUCTURES  058/064CREATING TRANSLATION STRUCTURES  059/064CREATING TRANSLATION STRUCTURES  060/064CREATING TRANSLATION STRUCTURES  061/064CREATING TRANSLATION STRUCTURES  062/064CREATING TRANSLATION STRUCTURES  063/064CREATING TRANSLATION STRUCTURES  064/064CREATING TRANSLATION STRUCTURES  064/064
+WRITING HEADER... OK
+TRANSLATING COMMUNICATORS... OK
+RECORD TRANSLATION
+TRANSLATING RECORDS 000 %TRANSLATING RECORDS 001 %TRANSLATING RECORDS 002 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 010 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 030 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 048 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 051 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 054 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 058 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 063 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 068 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 084 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 092 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+MERGING PARTIAL OUTPUT TRACES
+   * Merging task    1 026 %   * Merging task    1 053 %   * Merging task    1 079 %   * Merging task    1 100 %   * Merging task    2 064 %   * Merging task    2 100 %   * Merging task    3 065 %   * Merging task    3 100 %   * Merging task    4 065 %   * Merging task    4 100 %   * Merging task    5 065 %   * Merging task    5 100 %   * Merging task    6 064 %   * Merging task    6 100 %   * Merging task    7 065 %   * Merging task    7 100 %   * Merging task    8 085 %   * Merging task    8 100 %   * Merging task    9 068 %   * Merging task    9 100 %   * Merging task   10 051 %   * Merging task   10 100 %   * Merging task   11 049 %   * Merging task   11 099 %   * Merging task   11 100 %   * Merging task   12 049 %   * Merging task   12 099 %   * Merging task   12 100 %   * Merging task   13 049 %   * Merging task   13 099 %   * Merging task   13 100 %   * Merging task   14 049 %   * Merging task   14 098 %   * Merging task   14 100 %   * Merging task   15 049 %   * Merging task   15 099 %   * Merging task   15 100 %   * Merging task   16 062 %   * Merging task   16 100 %   * Merging task   17 100 %   * Merging task   18 100 %   * Merging task   19 097 %   * Merging task   19 100 %   * Merging task   20 097 %   * Merging task   20 100 %   * Merging task   21 097 %   * Merging task   21 100 %   * Merging task   22 096 %   * Merging task   22 100 %   * Merging task   23 097 %   * Merging task   23 100 %   * Merging task   24 100 %   * Merging task   25 100 %   * Merging task   26 091 %   * Merging task   26 100 %   * Merging task   27 095 %   * Merging task   27 100 %   * Merging task   28 096 %   * Merging task   28 100 %   * Merging task   29 097 %   * Merging task   29 100 %   * Merging task   30 096 %   * Merging task   30 100 %   * Merging task   31 097 %   * Merging task   31 100 %   * Merging task   32 100 %   * Merging task   33 062 %   * Merging task   33 100 %   * Merging task   34 047 %   * Merging task   34 094 %   * Merging task   34 100 %   * Merging task   35 046 %   * Merging task   35 091 %   * Merging task   35 100 %   * Merging task   36 048 %   * Merging task   36 096 %   * Merging task   36 100 %   * Merging task   37 049 %   * Merging task   37 098 %   * Merging task   37 100 %   * Merging task   38 049 %   * Merging task   38 098 %   * Merging task   38 100 %   * Merging task   39 049 %   * Merging task   39 099 %   * Merging task   39 100 %   * Merging task   40 062 %   * Merging task   40 100 %   * Merging task   41 060 %   * Merging task   41 100 %   * Merging task   42 045 %   * Merging task   42 091 %   * Merging task   42 100 %   * Merging task   43 046 %   * Merging task   43 092 %   * Merging task   43 100 %   * Merging task   44 047 %   * Merging task   44 095 %   * Merging task   44 100 %   * Merging task   45 046 %   * Merging task   45 093 %   * Merging task   45 100 %   * Merging task   46 047 %   * Merging task   46 093 %   * Merging task   46 100 %   * Merging task   47 048 %   * Merging task   47 096 %   * Merging task   47 100 %   * Merging task   48 060 %   * Merging task   48 100 %   * Merging task   49 060 %   * Merging task   49 100 %   * Merging task   50 047 %   * Merging task   50 095 %   * Merging task   50 100 %   * Merging task   51 049 %   * Merging task   51 097 %   * Merging task   51 100 %   * Merging task   52 048 %   * Merging task   52 096 %   * Merging task   52 100 %   * Merging task   53 048 %   * Merging task   53 096 %   * Merging task   53 100 %   * Merging task   54 046 %   * Merging task   54 092 %   * Merging task   54 100 %   * Merging task   55 047 %   * Merging task   55 095 %   * Merging task   55 100 %   * Merging task   56 060 %   * Merging task   56 100 %   * Merging task   57 078 %   * Merging task   57 100 %   * Merging task   58 059 %   * Merging task   58 100 %   * Merging task   59 060 %   * Merging task   59 100 %   * Merging task   60 060 %   * Merging task   60 100 %   * Merging task   61 059 %   * Merging task   61 100 %   * Merging task   62 056 %   * Merging task   62 100 %   * Merging task   63 058 %   * Merging task   63 100 %   * Merging task   64 078 %   * Merging task   64 100 %   * All task merged!         
+TRANSLATION FINISHED
+GENERATING PCF
+-> Input PCF and ouput PCF have the same name. Please use it in your simulations
+COPYING ROW FILE
+-> Input and ouput ROW files have the same name. Please use it in your simulations
+#+end_example
+
+Looks like it worked. Let's see the nature of the generated file.
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+ls -hl output-ondes3d-64p-draco_1-4.prv output-ondes3d-64p-draco_1-4.dim
+#+end_src
+
+#+RESULTS:
+: /home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+: -rw-r--r-- 1 schnorr schnorr 106M May 13 12:57 output-ondes3d-64p-draco_1-4.dim
+: -rw-r--r-- 1 schnorr schnorr 112M May  6 17:50 output-ondes3d-64p-draco_1-4.prv
+
+We need a =cfg= for Dimemas to replay.
+
+Tiago told me there is a =small.cfg= in the =dimemas= directory, let's
+create another one based on this.
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+cp ../dimemas/examples/small.cfg draco-example.cfg
+#+end_src
+
+#+RESULTS:
+: /home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+
+#+begin_src text :results output :session :exports both :tangle "./output-ondes3d-64p-draco_1-4/draco-example.cfg"
+SDDFA
+/*
+ * "Dimemas Configuration Format:" "Version 2.5"
+ * "Last update"  "09/18/02 at 12:51"
+ */ ;;
+
+
+#0:
+"wide area network information" {
+   // "wan_name" "name of the wide area network simulated"
+   char "wan_name"[];
+   // "number_of_machines" "number of machines in wan"
+   int "number_of_machines";
+   // "number_dedicated_connections" "number of dedicated connections between machines in the simulated system"
+   int "number_dedicated_connections";
+   //"function_of_traffic" "function that models influence of traffic in the non dedicated network"
+        // "options: 1 EXP, 2 LOG, 3 LIN, 4 CT"
+   int "function_of_traffic";
+   // Maximal value of traffic in the network
+   double "max_traffic_value";
+   // "external_net_bandwidth" "external net bandwidth in MB/s"
+   double "external_net_bandwidth";
+   // "1 Constant, 2 Lineal, 3 Logarithmic"
+   int "communication_group_model";
+};;
+
+
+
+#1:
+"environment information" {
+   char "machine_name"[];
+   int "machine_id";
+   // "instrumented_architecture" "Architecture used to instrument"
+   char    "instrumented_architecture"[];
+   // "number_of_nodes" "Number of nodes on virtual machine"
+   int     "number_of_nodes";
+   // "network_bandwidth" "Data tranfer rate between nodes in Mbytes/s"
+   // "0 means instantaneous communication"
+   double  "network_bandwidth";
+   // "number_of_buses_on_network" "Maximun number of messages on network"
+   // "0 means no limit"
+   // "1 means bus contention"
+   int   "number_of_buses_on_network";
+   // "1 Constant, 2 Lineal, 3 Logarithmic"
+   int   "communication_group_model";
+};;
+
+
+#2:
+"node information" {
+   int "machine_id";
+   // "node_id" "Node number"
+   int     "node_id";
+   // "simulated_architecture" "Architecture node name"
+   char    "simulated_architecture"[];
+   // "number_of_processors" "Number of processors within node"
+   int     "number_of_processors";
+	// "speed_ratio_instrumented_vs_simulated" "Relative processor speed"
+	double  "speed_ratio_instrumented_vs_simulated";
+	// "intra_node_startup" "Startup time (s) of intra-node communications model"
+	double  "intra_node_startup";
+	// "intra_node_bandwidth" "Bandwidth (MB/s) of intra-node communications model"
+	// "0 means instantaneous communication"
+	double  "intra_node_bandwidth";
+	// "intra_node_buses" "Number of buses of intra-node communications model"
+	// "0 means infinite buses"
+	int     "intra_node_buses";
+	// "intra_node_input_links" "Input links of intra-node communications model"
+	int     "intra_node_input_links";
+	// "intra_node_input_links" "Output links of intra-node communications model"
+	int     "intra_node_output_links";
+	// "intra_node_startup" "Startup time (s) of inter-node communications model"
+	double  "inter_node_startup";
+	// "inter_node_input_links" "Input links of inter-node communications model"
+	int     "inter_node_input_links";
+	// "inter_node_output_links" "Input links of intra-node communications model"
+	int     "inter_node_output_links";
+	// "wan_startup" "Startup time (s) of inter-machines (WAN) communications model"
+	double  "wan_startup";
+};;
+
+
+#3:
+"mapping information" {
+   // "tracefile" "Tracefile name of application"
+   char    "tracefile"[];
+   // "number_of_tasks" "Number of tasks in application"
+   int     "number_of_tasks";
+   // "mapping_tasks_to_nodes" "List of nodes in application"
+   int     "mapping_tasks_to_nodes"[];
+};;
+
+
+#4:
+"configuration files" {
+   char       "scheduler"[];
+   char       "file_system"[];
+   char       "communication"[];
+   char       "sensitivity"[];
+};;
+
+
+#5:
+"modules information" {
+// Module type
+        int     "type";
+        // Module value
+        int     "value";
+        // Speed ratio for this module, 0 means instantaneous execution
+        double  "execution_ratio";
+};;
+
+
+#6:
+"file system parameters" {
+   double     "disk latency";
+   double     "disk bandwidth";
+   double     "block size";
+   int        "concurrent requests";
+   double     "hit ratio";
+};;
+
+
+#7:
+"dedicated connection information" {
+   // "connection_id" "connection number"
+   int "connection_id";
+   // "source_machine" "source machine number"
+   int "source_machine";
+   // "destination_machine" "destination machine number"
+   int "destination_machine";
+   // "connection_bandwidth" "bandwidth of the connection in Mbytes/s"
+   double "connection_bandwidth";
+   // "tags_list" "list of tags that will use the connection"
+   int "tags_list"[];
+   // "first_message_size" "size of messages in bytes" int "first_message_size";
+   int "first_message_size";
+   // "first_size_condition" "size condition that should meet messages to use the connection"
+        // "it can be <, =, > and its is referent to message_size
+   char "first_size_condition"[];
+   // "operation" "& AND, | OR"
+   char "operation"[];
+    // "second_message_size" "size of messages in bytes"
+   int "second_message_size";
+   // "second_size_condition" "size condition that should meet messages to use the connection"
+        // "it can be <, =, > and its is referent to message_size"
+   char "second_size_condition"[];
+   // "list_communicators" "list of communicators of coll. Operations that can use the connection"
+   int "list_communicators"[];
+   // Latency of dedicated connection in seconds
+   double "connection_startup";
+   //Latency due to distance in seconds
+        double "flight_time";
+};;
+
+
+"wide area network information" {"", 1, 0, 4, 0.0, 0.0, 1};;
+
+"environment information" {"draco", 0, "", 4, 1000.0, 0, 1};;
+
+"node information" {0, 0, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 1, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 2, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 3, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+
+"mapping information" {"output-ondes3d-64p-draco_1-4.dim", 64, [64] 
+  {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+    3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+  }};;
+
+"configuration files" {"", "", "", ""};;
+
+"file system parameters" {0.0, 0.0, 8.0, 0, 1.0};;
+#+end_src
+
+I need to tangle the code above with C-c C-v t
+
+That will create the =draco-example.cfg= in the =./output-ondes3d-64p-draco_1-4/=.
+
+Now let's replay with Dimemas.
+
+We are using =-S 32K= according to Judit's suggestion.
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+~/install/dimemas-5.2.12/bin/Dimemas -S 32K -p output draco-example.cfg
+#+end_src
+
+#+RESULTS:
+
+I have not output, emacs have showed in another buffer. I manually
+copy below. Here's the error I got:
+
+#+BEGIN_EXAMPLE
+UNRECOVERABLE ERROR -> Node id 0 does not belong to any of the created machines
+#+END_EXAMPLE
+
+Looks like we badly configured Dimemas. So let's fix above.
+
+I have tangled again: C-c C-v t.
+
+Let's do it again:
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+~/install/dimemas-5.2.12/bin/Dimemas -S 32K -p output draco-example.cfg 2>&1 > output.log
+cat output.log
+rm output.log
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+-> Simulator configuration to be read draco-example.cfg
+-> Loading default random values
+-> Loading default scheduler configuration
+   * Machine 0. Policy: FIFO
+   * Loading default communications configuration
+-> Loding initial memory status
+-> Loding initial semaphores status
+-> Loading default file sytem configuration
+Fatal error at time 25210.000000000
+Time out of simulation limit
+#+end_example
+
+Great, but we have reached the time simulation limit. Tiago told me we
+cannot change that in any place (as far as he knows), the only
+possible solution is to increase the power computing of each
+machine. Let's edit the configuration above, tangle and try again.
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+~/install/dimemas-5.2.12/bin/Dimemas -S 32K -p output.prv draco-example.cfg 2>&1 > output.log
+cat output.log
+rm output.log
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+-> Simulator configuration to be read draco-example.cfg
+-> Loading default random values
+-> Loading default scheduler configuration
+   * Machine 0. Policy: FIFO
+   * Loading default communications configuration
+-> Loding initial memory status
+-> Loding initial semaphores status
+-> Loading default file sytem configuration
+
+780.000000000: END SIMULATION
+
+WARNING: : COMMUNIC_end: Application finished with a pending global operation
+WARNING: : * 63 tasks involved
+ **** Application 0 (output-ondes3d-64p-draco_1-4.dim) ****
+
+ **** Total Statistics ****
+
+Execution time:	780.000000000
+Speedup:	62.81 
+CPU Time:	48990.241997581
+
+ Id.	Computation	%time	Communication
+  0	777.372615546	49.92	0.000000000
+  1	777.372597177	49.92	0.000000000
+  2	777.372597219	49.92	0.000000000
+  3	777.372597403	49.92	0.000000000
+  4	777.372597430	49.92	0.000000000
+  5	777.372597549	49.92	0.000000000
+  6	777.372597691	49.92	0.000000000
+  7	777.372597805	49.92	0.000000000
+  8	777.372597849	49.92	0.000000000
+  9	777.372597980	49.92	0.000000000
+ 10	777.372598070	49.92	0.000000000
+ 11	777.372598191	49.92	0.000000000
+ 12	777.372598289	49.92	0.000000000
+ 13	777.372598419	49.92	0.000000000
+ 14	777.372598517	49.92	0.000000000
+ 15	777.372598632	49.92	0.000000000
+ 16	0.000000000	0.00	0.000000000
+ 17	778.023596091	49.94	0.000000000
+ 18	778.023596451	49.94	0.000000000
+ 19	778.023596804	49.94	0.000000000
+ 20	778.023597181	49.94	0.000000000
+ 21	778.023597564	49.94	0.000000000
+ 22	778.023597920	49.94	0.000000000
+ 23	778.023598272	49.94	0.000000000
+ 24	778.023598644	49.94	0.000000000
+ 25	778.023598977	49.94	0.000000000
+ 26	778.023599341	49.94	0.000000000
+ 27	778.023599702	49.94	0.000000000
+ 28	778.023600058	49.94	0.000000000
+ 29	778.023600603	49.94	0.000000000
+ 30	778.023601051	49.94	0.000000000
+ 31	778.023601563	49.94	0.000000000
+ 32	777.680196397	49.93	0.000000000
+ 33	777.680196770	49.93	0.000000000
+ 34	777.680197125	49.93	0.000000000
+ 35	777.680197467	49.93	0.000000000
+ 36	777.680197795	49.93	0.000000000
+ 37	777.680198138	49.93	0.000000000
+ 38	777.680198458	49.93	0.000000000
+ 39	777.680198781	49.93	0.000000000
+ 40	777.680199131	49.93	0.000000000
+ 41	777.680199513	49.93	0.000000000
+ 42	777.680199850	49.93	0.000000000
+ 43	777.680200225	49.93	0.000000000
+ 44	777.680200563	49.93	0.000000000
+ 45	777.680200901	49.93	0.000000000
+ 46	777.680201239	49.93	0.000000000
+ 47	777.680201592	49.93	0.000000000
+ 48	777.440200314	49.92	0.000000000
+ 49	777.440200694	49.92	0.000000000
+ 50	777.440201090	49.92	0.000000000
+ 51	777.440201446	49.92	0.000000000
+ 52	777.440201818	49.92	0.000000000
+ 53	777.440202213	49.92	0.000000000
+ 54	777.440202572	49.92	0.000000000
+ 55	777.440202938	49.92	0.000000000
+ 56	777.440203301	49.92	0.000000000
+ 57	777.440203648	49.92	0.000000000
+ 58	777.440204031	49.92	0.000000000
+ 59	777.440204383	49.92	0.000000000
+ 60	777.440204766	49.92	0.000000000
+ 61	777.440205122	49.92	0.000000000
+ 62	777.440205472	49.92	0.000000000
+ 63	777.440205841	49.92	0.000000000
+
+ Id.	Mess.sent	Bytes sent	Immediate recv	Waiting recv	Bytes recv	Coll.op.	Block time	Comm. time	Wait link time	Wait buses time	I/O time
+  0	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  1	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  2	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  3	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  4	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  5	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  6	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  7	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  8	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  9	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 10	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 11	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 12	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 13	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 14	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 15	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 16	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 17	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 18	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 19	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 20	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 21	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 22	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 23	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 24	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 25	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 26	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 27	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 28	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 29	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 30	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 31	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 32	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 33	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 34	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 35	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 36	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 37	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 38	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 39	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 40	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 41	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 42	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 43	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 44	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 45	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 46	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 47	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 48	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 49	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 50	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 51	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 52	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 53	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 54	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 55	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 56	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 57	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 58	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 59	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 60	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 61	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 62	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 63	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	6.300000e+01	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Average	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	9.843750e-01	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Maximum	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Minimum	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Stdev	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.240196e-01	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+
+Output Paraver trace "output.prv" generated
+
+WARNING: Some task P00 T01 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T02 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T03 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T04 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T05 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T06 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T07 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T08 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T09 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T10 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T11 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T12 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T13 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T14 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T15 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T00 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T48 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T49 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T50 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T51 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T52 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T53 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T54 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T55 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T56 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T57 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T58 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T59 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T60 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T61 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T62 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T63 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T32 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T33 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T34 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T35 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T36 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T37 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T38 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T39 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T40 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T41 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T42 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T43 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T44 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T45 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T46 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T47 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T17 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T18 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T19 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T20 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T21 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T22 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T23 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T24 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T25 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T26 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T27 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T28 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T29 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T30 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T31 (t00) waiting for global operation MPI_Barrier
+#+end_example
+
+There is a lot of warnings. We are not sure if we are okay.
+
+Strange things we have noticed:
+
+- Task 16 has no computation at all
+  #+BEGIN_EXAMPLE
+  16	0.000000000	0.00	0.000000000
+  #+END_EXAMPLE
+- =MPI_Barrier= at the end 
+
+Lucas used this hostname file to run the experiment:
+
+#+BEGIN_EXAMPLE
+draco1 slots=16 max_slots=16
+draco2 slots=16 max_slots=16
+draco3 slots=16 max_slots=16
+draco4 slots=16 max_slots=16
+#+END_EXAMPLE
+
+We should do a round-robin mapping.
+
+#+begin_src text :results output :session :exports both :tangle "./output-ondes3d-64p-draco_1-4/draco-example-v2.cfg"
+SDDFA
+/*
+ * "Dimemas Configuration Format:" "Version 2.5"
+ * "Last update"  "09/18/02 at 12:51"
+ */ ;;
+
+
+#0:
+"wide area network information" {
+   // "wan_name" "name of the wide area network simulated"
+   char "wan_name"[];
+   // "number_of_machines" "number of machines in wan"
+   int "number_of_machines";
+   // "number_dedicated_connections" "number of dedicated connections between machines in the simulated system"
+   int "number_dedicated_connections";
+   //"function_of_traffic" "function that models influence of traffic in the non dedicated network"
+        // "options: 1 EXP, 2 LOG, 3 LIN, 4 CT"
+   int "function_of_traffic";
+   // Maximal value of traffic in the network
+   double "max_traffic_value";
+   // "external_net_bandwidth" "external net bandwidth in MB/s"
+   double "external_net_bandwidth";
+   // "1 Constant, 2 Lineal, 3 Logarithmic"
+   int "communication_group_model";
+};;
+
+
+
+#1:
+"environment information" {
+   char "machine_name"[];
+   int "machine_id";
+   // "instrumented_architecture" "Architecture used to instrument"
+   char    "instrumented_architecture"[];
+   // "number_of_nodes" "Number of nodes on virtual machine"
+   int     "number_of_nodes";
+   // "network_bandwidth" "Data tranfer rate between nodes in Mbytes/s"
+   // "0 means instantaneous communication"
+   double  "network_bandwidth";
+   // "number_of_buses_on_network" "Maximun number of messages on network"
+   // "0 means no limit"
+   // "1 means bus contention"
+   int   "number_of_buses_on_network";
+   // "1 Constant, 2 Lineal, 3 Logarithmic"
+   int   "communication_group_model";
+};;
+
+
+#2:
+"node information" {
+   int "machine_id";
+   // "node_id" "Node number"
+   int     "node_id";
+   // "simulated_architecture" "Architecture node name"
+   char    "simulated_architecture"[];
+   // "number_of_processors" "Number of processors within node"
+   int     "number_of_processors";
+	// "speed_ratio_instrumented_vs_simulated" "Relative processor speed"
+	double  "speed_ratio_instrumented_vs_simulated";
+	// "intra_node_startup" "Startup time (s) of intra-node communications model"
+	double  "intra_node_startup";
+	// "intra_node_bandwidth" "Bandwidth (MB/s) of intra-node communications model"
+	// "0 means instantaneous communication"
+	double  "intra_node_bandwidth";
+	// "intra_node_buses" "Number of buses of intra-node communications model"
+	// "0 means infinite buses"
+	int     "intra_node_buses";
+	// "intra_node_input_links" "Input links of intra-node communications model"
+	int     "intra_node_input_links";
+	// "intra_node_input_links" "Output links of intra-node communications model"
+	int     "intra_node_output_links";
+	// "intra_node_startup" "Startup time (s) of inter-node communications model"
+	double  "inter_node_startup";
+	// "inter_node_input_links" "Input links of inter-node communications model"
+	int     "inter_node_input_links";
+	// "inter_node_output_links" "Input links of intra-node communications model"
+	int     "inter_node_output_links";
+	// "wan_startup" "Startup time (s) of inter-machines (WAN) communications model"
+	double  "wan_startup";
+};;
+
+
+#3:
+"mapping information" {
+   // "tracefile" "Tracefile name of application"
+   char    "tracefile"[];
+   // "number_of_tasks" "Number of tasks in application"
+   int     "number_of_tasks";
+   // "mapping_tasks_to_nodes" "List of nodes in application"
+   int     "mapping_tasks_to_nodes"[];
+};;
+
+
+#4:
+"configuration files" {
+   char       "scheduler"[];
+   char       "file_system"[];
+   char       "communication"[];
+   char       "sensitivity"[];
+};;
+
+
+#5:
+"modules information" {
+// Module type
+        int     "type";
+        // Module value
+        int     "value";
+        // Speed ratio for this module, 0 means instantaneous execution
+        double  "execution_ratio";
+};;
+
+
+#6:
+"file system parameters" {
+   double     "disk latency";
+   double     "disk bandwidth";
+   double     "block size";
+   int        "concurrent requests";
+   double     "hit ratio";
+};;
+
+
+#7:
+"dedicated connection information" {
+   // "connection_id" "connection number"
+   int "connection_id";
+   // "source_machine" "source machine number"
+   int "source_machine";
+   // "destination_machine" "destination machine number"
+   int "destination_machine";
+   // "connection_bandwidth" "bandwidth of the connection in Mbytes/s"
+   double "connection_bandwidth";
+   // "tags_list" "list of tags that will use the connection"
+   int "tags_list"[];
+   // "first_message_size" "size of messages in bytes" int "first_message_size";
+   int "first_message_size";
+   // "first_size_condition" "size condition that should meet messages to use the connection"
+        // "it can be <, =, > and its is referent to message_size
+   char "first_size_condition"[];
+   // "operation" "& AND, | OR"
+   char "operation"[];
+    // "second_message_size" "size of messages in bytes"
+   int "second_message_size";
+   // "second_size_condition" "size condition that should meet messages to use the connection"
+        // "it can be <, =, > and its is referent to message_size"
+   char "second_size_condition"[];
+   // "list_communicators" "list of communicators of coll. Operations that can use the connection"
+   int "list_communicators"[];
+   // Latency of dedicated connection in seconds
+   double "connection_startup";
+   //Latency due to distance in seconds
+        double "flight_time";
+};;
+
+
+"wide area network information" {"", 1, 0, 4, 0.0, 0.0, 1};;
+
+"environment information" {"draco", 0, "", 4, 1000.0, 0, 1};;
+
+"node information" {0, 0, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 1, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 2, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 3, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+
+"mapping information" {"output-ondes3d-64p-draco_1-4.dim", 64, [64] 
+  {
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3,
+    0,1,2,3
+  }};;
+
+"configuration files" {"", "", "", ""};;
+
+"file system parameters" {0.0, 0.0, 8.0, 0, 1.0};;
+#+end_src
+
+Don't forget to tangle again with C-c C-v t
+
+#+begin_src sh :results output :session :exports both :dir "~/svn/bozzetti/output-ondes3d-64p-draco_1-4/"
+pwd
+~/install/dimemas-5.2.12/bin/Dimemas -S 32K -p output.prv draco-example-v2.cfg 2>&1 > output.log
+cat output.log
+rm output.log
+#+end_src
+
+#+RESULTS:
+#+begin_example
+/home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
+-> Simulator configuration to be read draco-example-v2.cfg
+-> Loading default random values
+-> Loading default scheduler configuration
+   * Machine 0. Policy: FIFO
+   * Loading default communications configuration
+-> Loding initial memory status
+-> Loding initial semaphores status
+-> Loading default file sytem configuration
+
+780.000000000: END SIMULATION
+
+WARNING: : COMMUNIC_end: Application finished with a pending global operation
+WARNING: : * 63 tasks involved
+ **** Application 0 (output-ondes3d-64p-draco_1-4.dim) ****
+
+ **** Total Statistics ****
+
+Execution time:	780.000000000
+Speedup:	62.81 
+CPU Time:	48990.241997581
+
+ Id.	Computation	%time	Communication
+  0	777.372615546	49.92	0.000000000
+  1	777.372597177	49.92	0.000000000
+  2	777.372597219	49.92	0.000000000
+  3	777.372597403	49.92	0.000000000
+  4	777.372597430	49.92	0.000000000
+  5	777.372597549	49.92	0.000000000
+  6	777.372597691	49.92	0.000000000
+  7	777.372597805	49.92	0.000000000
+  8	777.372597849	49.92	0.000000000
+  9	777.372597980	49.92	0.000000000
+ 10	777.372598070	49.92	0.000000000
+ 11	777.372598191	49.92	0.000000000
+ 12	777.372598289	49.92	0.000000000
+ 13	777.372598419	49.92	0.000000000
+ 14	777.372598517	49.92	0.000000000
+ 15	777.372598632	49.92	0.000000000
+ 16	0.000000000	0.00	0.000000000
+ 17	778.023596091	49.94	0.000000000
+ 18	778.023596451	49.94	0.000000000
+ 19	778.023596804	49.94	0.000000000
+ 20	778.023597181	49.94	0.000000000
+ 21	778.023597564	49.94	0.000000000
+ 22	778.023597920	49.94	0.000000000
+ 23	778.023598272	49.94	0.000000000
+ 24	778.023598644	49.94	0.000000000
+ 25	778.023598977	49.94	0.000000000
+ 26	778.023599341	49.94	0.000000000
+ 27	778.023599702	49.94	0.000000000
+ 28	778.023600058	49.94	0.000000000
+ 29	778.023600603	49.94	0.000000000
+ 30	778.023601051	49.94	0.000000000
+ 31	778.023601563	49.94	0.000000000
+ 32	777.680196397	49.93	0.000000000
+ 33	777.680196770	49.93	0.000000000
+ 34	777.680197125	49.93	0.000000000
+ 35	777.680197467	49.93	0.000000000
+ 36	777.680197795	49.93	0.000000000
+ 37	777.680198138	49.93	0.000000000
+ 38	777.680198458	49.93	0.000000000
+ 39	777.680198781	49.93	0.000000000
+ 40	777.680199131	49.93	0.000000000
+ 41	777.680199513	49.93	0.000000000
+ 42	777.680199850	49.93	0.000000000
+ 43	777.680200225	49.93	0.000000000
+ 44	777.680200563	49.93	0.000000000
+ 45	777.680200901	49.93	0.000000000
+ 46	777.680201239	49.93	0.000000000
+ 47	777.680201592	49.93	0.000000000
+ 48	777.440200314	49.92	0.000000000
+ 49	777.440200694	49.92	0.000000000
+ 50	777.440201090	49.92	0.000000000
+ 51	777.440201446	49.92	0.000000000
+ 52	777.440201818	49.92	0.000000000
+ 53	777.440202213	49.92	0.000000000
+ 54	777.440202572	49.92	0.000000000
+ 55	777.440202938	49.92	0.000000000
+ 56	777.440203301	49.92	0.000000000
+ 57	777.440203648	49.92	0.000000000
+ 58	777.440204031	49.92	0.000000000
+ 59	777.440204383	49.92	0.000000000
+ 60	777.440204766	49.92	0.000000000
+ 61	777.440205122	49.92	0.000000000
+ 62	777.440205472	49.92	0.000000000
+ 63	777.440205841	49.92	0.000000000
+
+ Id.	Mess.sent	Bytes sent	Immediate recv	Waiting recv	Bytes recv	Coll.op.	Block time	Comm. time	Wait link time	Wait buses time	I/O time
+  0	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  1	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  2	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  3	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  4	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  5	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  6	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  7	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  8	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  9	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 10	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 11	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 12	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 13	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 14	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 15	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 16	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 17	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 18	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 19	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 20	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 21	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 22	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 23	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 24	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 25	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 26	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 27	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 28	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 29	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 30	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 31	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 32	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 33	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 34	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 35	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 36	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 37	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 38	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 39	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 40	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 41	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 42	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 43	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 44	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 45	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 46	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 47	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 48	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 49	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 50	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 51	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 52	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 53	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 54	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 55	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 56	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 57	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 58	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 59	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 60	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 61	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 62	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 63	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	6.300000e+01	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Average	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	9.843750e-01	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Maximum	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Minimum	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Stdev	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	1.240196e-01	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+
+Output Paraver trace "output.prv" generated
+
+WARNING: Some task P00 T01 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T02 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T03 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T04 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T05 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T06 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T07 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T08 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T09 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T10 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T11 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T12 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T13 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T14 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T15 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T00 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T48 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T49 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T50 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T51 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T52 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T53 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T54 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T55 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T56 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T57 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T58 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T59 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T60 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T61 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T62 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T63 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T32 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T33 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T34 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T35 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T36 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T37 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T38 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T39 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T40 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T41 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T42 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T43 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T44 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T45 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T46 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T47 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T17 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T18 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T19 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T20 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T21 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T22 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T23 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T24 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T25 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T26 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T27 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T28 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T29 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T30 (t00) waiting for global operation MPI_Barrier
+WARNING: Some task P00 T31 (t00) waiting for global operation MPI_Barrier
+#+end_example
+
+Nothing has changed.
+
+Our feeling is that the input trace file Lucas has obtained is somehow
+corrupted, or at least missing information from task 16. We should
+re-run the MPI application again, and do everything (=prv2dim= and
+=Dimemas= simulation)once again.
