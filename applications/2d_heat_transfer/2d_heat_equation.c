@@ -209,7 +209,7 @@ first and last rows have fixed temperature*/
       iz = 0;
       for (it = 1; it <= TIME_STEPS; it++)
 	{
-           printf("Worker number = %d starting time step = %d\n", worker_number, it);
+//           printf("Worker number = %d starting time step = %d\n", worker_number, it);
 	   if (neighbor1 != NONE)
 	    {
 	          MPI_Send(&u[iz][offset][0], NYPROB, MPI_FLOAT, neighbor1,
