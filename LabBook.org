@@ -4069,7 +4069,7 @@ cp ../dimemas/examples/small.cfg draco-example.cfg
 #+RESULTS:
 : /home/schnorr/svn/bozzetti/output-ondes3d-64p-draco_1-4
 
-#+begin_src text :results output :session :exports both :tangle "./output-ondes3d-64p-draco_1-4/draco-example.cfg"
+#+begin_src text :results output :session :exports both :tangle "./draco-example.cfg"
 SDDFA
 /*
  * "Dimemas Configuration Format:" "Version 2.5"
@@ -4560,7 +4560,7 @@ draco4 slots=16 max_slots=16
 
 We should do a round-robin mapping.
 
-#+begin_src text :results output :session :exports both :tangle "./output-ondes3d-64p-draco_1-4/draco-example-v2.cfg"
+#+begin_src text :results output :session :exports both :tangle "./draco-example-v2.cfg"
 SDDFA
 /*
  * "Dimemas Configuration Format:" "Version 2.5"
@@ -5226,14 +5226,14 @@ See the entry below to understand the parameters for the next call to =mpirun=:
 - [[*2016-05-06 Compiling and instrumenting Ondes3D for Draco][2016-05-06 Compiling and instrumenting Ondes3D for Draco]]
 
 #+begin_src sh :results output verbatim :dir /ssh:draco1:~/ondes3d-dir/Ondes3d-1.0/
-unset LD_PRELOAD
-unset EXTRAE_CONFIG_FILE
-unset EXTRAE_HOME
-pwd
-mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self \
-        --machinefile machinefile \
-        -np 64 \
-        /home/schnorr/ondes3d
+  unset LD_PRELOAD
+  unset EXTRAE_CONFIG_FILE
+  unset EXTRAE_HOME
+  pwd
+  mpirun  -mca btl_tcp_if_include em1 --mca btl tcp,self \
+          --machinefile machinefile \
+          -np 64 \
+          /home/schnorr/ondes3d
 #+end_src
 
 #+RESULTS:
@@ -7398,9 +7398,9 @@ WARNING: : COMMUNIC_end: Task 127 ends with 6 message(s) in reception queue:
           -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253558 Size: 4
           -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253561 Size: 4
           -> Sender: T126 t00  destT127  destt-1  Tag: 02 CommId: 312696 Size: 20000
-**** Application 0 (2016-05-14-2D_Heat_Transfer_5k_5k_500.dim) ****
+  **** Application 0 (2016-05-14-2D_Heat_Transfer_5k_5k_500.dim) ****
 
-**** Total Statistics ****
+  **** Total Statistics ****
 
 Execution time:	1610.000000000
 Speedup:	94.25 
@@ -7676,3 +7676,6 @@ Output Paraver trace "output.prv" generated
 
 #+end_example
 
+
+I am still trying to understand why all these warnings. Is something
+we have done wrong during tracing?
