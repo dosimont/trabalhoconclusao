@@ -7679,3 +7679,51 @@ Output Paraver trace "output.prv" generated
 
 I am still trying to understand why all these warnings. Is something
 we have done wrong during tracing?
+* 2016-05-16 Analyzing the first draco trace
+
+So we got warning when simulating the trace on Dimemas and an error on
+the conversion of the paraver trace to the tit format.
+
+Let`s take a better look at the original trace first.
+We will be working at the =experiments/16-May-2016/draco1/= directory.
+
+Let`s copy the files to the directory and convert the original trace
+to the pjdump format.
+
+#+begin_src sh
+cd experiments/16-May-2016/draco1
+wget https://dl.dropboxusercontent.com/u/1119921/output-ondes3d-64p-draco_1-4.tar.gz
+tar xfz output-ondes3d-64p-draco_1-4.tar.gz -C . --strip-components=1
+perl ../../../getpjdump/prv2pjdump.pl -i output-ondes3d-64p-draco_1-4 > output-ondes3d-64p-draco_1-4.pjdump
+#+end_src
+
+#+RESULTS:
+
+And see what is going on with the task 16.
+
+#+begin_src sh
+cd experiments/16-May-2016/draco1
+cat output-ondes3d-64p-draco_1-4.pjdump | grep 'rank-16'
+#+end_src
+
+#+RESULTS:
+
+Nothing is going on with task 16 on the pjdump file.
+Let`s check on the prv file (remember that its id on the prv file is plus 1).
+
+#+begin_src sh
+cd experiments/16-May-2016/draco1
+cat output-ondes3d-64p-draco_1-4.prv | grep ':1:17:1:'
+#+end_src
+
+#+RESULTS:
+: c:1:17:1:5
+
+Nothing there too.
+This can potentialy explains the warnings on Dimemas and specially why the conversion to tit was not working.
+
+Let`s move on and look at the trace Lucas obtained with the 2d head application.
+
+
+
+
