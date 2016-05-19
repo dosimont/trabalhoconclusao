@@ -7727,3 +7727,1244 @@ Let`s move on and look at the trace Lucas obtained with the 2d head application.
 
 
 
+* 2016-05-18 Second draco trace
+
+Lucas gave me the link to the download the head2D trace:
+https://www.dropbox.com/s/pr17yli94u9v3v0/2016-05-14-2D_Heat_Transfer.tar.gz
+
+We will work on the directory =experiments/18-May-2016/draco2/=.
+Let`s download it and convert it to tit (logging errors).
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+wget https://www.dropbox.com/s/pr17yli94u9v3v0/2016-05-14-2D_Heat_Transfer.tar.gz
+tar xfz 2016-05-14-2D_Heat_Transfer.tar.gz -C . --strip-components=1
+perl ../../../getpjdump/prv2tit.pl -i 2016-05-14-2D_Heat_Transfer_5k_5k_500 > 2016-05-14-2D_Heat_Transfer_5k_5k_500.tit 2> error.txt
+cat error.txt
+#+end_src
+
+#+RESULTS:
+: Scalar value @ar[$task] better written as $ar[$task] at ../../../getpjdump/prv2tit.pl line 903.
+: Scalar value @ar[$task] better written as $ar[$task] at ../../../getpjdump/prv2tit.pl line 923.
+: Can't use an undefined value as a HASH reference at ../../../getpjdump/prv2tit.pl line 202, <INPUT> line 1135448.
+
+OK, same thing we had with the previous trace.
+Let`s try on Dimemas, first converting it to the dim format (using the =-s= option).
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+./../../../dimemas/dimemas-5.2.12/prv2dim/prv2dim -s 2016-05-14-2D_Heat_Transfer_5k_5k_500.prv 2dheat.dim 2> error.txt
+cat error.txt
+#+end_src
+
+#+RESULTS:
+#+begin_example
+INITIALIZING PARSER... OK!
+SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 001 %SPLITTING COMMUNICATIONS 002 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 010 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 030 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 048 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 051 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 058 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 084 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 092 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+-> Trace first pass finished (communications split)
+   * Records parsed:          629411
+   * Splitted communications 375333
+SORTING PARTIAL COMMUNICATIONS
+COMMUNICATIONS SORTED
+INITIALIZING TRANSLATION...  OK
+CREATING TRANSLATION STRUCTURES  001/128CREATING TRANSLATION STRUCTURES  002/128CREATING TRANSLATION STRUCTURES  003/128CREATING TRANSLATION STRUCTURES  004/128CREATING TRANSLATION STRUCTURES  005/128CREATING TRANSLATION STRUCTURES  006/128CREATING TRANSLATION STRUCTURES  007/128CREATING TRANSLATION STRUCTURES  008/128CREATING TRANSLATION STRUCTURES  009/128CREATING TRANSLATION STRUCTURES  010/128CREATING TRANSLATION STRUCTURES  011/128CREATING TRANSLATION STRUCTURES  012/128CREATING TRANSLATION STRUCTURES  013/128CREATING TRANSLATION STRUCTURES  014/128CREATING TRANSLATION STRUCTURES  015/128CREATING TRANSLATION STRUCTURES  016/128CREATING TRANSLATION STRUCTURES  017/128CREATING TRANSLATION STRUCTURES  018/128CREATING TRANSLATION STRUCTURES  019/128CREATING TRANSLATION STRUCTURES  020/128CREATING TRANSLATION STRUCTURES  021/128CREATING TRANSLATION STRUCTURES  022/128CREATING TRANSLATION STRUCTURES  023/128CREATING TRANSLATION STRUCTURES  024/128CREATING TRANSLATION STRUCTURES  025/128CREATING TRANSLATION STRUCTURES  026/128CREATING TRANSLATION STRUCTURES  027/128CREATING TRANSLATION STRUCTURES  028/128CREATING TRANSLATION STRUCTURES  029/128CREATING TRANSLATION STRUCTURES  030/128CREATING TRANSLATION STRUCTURES  031/128CREATING TRANSLATION STRUCTURES  032/128CREATING TRANSLATION STRUCTURES  033/128CREATING TRANSLATION STRUCTURES  034/128CREATING TRANSLATION STRUCTURES  035/128CREATING TRANSLATION STRUCTURES  036/128CREATING TRANSLATION STRUCTURES  037/128CREATING TRANSLATION STRUCTURES  038/128CREATING TRANSLATION STRUCTURES  039/128CREATING TRANSLATION STRUCTURES  040/128CREATING TRANSLATION STRUCTURES  041/128CREATING TRANSLATION STRUCTURES  042/128CREATING TRANSLATION STRUCTURES  043/128CREATING TRANSLATION STRUCTURES  044/128CREATING TRANSLATION STRUCTURES  045/128CREATING TRANSLATION STRUCTURES  046/128CREATING TRANSLATION STRUCTURES  047/128CREATING TRANSLATION STRUCTURES  048/128CREATING TRANSLATION STRUCTURES  049/128CREATING TRANSLATION STRUCTURES  050/128CREATING TRANSLATION STRUCTURES  051/128CREATING TRANSLATION STRUCTURES  052/128CREATING TRANSLATION STRUCTURES  053/128CREATING TRANSLATION STRUCTURES  054/128CREATING TRANSLATION STRUCTURES  055/128CREATING TRANSLATION STRUCTURES  056/128CREATING TRANSLATION STRUCTURES  057/128CREATING TRANSLATION STRUCTURES  058/128CREATING TRANSLATION STRUCTURES  059/128CREATING TRANSLATION STRUCTURES  060/128CREATING TRANSLATION STRUCTURES  061/128CREATING TRANSLATION STRUCTURES  062/128CREATING TRANSLATION STRUCTURES  063/128CREATING TRANSLATION STRUCTURES  064/128CREATING TRANSLATION STRUCTURES  065/128CREATING TRANSLATION STRUCTURES  066/128CREATING TRANSLATION STRUCTURES  067/128CREATING TRANSLATION STRUCTURES  068/128CREATING TRANSLATION STRUCTURES  069/128CREATING TRANSLATION STRUCTURES  070/128CREATING TRANSLATION STRUCTURES  071/128CREATING TRANSLATION STRUCTURES  072/128CREATING TRANSLATION STRUCTURES  073/128CREATING TRANSLATION STRUCTURES  074/128CREATING TRANSLATION STRUCTURES  075/128CREATING TRANSLATION STRUCTURES  076/128CREATING TRANSLATION STRUCTURES  077/128CREATING TRANSLATION STRUCTURES  078/128CREATING TRANSLATION STRUCTURES  079/128CREATING TRANSLATION STRUCTURES  080/128CREATING TRANSLATION STRUCTURES  081/128CREATING TRANSLATION STRUCTURES  082/128CREATING TRANSLATION STRUCTURES  083/128CREATING TRANSLATION STRUCTURES  084/128CREATING TRANSLATION STRUCTURES  085/128CREATING TRANSLATION STRUCTURES  086/128CREATING TRANSLATION STRUCTURES  087/128CREATING TRANSLATION STRUCTURES  088/128CREATING TRANSLATION STRUCTURES  089/128CREATING TRANSLATION STRUCTURES  090/128CREATING TRANSLATION STRUCTURES  091/128CREATING TRANSLATION STRUCTURES  092/128CREATING TRANSLATION STRUCTURES  093/128CREATING TRANSLATION STRUCTURES  094/128CREATING TRANSLATION STRUCTURES  095/128CREATING TRANSLATION STRUCTURES  096/128CREATING TRANSLATION STRUCTURES  097/128CREATING TRANSLATION STRUCTURES  098/128CREATING TRANSLATION STRUCTURES  099/128CREATING TRANSLATION STRUCTURES  100/128CREATING TRANSLATION STRUCTURES  101/128CREATING TRANSLATION STRUCTURES  102/128CREATING TRANSLATION STRUCTURES  103/128CREATING TRANSLATION STRUCTURES  104/128CREATING TRANSLATION STRUCTURES  105/128CREATING TRANSLATION STRUCTURES  106/128CREATING TRANSLATION STRUCTURES  107/128CREATING TRANSLATION STRUCTURES  108/128CREATING TRANSLATION STRUCTURES  109/128CREATING TRANSLATION STRUCTURES  110/128CREATING TRANSLATION STRUCTURES  111/128CREATING TRANSLATION STRUCTURES  112/128CREATING TRANSLATION STRUCTURES  113/128CREATING TRANSLATION STRUCTURES  114/128CREATING TRANSLATION STRUCTURES  115/128CREATING TRANSLATION STRUCTURES  116/128CREATING TRANSLATION STRUCTURES  117/128CREATING TRANSLATION STRUCTURES  118/128CREATING TRANSLATION STRUCTURES  119/128CREATING TRANSLATION STRUCTURES  120/128CREATING TRANSLATION STRUCTURES  121/128CREATING TRANSLATION STRUCTURES  122/128CREATING TRANSLATION STRUCTURES  123/128CREATING TRANSLATION STRUCTURES  124/128CREATING TRANSLATION STRUCTURES  125/128CREATING TRANSLATION STRUCTURES  126/128CREATING TRANSLATION STRUCTURES  127/128CREATING TRANSLATION STRUCTURES  128/128CREATING TRANSLATION STRUCTURES  128/128
+WRITING HEADER... OK
+TRANSLATING COMMUNICATORS... OK
+RECORD TRANSLATION
+TRANSLATING RECORDS 000 %TRANSLATING RECORDS 001 %TRANSLATING RECORDS 002 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 010 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 030 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 048 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 051 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 054 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 058 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 063 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 068 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 084 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 092 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+MERGING PARTIAL OUTPUT TRACES
+   * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * Merging task    5 100 %   * Merging task    6 100 %   * Merging task    7 100 %   * Merging task    8 100 %   * Merging task    9 100 %   * Merging task   10 100 %   * Merging task   11 100 %   * Merging task   12 100 %   * Merging task   13 100 %   * Merging task   14 100 %   * Merging task   15 100 %   * Merging task   16 100 %   * Merging task   17 100 %   * Merging task   18 100 %   * Merging task   19 100 %   * Merging task   20 100 %   * Merging task   21 100 %   * Merging task   22 100 %   * Merging task   23 100 %   * Merging task   24 100 %   * Merging task   25 100 %   * Merging task   26 100 %   * Merging task   27 100 %   * Merging task   28 100 %   * Merging task   29 100 %   * Merging task   30 100 %   * Merging task   31 100 %   * Merging task   32 100 %   * Merging task   33 100 %   * Merging task   34 100 %   * Merging task   35 100 %   * Merging task   36 100 %   * Merging task   37 100 %   * Merging task   38 100 %   * Merging task   39 100 %   * Merging task   40 100 %   * Merging task   41 100 %   * Merging task   42 100 %   * Merging task   43 100 %   * Merging task   44 100 %   * Merging task   45 100 %   * Merging task   46 100 %   * Merging task   47 100 %   * Merging task   48 100 %   * Merging task   49 100 %   * Merging task   50 100 %   * Merging task   51 100 %   * Merging task   52 100 %   * Merging task   53 100 %   * Merging task   54 100 %   * Merging task   55 100 %   * Merging task   56 100 %   * Merging task   57 100 %   * Merging task   58 100 %   * Merging task   59 100 %   * Merging task   60 100 %   * Merging task   61 100 %   * Merging task   62 100 %   * Merging task   63 100 %   * Merging task   64 100 %   * Merging task   65 100 %   * Merging task   66 100 %   * Merging task   67 100 %   * Merging task   68 100 %   * Merging task   69 100 %   * Merging task   70 100 %   * Merging task   71 100 %   * Merging task   72 100 %   * Merging task   73 100 %   * Merging task   74 100 %   * Merging task   75 100 %   * Merging task   76 100 %   * Merging task   77 100 %   * Merging task   78 100 %   * Merging task   79 100 %   * Merging task   80 100 %   * Merging task   81 100 %   * Merging task   82 100 %   * Merging task   83 100 %   * Merging task   84 100 %   * Merging task   85 100 %   * Merging task   86 100 %   * Merging task   87 100 %   * Merging task   88 100 %   * Merging task   89 100 %   * Merging task   90 100 %   * Merging task   91 100 %   * Merging task   92 100 %   * Merging task   93 100 %   * Merging task   94 100 %   * Merging task   95 100 %   * Merging task   96 100 %   * Merging task   97 100 %   * Merging task   98 100 %   * Merging task   99 100 %   * Merging task  100 100 %   * Merging task  101 100 %   * Merging task  102 100 %   * Merging task  103 100 %   * Merging task  104 100 %   * Merging task  105 100 %   * Merging task  106 100 %   * Merging task  107 100 %   * Merging task  108 100 %   * Merging task  109 100 %   * Merging task  110 100 %   * Merging task  111 100 %   * Merging task  112 100 %   * Merging task  113 100 %   * Merging task  114 100 %   * Merging task  115 100 %   * Merging task  116 100 %   * Merging task  117 100 %   * Merging task  118 100 %   * Merging task  119 100 %   * Merging task  120 100 %   * Merging task  121 100 %   * Merging task  122 100 %   * Merging task  123 100 %   * Merging task  124 100 %   * Merging task  125 100 %   * Merging task  126 100 %   * Merging task  127 100 %   * Merging task  128 100 %   * All task merged!         
+
+********************************************************************************
+*                               WARNING                                        *
+********************************************************************************
+1 tasks have communications records outside a communication block
+WARNING: The simulation of this trace could be inconsistent
+NOTE: If the Paraver trace comes from a trace cut, check the cut limtis
+********************************************************************************
+
+TRANSLATION FINISHED
+GENERATING PCF
+   * Input PCF 2016-05-14-2D_Heat_Transfer_5k_5k_500.pcf correctly copied to 2dheat.pcf
+COPYING ROW FILE
+#+end_example
+
+We got a warning: "1 tasks have communications records outside a
+communication block", it says that the simulation can be inconsistent.
+Let`s try it anyway, but first we need a configuration file.
+We will use the same configuration file that Lucas created,
+but before that, let`s take a look at the header of the prv file.
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+head -10 2016-05-14-2D_Heat_Transfer_5k_5k_500.prv
+#+end_src
+
+#+RESULTS:
+#+begin_example
+#Paraver (14/05/2016 at 02:13):1603643413942745_ns:8(15,16,16,16,16,16,16,16):1:128(1:1,1:1,1:1,1:1,1:1,1:1,1:1,1:1,1:1,1:1,1:1,1:1,0:0,1:1,1:1,1:1,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:2,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:3,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:4,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:5,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:6,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:7,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8,1:8),128
+c:1:1:128:1:2:3:4:5:6:7:8:9:10:11:12:13:14:15:16:17:18:19:20:21:22:23:24:25:26:27:28:29:30:31:32:33:34:35:36:37:38:39:40:41:42:43:44:45:46:47:48:49:50:51:52:53:54:55:56:57:58:59:60:61:62:63:64:65:66:67:68:69:70:71:72:73:74:75:76:77:78:79:80:81:82:83:84:85:86:87:88:89:90:91:92:93:94:95:96:97:98:99:100:101:102:103:104:105:106:107:108:109:110:111:112:113:114:115:116:117:118:119:120:121:122:123:124:125:126:127:128
+c:1:2:1:70
+c:1:3:1:73
+c:1:4:1:80
+c:1:5:1:77
+c:1:6:1:78
+c:1:7:1:76
+c:1:8:1:71
+c:1:9:1:79
+#+end_example
+
+8 nodes, 15 CPUs on the first node and 16 on the other nodes, which
+give us a total of 127 CPUs. Then we have 15 tasks mapped to the first
+node and 16 tasks in the other nodes. There are a total of 128 tasks
+however, the task number 13 is not mapped. Maybe this is fine, maybe
+not, let`s see.  Here it is the configuration file Lucas made for this
+trace (we just added the new dimemas file name at the end):
+
+#+begin_src text :results output :session :exports both  :tangle "./experiments/18-May-2016/draco2/draco-8.cfg"
+SDDFA
+/*
+ * "Dimemas Configuration Format:" "Version 2.5"
+ * "Last update"  "09/18/02 at 12:51"
+ */ ;;
+
+
+#0:
+"wide area network information" {
+   // "wan_name" "name of the wide area network simulated"
+   char "wan_name"[];
+   // "number_of_machines" "number of machines in wan"
+   int "number_of_machines";
+   // "number_dedicated_connections" "number of dedicated connections between machines in the simulated system"
+   int "number_dedicated_connections";
+   //"function_of_traffic" "function that models influence of traffic in the non dedicated network"
+        // "options: 1 EXP, 2 LOG, 3 LIN, 4 CT"
+   int "function_of_traffic";
+   // Maximal value of traffic in the network
+   double "max_traffic_value";
+   // "external_net_bandwidth" "external net bandwidth in MB/s"
+   double "external_net_bandwidth";
+   // "1 Constant, 2 Lineal, 3 Logarithmic"
+   int "communication_group_model";
+};;
+
+
+
+#1:
+"environment information" {
+   char "machine_name"[];
+   int "machine_id";
+   // "instrumented_architecture" "Architecture used to instrument"
+   char    "instrumented_architecture"[];
+   // "number_of_nodes" "Number of nodes on virtual machine"
+   int     "number_of_nodes";
+   // "network_bandwidth" "Data tranfer rate between nodes in Mbytes/s"
+   // "0 means instantaneous communication"
+   double  "network_bandwidth";
+   // "number_of_buses_on_network" "Maximun number of messages on network"
+   // "0 means no limit"
+   // "1 means bus contention"
+   int   "number_of_buses_on_network";
+   // "1 Constant, 2 Lineal, 3 Logarithmic"
+   int   "communication_group_model";
+};;
+
+
+#2:
+"node information" {
+   int "machine_id";
+   // "node_id" "Node number"
+   int     "node_id";
+   // "simulated_architecture" "Architecture node name"
+   char    "simulated_architecture"[];
+   // "number_of_processors" "Number of processors within node"
+   int     "number_of_processors";
+	// "speed_ratio_instrumented_vs_simulated" "Relative processor speed"
+	double  "speed_ratio_instrumented_vs_simulated";
+	// "intra_node_startup" "Startup time (s) of intra-node communications model"
+	double  "intra_node_startup";
+	// "intra_node_bandwidth" "Bandwidth (MB/s) of intra-node communications model"
+	// "0 means instantaneous communication"
+	double  "intra_node_bandwidth";
+	// "intra_node_buses" "Number of buses of intra-node communications model"
+	// "0 means infinite buses"
+	int     "intra_node_buses";
+	// "intra_node_input_links" "Input links of intra-node communications model"
+	int     "intra_node_input_links";
+	// "intra_node_input_links" "Output links of intra-node communications model"
+	int     "intra_node_output_links";
+	// "intra_node_startup" "Startup time (s) of inter-node communications model"
+	double  "inter_node_startup";
+	// "inter_node_input_links" "Input links of inter-node communications model"
+	int     "inter_node_input_links";
+	// "inter_node_output_links" "Input links of intra-node communications model"
+	int     "inter_node_output_links";
+	// "wan_startup" "Startup time (s) of inter-machines (WAN) communications model"
+	double  "wan_startup";
+};;
+
+
+#3:
+"mapping information" {
+   // "tracefile" "Tracefile name of application"
+   char    "tracefile"[];
+   // "number_of_tasks" "Number of tasks in application"
+   int     "number_of_tasks";
+   // "mapping_tasks_to_nodes" "List of nodes in application"
+   int     "mapping_tasks_to_nodes"[];
+};;
+
+
+#4:
+"configuration files" {
+   char       "scheduler"[];
+   char       "file_system"[];
+   char       "communication"[];
+   char       "sensitivity"[];
+};;
+
+
+#5:
+"modules information" {
+// Module type
+        int     "type";
+        // Module value
+        int     "value";
+        // Speed ratio for this module, 0 means instantaneous execution
+        double  "execution_ratio";
+};;
+
+
+#6:
+"file system parameters" {
+   double     "disk latency";
+   double     "disk bandwidth";
+   double     "block size";
+   int        "concurrent requests";
+   double     "hit ratio";
+};;
+
+
+#7:
+"dedicated connection information" {
+   // "connection_id" "connection number"
+   int "connection_id";
+   // "source_machine" "source machine number"
+   int "source_machine";
+   // "destination_machine" "destination machine number"
+   int "destination_machine";
+   // "connection_bandwidth" "bandwidth of the connection in Mbytes/s"
+   double "connection_bandwidth";
+   // "tags_list" "list of tags that will use the connection"
+   int "tags_list"[];
+   // "first_message_size" "size of messages in bytes" int "first_message_size";
+   int "first_message_size";
+   // "first_size_condition" "size condition that should meet messages to use the connection"
+        // "it can be <, =, > and its is referent to message_size
+   char "first_size_condition"[];
+   // "operation" "& AND, | OR"
+   char "operation"[];
+    // "second_message_size" "size of messages in bytes"
+   int "second_message_size";
+   // "second_size_condition" "size condition that should meet messages to use the connection"
+        // "it can be <, =, > and its is referent to message_size"
+   char "second_size_condition"[];
+   // "list_communicators" "list of communicators of coll. Operations that can use the connection"
+   int "list_communicators"[];
+   // Latency of dedicated connection in seconds
+   double "connection_startup";
+   //Latency due to distance in seconds
+        double "flight_time";
+};;
+
+
+"wide area network information" {"", 1, 0, 4, 0.0, 0.0, 1};;
+
+"environment information" {"draco", 0, "", 8, 1000.0, 0, 1};;
+
+"node information" {0, 0, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 1, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 2, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 3, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 4, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 5, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 6, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+"node information" {0, 7, "", 16, 1000.0, 0.0, 0.0, 0, 9999, 9999, 0.000128, 9999, 9999, 0.0 };;
+
+"mapping information" {"2dheat.dim", 128, [128] 
+  {
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7,
+    0,1,2,3,4,5,6,7
+  }};;
+
+"configuration files" {"", "", "", ""};;
+
+"file system parameters" {0.0, 0.0, 8.0, 0, 1.0};;
+
+#+end_src
+
+Tangle it with C-c C-v t.
+Here we have 8 nodes with 16 CPUs each. The 128 tasks are mapped in a round-robin fashion.
+Let`s simulate (using =-S 32K=).
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+./../../../dimemas/dimemas-5.2.12/Simulator/Dimemas -S 32K -p output.prv draco-8.cfg > log 2>&1
+cat log
+#+end_src
+
+#+RESULTS:
+: -> Simulator configuration to be read draco-8.cfg
+: 
+: UNRECOVERABLE ERROR -> Unknown configuration file tpye draco-8.cfg
+: 
+: Magic Buffer = 
+: 
+
+Ok, we got a problem, let`s fix that.
+The solution was to remove the the first blank line in the configuration file :/
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+sed '1d' draco-8.cfg > tmp; mv tmp draco-8.cfg
+#+end_src
+
+Let`s run the trace on Dimemas again.
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+./../../../dimemas/dimemas-5.2.12/Simulator/Dimemas -S 32K -p output.prv draco-8.cfg > log 2>&1
+cat log
+#+end_src
+
+#+RESULTS:
+#+begin_example
+-> Simulator configuration to be read draco-8.cfg
+-> Loading default random values
+-> Loading default scheduler configuration
+   * Machine 0. Policy: FIFO
+   * Loading default communications configuration
+-> Loding initial memory status
+-> Loding initial semaphores status
+-> Loading default file sytem configuration
+
+1610.000000000: END SIMULATION
+
+WARNING: : COMMUNIC_end: Task 00 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T127 Tag: 01 CommId: 253651 Size: 780000
+WARNING: : COMMUNIC_end: Task 00 ends with 22 message(s) in reception queue:
+          -> Sender: T01 t00  destT00  destt-1  Tag: 04 CommId: 310385 Size: 4
+          -> Sender: T01 t00  destT00  destt-1  Tag: 04 CommId: 310388 Size: 4
+          -> Sender: T02 t00  destT00  destt-1  Tag: 04 CommId: 310396 Size: 4
+          -> Sender: T02 t00  destT00  destt-1  Tag: 04 CommId: 310399 Size: 4
+          -> Sender: T03 t00  destT00  destt-1  Tag: 04 CommId: 310468 Size: 4
+          -> Sender: T03 t00  destT00  destt-1  Tag: 04 CommId: 310471 Size: 4
+          -> Sender: T04 t00  destT00  destt-1  Tag: 04 CommId: 310542 Size: 4
+          -> Sender: T04 t00  destT00  destt-1  Tag: 04 CommId: 310545 Size: 4
+          -> Sender: T05 t00  destT00  destt-1  Tag: 04 CommId: 310599 Size: 4
+          -> Sender: T05 t00  destT00  destt-1  Tag: 04 CommId: 310602 Size: 4
+          -> Sender: T06 t00  destT00  destt-1  Tag: 04 CommId: 310663 Size: 4
+          -> Sender: T06 t00  destT00  destt-1  Tag: 04 CommId: 310666 Size: 4
+          -> Sender: T07 t00  destT00  destt-1  Tag: 04 CommId: 310725 Size: 4
+          -> Sender: T07 t00  destT00  destt-1  Tag: 04 CommId: 310731 Size: 4
+          -> Sender: T08 t00  destT00  destt-1  Tag: 04 CommId: 310785 Size: 4
+          -> Sender: T08 t00  destT00  destt-1  Tag: 04 CommId: 310788 Size: 4
+          -> Sender: T09 t00  destT00  destt-1  Tag: 04 CommId: 310820 Size: 4
+          -> Sender: T09 t00  destT00  destt-1  Tag: 04 CommId: 310827 Size: 4
+          -> Sender: T11 t00  destT00  destt-1  Tag: 04 CommId: 310890 Size: 4
+          -> Sender: T10 t00  destT00  destt-1  Tag: 04 CommId: 310856 Size: 4
+          -> Sender: T11 t00  destT00  destt-1  Tag: 04 CommId: 310893 Size: 4
+          -> Sender: T10 t00  destT00  destt-1  Tag: 04 CommId: 310859 Size: 4
+WARNING: : COMMUNIC_end: Task 01 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310409 Size: 800000
+WARNING: : COMMUNIC_end: Task 02 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310451 Size: 800000
+WARNING: : COMMUNIC_end: Task 03 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310509 Size: 800000
+WARNING: : COMMUNIC_end: Task 04 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310592 Size: 800000
+WARNING: : COMMUNIC_end: Task 05 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310656 Size: 800000
+WARNING: : COMMUNIC_end: Task 06 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310704 Size: 800000
+WARNING: : COMMUNIC_end: Task 07 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310758 Size: 800000
+WARNING: : COMMUNIC_end: Task 08 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310795 Size: 800000
+WARNING: : COMMUNIC_end: Task 09 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310839 Size: 800000
+WARNING: : COMMUNIC_end: Task 10 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310866 Size: 800000
+WARNING: : COMMUNIC_end: Task 11 ends with 1 message(s) pending to send:
+          * Thread 00 -> Dest-: T00 Tag: 04 CommId: 310901 Size: 800000
+WARNING: : COMMUNIC_end: Task 13 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T14  t-1, Destination T13  t00  Tag: 03 CommId: 259875 Size: 20000
+WARNING: : COMMUNIC_end: Task 14 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T15  t-1, Destination T14  t00  Tag: 03 CommId: 259833 Size: 20000
+WARNING: : COMMUNIC_end: Task 14 ends with 1 message(s) in reception queue:
+          -> Sender: T13 t00  destT14  destt-1  Tag: 02 CommId: 259795 Size: 20000
+WARNING: : COMMUNIC_end: Task 15 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T16  t-1, Destination T15  t00  Tag: 03 CommId: 178908 Size: 20000
+WARNING: : COMMUNIC_end: Task 15 ends with 1 message(s) in reception queue:
+          -> Sender: T14 t00  destT15  destt-1  Tag: 02 CommId: 259758 Size: 20000
+WARNING: : COMMUNIC_end: Task 16 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T17  t-1, Destination T16  t00  Tag: 03 CommId: 178767 Size: 20000
+WARNING: : COMMUNIC_end: Task 16 ends with 1 message(s) in reception queue:
+          -> Sender: T15 t00  destT16  destt-1  Tag: 02 CommId: 259712 Size: 20000
+WARNING: : COMMUNIC_end: Task 17 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T18  t-1, Destination T17  t00  Tag: 03 CommId: 178668 Size: 20000
+WARNING: : COMMUNIC_end: Task 17 ends with 1 message(s) in reception queue:
+          -> Sender: T16 t00  destT17  destt-1  Tag: 02 CommId: 178690 Size: 20000
+WARNING: : COMMUNIC_end: Task 18 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T19  t-1, Destination T18  t00  Tag: 03 CommId: 178534 Size: 20000
+WARNING: : COMMUNIC_end: Task 18 ends with 1 message(s) in reception queue:
+          -> Sender: T17 t00  destT18  destt-1  Tag: 02 CommId: 178553 Size: 20000
+WARNING: : COMMUNIC_end: Task 19 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T20  t-1, Destination T19  t00  Tag: 03 CommId: 178447 Size: 20000
+WARNING: : COMMUNIC_end: Task 19 ends with 1 message(s) in reception queue:
+          -> Sender: T18 t00  destT19  destt-1  Tag: 02 CommId: 178474 Size: 20000
+WARNING: : COMMUNIC_end: Task 20 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T21  t-1, Destination T20  t00  Tag: 03 CommId: 178317 Size: 20000
+WARNING: : COMMUNIC_end: Task 20 ends with 1 message(s) in reception queue:
+          -> Sender: T19 t00  destT20  destt-1  Tag: 02 CommId: 178332 Size: 20000
+WARNING: : COMMUNIC_end: Task 21 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T22  t-1, Destination T21  t00  Tag: 03 CommId: 178239 Size: 20000
+WARNING: : COMMUNIC_end: Task 21 ends with 1 message(s) in reception queue:
+          -> Sender: T20 t00  destT21  destt-1  Tag: 02 CommId: 178249 Size: 20000
+WARNING: : COMMUNIC_end: Task 22 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T23  t-1, Destination T22  t00  Tag: 03 CommId: 178116 Size: 20000
+WARNING: : COMMUNIC_end: Task 22 ends with 1 message(s) in reception queue:
+          -> Sender: T21 t00  destT22  destt-1  Tag: 02 CommId: 178132 Size: 20000
+WARNING: : COMMUNIC_end: Task 23 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T24  t-1, Destination T23  t00  Tag: 03 CommId: 178045 Size: 20000
+WARNING: : COMMUNIC_end: Task 23 ends with 1 message(s) in reception queue:
+          -> Sender: T22 t00  destT23  destt-1  Tag: 02 CommId: 178066 Size: 20000
+WARNING: : COMMUNIC_end: Task 24 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T25  t-1, Destination T24  t00  Tag: 03 CommId: 177986 Size: 20000
+WARNING: : COMMUNIC_end: Task 24 ends with 1 message(s) in reception queue:
+          -> Sender: T23 t00  destT24  destt-1  Tag: 02 CommId: 177972 Size: 20000
+WARNING: : COMMUNIC_end: Task 25 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T26  t-1, Destination T25  t00  Tag: 03 CommId: 177935 Size: 20000
+WARNING: : COMMUNIC_end: Task 25 ends with 1 message(s) in reception queue:
+          -> Sender: T24 t00  destT25  destt-1  Tag: 02 CommId: 177892 Size: 20000
+WARNING: : COMMUNIC_end: Task 26 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T27  t-1, Destination T26  t00  Tag: 03 CommId: 177805 Size: 20000
+WARNING: : COMMUNIC_end: Task 26 ends with 1 message(s) in reception queue:
+          -> Sender: T25 t00  destT26  destt-1  Tag: 02 CommId: 177831 Size: 20000
+WARNING: : COMMUNIC_end: Task 27 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T28  t-1, Destination T27  t00  Tag: 03 CommId: 177755 Size: 20000
+WARNING: : COMMUNIC_end: Task 27 ends with 1 message(s) in reception queue:
+          -> Sender: T26 t00  destT27  destt-1  Tag: 02 CommId: 177791 Size: 20000
+WARNING: : COMMUNIC_end: Task 28 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T29  t-1, Destination T28  t00  Tag: 03 CommId: 177695 Size: 20000
+WARNING: : COMMUNIC_end: Task 28 ends with 1 message(s) in reception queue:
+          -> Sender: T27 t00  destT28  destt-1  Tag: 02 CommId: 177651 Size: 20000
+WARNING: : COMMUNIC_end: Task 29 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T30  t-1, Destination T29  t00  Tag: 03 CommId: 177625 Size: 20000
+WARNING: : COMMUNIC_end: Task 29 ends with 1 message(s) in reception queue:
+          -> Sender: T28 t00  destT29  destt-1  Tag: 02 CommId: 177611 Size: 20000
+WARNING: : COMMUNIC_end: Task 30 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T31  t-1, Destination T30  t00  Tag: 03 CommId: 177534 Size: 20000
+WARNING: : COMMUNIC_end: Task 30 ends with 1 message(s) in reception queue:
+          -> Sender: T29 t00  destT30  destt-1  Tag: 02 CommId: 177555 Size: 20000
+WARNING: : COMMUNIC_end: Task 31 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T32  t-1, Destination T31  t00  Tag: 03 CommId: 95662 Size: 20000
+WARNING: : COMMUNIC_end: Task 31 ends with 1 message(s) in reception queue:
+          -> Sender: T30 t00  destT31  destt-1  Tag: 02 CommId: 177481 Size: 20000
+WARNING: : COMMUNIC_end: Task 32 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T33  t-1, Destination T32  t00  Tag: 03 CommId: 95585 Size: 20000
+WARNING: : COMMUNIC_end: Task 32 ends with 1 message(s) in reception queue:
+          -> Sender: T31 t00  destT32  destt-1  Tag: 02 CommId: 177391 Size: 20000
+WARNING: : COMMUNIC_end: Task 33 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T34  t-1, Destination T33  t00  Tag: 03 CommId: 95427 Size: 20000
+WARNING: : COMMUNIC_end: Task 33 ends with 1 message(s) in reception queue:
+          -> Sender: T32 t00  destT33  destt-1  Tag: 02 CommId: 95491 Size: 20000
+WARNING: : COMMUNIC_end: Task 34 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T35  t-1, Destination T34  t00  Tag: 03 CommId: 95337 Size: 20000
+WARNING: : COMMUNIC_end: Task 34 ends with 1 message(s) in reception queue:
+          -> Sender: T33 t00  destT34  destt-1  Tag: 02 CommId: 95412 Size: 20000
+WARNING: : COMMUNIC_end: Task 35 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T36  t-1, Destination T35  t00  Tag: 03 CommId: 95221 Size: 20000
+WARNING: : COMMUNIC_end: Task 35 ends with 1 message(s) in reception queue:
+          -> Sender: T34 t00  destT35  destt-1  Tag: 02 CommId: 95262 Size: 20000
+WARNING: : COMMUNIC_end: Task 36 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T37  t-1, Destination T36  t00  Tag: 03 CommId: 95141 Size: 20000
+WARNING: : COMMUNIC_end: Task 36 ends with 1 message(s) in reception queue:
+          -> Sender: T35 t00  destT36  destt-1  Tag: 02 CommId: 95181 Size: 20000
+WARNING: : COMMUNIC_end: Task 37 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T38  t-1, Destination T37  t00  Tag: 03 CommId: 95083 Size: 20000
+WARNING: : COMMUNIC_end: Task 37 ends with 1 message(s) in reception queue:
+          -> Sender: T36 t00  destT37  destt-1  Tag: 02 CommId: 95050 Size: 20000
+WARNING: : COMMUNIC_end: Task 38 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T39  t-1, Destination T38  t00  Tag: 03 CommId: 95015 Size: 20000
+WARNING: : COMMUNIC_end: Task 38 ends with 1 message(s) in reception queue:
+          -> Sender: T37 t00  destT38  destt-1  Tag: 02 CommId: 94971 Size: 20000
+WARNING: : COMMUNIC_end: Task 39 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T40  t-1, Destination T39  t00  Tag: 03 CommId: 94945 Size: 20000
+WARNING: : COMMUNIC_end: Task 39 ends with 1 message(s) in reception queue:
+          -> Sender: T38 t00  destT39  destt-1  Tag: 02 CommId: 94910 Size: 20000
+WARNING: : COMMUNIC_end: Task 40 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T41  t-1, Destination T40  t00  Tag: 03 CommId: 94884 Size: 20000
+WARNING: : COMMUNIC_end: Task 40 ends with 1 message(s) in reception queue:
+          -> Sender: T39 t00  destT40  destt-1  Tag: 02 CommId: 94850 Size: 20000
+WARNING: : COMMUNIC_end: Task 41 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T42  t-1, Destination T41  t00  Tag: 03 CommId: 94833 Size: 20000
+WARNING: : COMMUNIC_end: Task 41 ends with 1 message(s) in reception queue:
+          -> Sender: T40 t00  destT41  destt-1  Tag: 02 CommId: 94780 Size: 20000
+WARNING: : COMMUNIC_end: Task 42 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T43  t-1, Destination T42  t00  Tag: 03 CommId: 94764 Size: 20000
+WARNING: : COMMUNIC_end: Task 42 ends with 1 message(s) in reception queue:
+          -> Sender: T41 t00  destT42  destt-1  Tag: 02 CommId: 94710 Size: 20000
+WARNING: : COMMUNIC_end: Task 43 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T44  t-1, Destination T43  t00  Tag: 03 CommId: 94694 Size: 20000
+WARNING: : COMMUNIC_end: Task 43 ends with 1 message(s) in reception queue:
+          -> Sender: T42 t00  destT43  destt-1  Tag: 02 CommId: 94669 Size: 20000
+WARNING: : COMMUNIC_end: Task 44 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T45  t-1, Destination T44  t00  Tag: 03 CommId: 94644 Size: 20000
+WARNING: : COMMUNIC_end: Task 44 ends with 1 message(s) in reception queue:
+          -> Sender: T43 t00  destT44  destt-1  Tag: 02 CommId: 94600 Size: 20000
+WARNING: : COMMUNIC_end: Task 45 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T46  t-1, Destination T45  t00  Tag: 03 CommId: 94574 Size: 20000
+WARNING: : COMMUNIC_end: Task 45 ends with 1 message(s) in reception queue:
+          -> Sender: T44 t00  destT45  destt-1  Tag: 02 CommId: 94539 Size: 20000
+WARNING: : COMMUNIC_end: Task 46 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T47  t-1, Destination T46  t00  Tag: 03 CommId: 94523 Size: 20000
+WARNING: : COMMUNIC_end: Task 46 ends with 1 message(s) in reception queue:
+          -> Sender: T45 t00  destT46  destt-1  Tag: 02 CommId: 94490 Size: 20000
+WARNING: : COMMUNIC_end: Task 47 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T48  t-1, Destination T47  t00  Tag: 03 CommId: 561429 Size: 20000
+WARNING: : COMMUNIC_end: Task 47 ends with 1 message(s) in reception queue:
+          -> Sender: T46 t00  destT47  destt-1  Tag: 02 CommId: 94429 Size: 20000
+WARNING: : COMMUNIC_end: Task 48 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T49  t-1, Destination T48  t00  Tag: 03 CommId: 561348 Size: 20000
+WARNING: : COMMUNIC_end: Task 48 ends with 1 message(s) in reception queue:
+          -> Sender: T47 t00  destT48  destt-1  Tag: 02 CommId: 94379 Size: 20000
+WARNING: : COMMUNIC_end: Task 49 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T50  t-1, Destination T49  t00  Tag: 03 CommId: 561277 Size: 20000
+WARNING: : COMMUNIC_end: Task 49 ends with 1 message(s) in reception queue:
+          -> Sender: T48 t00  destT49  destt-1  Tag: 02 CommId: 561210 Size: 20000
+WARNING: : COMMUNIC_end: Task 50 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T51  t-1, Destination T50  t00  Tag: 03 CommId: 561127 Size: 20000
+WARNING: : COMMUNIC_end: Task 50 ends with 1 message(s) in reception queue:
+          -> Sender: T49 t00  destT50  destt-1  Tag: 02 CommId: 561143 Size: 20000
+WARNING: : COMMUNIC_end: Task 51 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T52  t-1, Destination T51  t00  Tag: 03 CommId: 561047 Size: 20000
+WARNING: : COMMUNIC_end: Task 51 ends with 1 message(s) in reception queue:
+          -> Sender: T50 t00  destT51  destt-1  Tag: 02 CommId: 561063 Size: 20000
+WARNING: : COMMUNIC_end: Task 52 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T53  t-1, Destination T52  t00  Tag: 03 CommId: 560907 Size: 20000
+WARNING: : COMMUNIC_end: Task 52 ends with 1 message(s) in reception queue:
+          -> Sender: T51 t00  destT52  destt-1  Tag: 02 CommId: 560923 Size: 20000
+WARNING: : COMMUNIC_end: Task 53 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T54  t-1, Destination T53  t00  Tag: 03 CommId: 560836 Size: 20000
+WARNING: : COMMUNIC_end: Task 53 ends with 1 message(s) in reception queue:
+          -> Sender: T52 t00  destT53  destt-1  Tag: 02 CommId: 560852 Size: 20000
+WARNING: : COMMUNIC_end: Task 54 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T55  t-1, Destination T54  t00  Tag: 03 CommId: 560786 Size: 20000
+WARNING: : COMMUNIC_end: Task 54 ends with 1 message(s) in reception queue:
+          -> Sender: T53 t00  destT54  destt-1  Tag: 02 CommId: 560722 Size: 20000
+WARNING: : COMMUNIC_end: Task 55 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T56  t-1, Destination T55  t00  Tag: 03 CommId: 560646 Size: 20000
+WARNING: : COMMUNIC_end: Task 55 ends with 1 message(s) in reception queue:
+          -> Sender: T54 t00  destT55  destt-1  Tag: 02 CommId: 560662 Size: 20000
+WARNING: : COMMUNIC_end: Task 56 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T57  t-1, Destination T56  t00  Tag: 03 CommId: 560585 Size: 20000
+WARNING: : COMMUNIC_end: Task 56 ends with 1 message(s) in reception queue:
+          -> Sender: T55 t00  destT56  destt-1  Tag: 02 CommId: 560601 Size: 20000
+WARNING: : COMMUNIC_end: Task 57 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T58  t-1, Destination T57  t00  Tag: 03 CommId: 560536 Size: 20000
+WARNING: : COMMUNIC_end: Task 57 ends with 1 message(s) in reception queue:
+          -> Sender: T56 t00  destT57  destt-1  Tag: 02 CommId: 560481 Size: 20000
+WARNING: : COMMUNIC_end: Task 58 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T59  t-1, Destination T58  t00  Tag: 03 CommId: 560465 Size: 20000
+WARNING: : COMMUNIC_end: Task 58 ends with 1 message(s) in reception queue:
+          -> Sender: T57 t00  destT58  destt-1  Tag: 02 CommId: 560411 Size: 20000
+WARNING: : COMMUNIC_end: Task 59 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T60  t-1, Destination T59  t00  Tag: 03 CommId: 560375 Size: 20000
+WARNING: : COMMUNIC_end: Task 59 ends with 1 message(s) in reception queue:
+          -> Sender: T58 t00  destT59  destt-1  Tag: 02 CommId: 560371 Size: 20000
+WARNING: : COMMUNIC_end: Task 60 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T61  t-1, Destination T60  t00  Tag: 03 CommId: 560305 Size: 20000
+WARNING: : COMMUNIC_end: Task 60 ends with 1 message(s) in reception queue:
+          -> Sender: T59 t00  destT60  destt-1  Tag: 02 CommId: 560302 Size: 20000
+WARNING: : COMMUNIC_end: Task 61 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T62  t-1, Destination T61  t00  Tag: 03 CommId: 560244 Size: 20000
+WARNING: : COMMUNIC_end: Task 61 ends with 1 message(s) in reception queue:
+          -> Sender: T60 t00  destT61  destt-1  Tag: 02 CommId: 560211 Size: 20000
+WARNING: : COMMUNIC_end: Task 62 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T63  t-1, Destination T62  t00  Tag: 03 CommId: 560195 Size: 20000
+WARNING: : COMMUNIC_end: Task 62 ends with 1 message(s) in reception queue:
+          -> Sender: T61 t00  destT62  destt-1  Tag: 02 CommId: 560151 Size: 20000
+WARNING: : COMMUNIC_end: Task 63 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T64  t-1, Destination T63  t00  Tag: 03 CommId: 9967 Size: 20000
+WARNING: : COMMUNIC_end: Task 63 ends with 1 message(s) in reception queue:
+          -> Sender: T62 t00  destT63  destt-1  Tag: 02 CommId: 560100 Size: 20000
+WARNING: : COMMUNIC_end: Task 64 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T65  t-1, Destination T64  t00  Tag: 03 CommId: 9887 Size: 20000
+WARNING: : COMMUNIC_end: Task 64 ends with 1 message(s) in reception queue:
+          -> Sender: T63 t00  destT64  destt-1  Tag: 02 CommId: 560051 Size: 20000
+WARNING: : COMMUNIC_end: Task 65 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T66  t-1, Destination T65  t00  Tag: 03 CommId: 9816 Size: 20000
+WARNING: : COMMUNIC_end: Task 65 ends with 1 message(s) in reception queue:
+          -> Sender: T64 t00  destT65  destt-1  Tag: 02 CommId: 9762 Size: 20000
+WARNING: : COMMUNIC_end: Task 66 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T67  t-1, Destination T66  t00  Tag: 03 CommId: 9737 Size: 20000
+WARNING: : COMMUNIC_end: Task 66 ends with 1 message(s) in reception queue:
+          -> Sender: T65 t00  destT66  destt-1  Tag: 02 CommId: 9692 Size: 20000
+WARNING: : COMMUNIC_end: Task 67 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T68  t-1, Destination T67  t00  Tag: 03 CommId: 9666 Size: 20000
+WARNING: : COMMUNIC_end: Task 67 ends with 1 message(s) in reception queue:
+          -> Sender: T66 t00  destT67  destt-1  Tag: 02 CommId: 9616 Size: 20000
+WARNING: : COMMUNIC_end: Task 68 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T69  t-1, Destination T68  t00  Tag: 03 CommId: 9526 Size: 20000
+WARNING: : COMMUNIC_end: Task 68 ends with 1 message(s) in reception queue:
+          -> Sender: T67 t00  destT68  destt-1  Tag: 02 CommId: 9547 Size: 20000
+WARNING: : COMMUNIC_end: Task 69 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T70  t-1, Destination T69  t00  Tag: 03 CommId: 9446 Size: 20000
+WARNING: : COMMUNIC_end: Task 69 ends with 1 message(s) in reception queue:
+          -> Sender: T68 t00  destT69  destt-1  Tag: 02 CommId: 9481 Size: 20000
+WARNING: : COMMUNIC_end: Task 70 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T71  t-1, Destination T70  t00  Tag: 03 CommId: 9325 Size: 20000
+WARNING: : COMMUNIC_end: Task 70 ends with 1 message(s) in reception queue:
+          -> Sender: T69 t00  destT70  destt-1  Tag: 02 CommId: 9351 Size: 20000
+WARNING: : COMMUNIC_end: Task 71 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T72  t-1, Destination T71  t00  Tag: 03 CommId: 9255 Size: 20000
+WARNING: : COMMUNIC_end: Task 71 ends with 1 message(s) in reception queue:
+          -> Sender: T70 t00  destT71  destt-1  Tag: 02 CommId: 9291 Size: 20000
+WARNING: : COMMUNIC_end: Task 72 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T73  t-1, Destination T72  t00  Tag: 03 CommId: 9205 Size: 20000
+WARNING: : COMMUNIC_end: Task 72 ends with 1 message(s) in reception queue:
+          -> Sender: T71 t00  destT72  destt-1  Tag: 02 CommId: 9180 Size: 20000
+WARNING: : COMMUNIC_end: Task 73 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T74  t-1, Destination T73  t00  Tag: 03 CommId: 9144 Size: 20000
+WARNING: : COMMUNIC_end: Task 73 ends with 1 message(s) in reception queue:
+          -> Sender: T72 t00  destT73  destt-1  Tag: 02 CommId: 9101 Size: 20000
+WARNING: : COMMUNIC_end: Task 74 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T75  t-1, Destination T74  t00  Tag: 03 CommId: 9024 Size: 20000
+WARNING: : COMMUNIC_end: Task 74 ends with 1 message(s) in reception queue:
+          -> Sender: T73 t00  destT74  destt-1  Tag: 02 CommId: 9050 Size: 20000
+WARNING: : COMMUNIC_end: Task 75 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T76  t-1, Destination T75  t00  Tag: 03 CommId: 8964 Size: 20000
+WARNING: : COMMUNIC_end: Task 75 ends with 1 message(s) in reception queue:
+          -> Sender: T74 t00  destT75  destt-1  Tag: 02 CommId: 8990 Size: 20000
+WARNING: : COMMUNIC_end: Task 76 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T77  t-1, Destination T76  t00  Tag: 03 CommId: 8914 Size: 20000
+WARNING: : COMMUNIC_end: Task 76 ends with 1 message(s) in reception queue:
+          -> Sender: T75 t00  destT76  destt-1  Tag: 02 CommId: 8870 Size: 20000
+WARNING: : COMMUNIC_end: Task 77 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T78  t-1, Destination T77  t00  Tag: 03 CommId: 8844 Size: 20000
+WARNING: : COMMUNIC_end: Task 77 ends with 1 message(s) in reception queue:
+          -> Sender: T76 t00  destT77  destt-1  Tag: 02 CommId: 8820 Size: 20000
+WARNING: : COMMUNIC_end: Task 78 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T79  t-1, Destination T78  t00  Tag: 03 CommId: 8754 Size: 20000
+WARNING: : COMMUNIC_end: Task 78 ends with 1 message(s) in reception queue:
+          -> Sender: T77 t00  destT78  destt-1  Tag: 02 CommId: 8770 Size: 20000
+WARNING: : COMMUNIC_end: Task 79 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T80  t-1, Destination T79  t00  Tag: 03 CommId: 475618 Size: 20000
+WARNING: : COMMUNIC_end: Task 79 ends with 1 message(s) in reception queue:
+          -> Sender: T78 t00  destT79  destt-1  Tag: 02 CommId: 8700 Size: 20000
+WARNING: : COMMUNIC_end: Task 80 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T81  t-1, Destination T80  t00  Tag: 03 CommId: 475535 Size: 20000
+WARNING: : COMMUNIC_end: Task 80 ends with 1 message(s) in reception queue:
+          -> Sender: T79 t00  destT80  destt-1  Tag: 02 CommId: 8600 Size: 20000
+WARNING: : COMMUNIC_end: Task 81 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T82  t-1, Destination T81  t00  Tag: 03 CommId: 475464 Size: 20000
+WARNING: : COMMUNIC_end: Task 81 ends with 1 message(s) in reception queue:
+          -> Sender: T80 t00  destT81  destt-1  Tag: 02 CommId: 475417 Size: 20000
+WARNING: : COMMUNIC_end: Task 82 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T83  t-1, Destination T82  t00  Tag: 03 CommId: 475382 Size: 20000
+WARNING: : COMMUNIC_end: Task 82 ends with 1 message(s) in reception queue:
+          -> Sender: T81 t00  destT82  destt-1  Tag: 02 CommId: 475347 Size: 20000
+WARNING: : COMMUNIC_end: Task 83 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T84  t-1, Destination T83  t00  Tag: 03 CommId: 475238 Size: 20000
+WARNING: : COMMUNIC_end: Task 83 ends with 1 message(s) in reception queue:
+          -> Sender: T82 t00  destT83  destt-1  Tag: 02 CommId: 475274 Size: 20000
+WARNING: : COMMUNIC_end: Task 84 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T85  t-1, Destination T84  t00  Tag: 03 CommId: 475155 Size: 20000
+WARNING: : COMMUNIC_end: Task 84 ends with 1 message(s) in reception queue:
+          -> Sender: T83 t00  destT84  destt-1  Tag: 02 CommId: 475191 Size: 20000
+WARNING: : COMMUNIC_end: Task 85 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T86  t-1, Destination T85  t00  Tag: 03 CommId: 475095 Size: 20000
+WARNING: : COMMUNIC_end: Task 85 ends with 1 message(s) in reception queue:
+          -> Sender: T84 t00  destT85  destt-1  Tag: 02 CommId: 475059 Size: 20000
+WARNING: : COMMUNIC_end: Task 86 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T87  t-1, Destination T86  t00  Tag: 03 CommId: 475021 Size: 20000
+WARNING: : COMMUNIC_end: Task 86 ends with 1 message(s) in reception queue:
+          -> Sender: T85 t00  destT86  destt-1  Tag: 02 CommId: 474991 Size: 20000
+WARNING: : COMMUNIC_end: Task 87 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T88  t-1, Destination T87  t00  Tag: 03 CommId: 474898 Size: 20000
+WARNING: : COMMUNIC_end: Task 87 ends with 1 message(s) in reception queue:
+          -> Sender: T86 t00  destT87  destt-1  Tag: 02 CommId: 474925 Size: 20000
+WARNING: : COMMUNIC_end: Task 88 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T89  t-1, Destination T88  t00  Tag: 03 CommId: 474828 Size: 20000
+WARNING: : COMMUNIC_end: Task 88 ends with 1 message(s) in reception queue:
+          -> Sender: T87 t00  destT88  destt-1  Tag: 02 CommId: 474874 Size: 20000
+WARNING: : COMMUNIC_end: Task 89 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T90  t-1, Destination T89  t00  Tag: 03 CommId: 474705 Size: 20000
+WARNING: : COMMUNIC_end: Task 89 ends with 1 message(s) in reception queue:
+          -> Sender: T88 t00  destT89  destt-1  Tag: 02 CommId: 474741 Size: 20000
+WARNING: : COMMUNIC_end: Task 90 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T91  t-1, Destination T90  t00  Tag: 03 CommId: 474641 Size: 20000
+WARNING: : COMMUNIC_end: Task 90 ends with 1 message(s) in reception queue:
+          -> Sender: T89 t00  destT90  destt-1  Tag: 02 CommId: 474678 Size: 20000
+WARNING: : COMMUNIC_end: Task 91 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T92  t-1, Destination T91  t00  Tag: 03 CommId: 474598 Size: 20000
+WARNING: : COMMUNIC_end: Task 91 ends with 1 message(s) in reception queue:
+          -> Sender: T90 t00  destT91  destt-1  Tag: 02 CommId: 474555 Size: 20000
+WARNING: : COMMUNIC_end: Task 92 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T93  t-1, Destination T92  t00  Tag: 03 CommId: 474528 Size: 20000
+WARNING: : COMMUNIC_end: Task 92 ends with 1 message(s) in reception queue:
+          -> Sender: T91 t00  destT92  destt-1  Tag: 02 CommId: 474494 Size: 20000
+WARNING: : COMMUNIC_end: Task 93 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T94  t-1, Destination T93  t00  Tag: 03 CommId: 474475 Size: 20000
+WARNING: : COMMUNIC_end: Task 93 ends with 1 message(s) in reception queue:
+          -> Sender: T92 t00  destT93  destt-1  Tag: 02 CommId: 474441 Size: 20000
+WARNING: : COMMUNIC_end: Task 94 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T95  t-1, Destination T94  t00  Tag: 03 CommId: 474415 Size: 20000
+WARNING: : COMMUNIC_end: Task 94 ends with 1 message(s) in reception queue:
+          -> Sender: T93 t00  destT94  destt-1  Tag: 02 CommId: 474378 Size: 20000
+WARNING: : COMMUNIC_end: Task 95 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T96  t-1, Destination T95  t00  Tag: 03 CommId: 392628 Size: 20000
+WARNING: : COMMUNIC_end: Task 95 ends with 1 message(s) in reception queue:
+          -> Sender: T94 t00  destT95  destt-1  Tag: 02 CommId: 474328 Size: 20000
+WARNING: : COMMUNIC_end: Task 96 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T97  t-1, Destination T96  t00  Tag: 03 CommId: 392548 Size: 20000
+WARNING: : COMMUNIC_end: Task 96 ends with 1 message(s) in reception queue:
+          -> Sender: T95 t00  destT96  destt-1  Tag: 02 CommId: 474264 Size: 20000
+WARNING: : COMMUNIC_end: Task 97 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T98  t-1, Destination T97  t00  Tag: 03 CommId: 392398 Size: 20000
+WARNING: : COMMUNIC_end: Task 97 ends with 1 message(s) in reception queue:
+          -> Sender: T96 t00  destT97  destt-1  Tag: 02 CommId: 392473 Size: 20000
+WARNING: : COMMUNIC_end: Task 98 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T99  t-1, Destination T98  t00  Tag: 03 CommId: 392317 Size: 20000
+WARNING: : COMMUNIC_end: Task 98 ends with 1 message(s) in reception queue:
+          -> Sender: T97 t00  destT98  destt-1  Tag: 02 CommId: 392394 Size: 20000
+WARNING: : COMMUNIC_end: Task 99 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T100  t-1, Destination T99  t00  Tag: 03 CommId: 392177 Size: 20000
+WARNING: : COMMUNIC_end: Task 99 ends with 1 message(s) in reception queue:
+          -> Sender: T98 t00  destT99  destt-1  Tag: 02 CommId: 392244 Size: 20000
+WARNING: : COMMUNIC_end: Task 100 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T101  t-1, Destination T100  t00  Tag: 03 CommId: 392097 Size: 20000
+WARNING: : COMMUNIC_end: Task 100 ends with 1 message(s) in reception queue:
+          -> Sender: T99 t00  destT100  destt-1  Tag: 02 CommId: 392163 Size: 20000
+WARNING: : COMMUNIC_end: Task 101 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T102  t-1, Destination T101  t00  Tag: 03 CommId: 392046 Size: 20000
+WARNING: : COMMUNIC_end: Task 101 ends with 1 message(s) in reception queue:
+          -> Sender: T100 t00  destT101  destt-1  Tag: 02 CommId: 392032 Size: 20000
+WARNING: : COMMUNIC_end: Task 102 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T103  t-1, Destination T102  t00  Tag: 03 CommId: 391976 Size: 20000
+WARNING: : COMMUNIC_end: Task 102 ends with 1 message(s) in reception queue:
+          -> Sender: T101 t00  destT102  destt-1  Tag: 02 CommId: 391953 Size: 20000
+WARNING: : COMMUNIC_end: Task 103 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T104  t-1, Destination T103  t00  Tag: 03 CommId: 391907 Size: 20000
+WARNING: : COMMUNIC_end: Task 103 ends with 1 message(s) in reception queue:
+          -> Sender: T102 t00  destT103  destt-1  Tag: 02 CommId: 391892 Size: 20000
+WARNING: : COMMUNIC_end: Task 104 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T105  t-1, Destination T104  t00  Tag: 03 CommId: 391795 Size: 20000
+WARNING: : COMMUNIC_end: Task 104 ends with 1 message(s) in reception queue:
+          -> Sender: T103 t00  destT104  destt-1  Tag: 02 CommId: 391832 Size: 20000
+WARNING: : COMMUNIC_end: Task 105 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T106  t-1, Destination T105  t00  Tag: 03 CommId: 391716 Size: 20000
+WARNING: : COMMUNIC_end: Task 105 ends with 1 message(s) in reception queue:
+          -> Sender: T104 t00  destT105  destt-1  Tag: 02 CommId: 391762 Size: 20000
+WARNING: : COMMUNIC_end: Task 106 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T107  t-1, Destination T106  t00  Tag: 03 CommId: 391665 Size: 20000
+WARNING: : COMMUNIC_end: Task 106 ends with 1 message(s) in reception queue:
+          -> Sender: T105 t00  destT106  destt-1  Tag: 02 CommId: 391651 Size: 20000
+WARNING: : COMMUNIC_end: Task 107 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T108  t-1, Destination T107  t00  Tag: 03 CommId: 391615 Size: 20000
+WARNING: : COMMUNIC_end: Task 107 ends with 1 message(s) in reception queue:
+          -> Sender: T106 t00  destT107  destt-1  Tag: 02 CommId: 391572 Size: 20000
+WARNING: : COMMUNIC_end: Task 108 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T109  t-1, Destination T108  t00  Tag: 03 CommId: 391495 Size: 20000
+WARNING: : COMMUNIC_end: Task 108 ends with 1 message(s) in reception queue:
+          -> Sender: T107 t00  destT108  destt-1  Tag: 02 CommId: 391521 Size: 20000
+WARNING: : COMMUNIC_end: Task 109 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T110  t-1, Destination T109  t00  Tag: 03 CommId: 391445 Size: 20000
+WARNING: : COMMUNIC_end: Task 109 ends with 1 message(s) in reception queue:
+          -> Sender: T108 t00  destT109  destt-1  Tag: 02 CommId: 391471 Size: 20000
+WARNING: : COMMUNIC_end: Task 110 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T111  t-1, Destination T110  t00  Tag: 03 CommId: 391385 Size: 20000
+WARNING: : COMMUNIC_end: Task 110 ends with 1 message(s) in reception queue:
+          -> Sender: T109 t00  destT110  destt-1  Tag: 02 CommId: 391341 Size: 20000
+WARNING: : COMMUNIC_end: Task 111 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T112  t-1, Destination T111  t00  Tag: 03 CommId: 313958 Size: 20000
+WARNING: : COMMUNIC_end: Task 111 ends with 1 message(s) in reception queue:
+          -> Sender: T110 t00  destT111  destt-1  Tag: 02 CommId: 391310 Size: 20000
+WARNING: : COMMUNIC_end: Task 112 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T113  t-1, Destination T112  t00  Tag: 03 CommId: 313865 Size: 20000
+WARNING: : COMMUNIC_end: Task 112 ends with 1 message(s) in reception queue:
+          -> Sender: T111 t00  destT112  destt-1  Tag: 02 CommId: 391251 Size: 20000
+WARNING: : COMMUNIC_end: Task 113 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T114  t-1, Destination T113  t00  Tag: 03 CommId: 313806 Size: 20000
+WARNING: : COMMUNIC_end: Task 113 ends with 1 message(s) in reception queue:
+          -> Sender: T112 t00  destT113  destt-1  Tag: 02 CommId: 313800 Size: 20000
+WARNING: : COMMUNIC_end: Task 114 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T115  t-1, Destination T114  t00  Tag: 03 CommId: 313714 Size: 20000
+WARNING: : COMMUNIC_end: Task 114 ends with 1 message(s) in reception queue:
+          -> Sender: T113 t00  destT114  destt-1  Tag: 02 CommId: 313708 Size: 20000
+WARNING: : COMMUNIC_end: Task 115 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T116  t-1, Destination T115  t00  Tag: 03 CommId: 313663 Size: 20000
+WARNING: : COMMUNIC_end: Task 115 ends with 1 message(s) in reception queue:
+          -> Sender: T114 t00  destT115  destt-1  Tag: 02 CommId: 313659 Size: 20000
+WARNING: : COMMUNIC_end: Task 116 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T117  t-1, Destination T116  t00  Tag: 03 CommId: 313580 Size: 20000
+WARNING: : COMMUNIC_end: Task 116 ends with 1 message(s) in reception queue:
+          -> Sender: T115 t00  destT116  destt-1  Tag: 02 CommId: 313567 Size: 20000
+WARNING: : COMMUNIC_end: Task 117 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T118  t-1, Destination T117  t00  Tag: 03 CommId: 313476 Size: 20000
+WARNING: : COMMUNIC_end: Task 117 ends with 1 message(s) in reception queue:
+          -> Sender: T116 t00  destT117  destt-1  Tag: 02 CommId: 313518 Size: 20000
+WARNING: : COMMUNIC_end: Task 118 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T119  t-1, Destination T118  t00  Tag: 03 CommId: 313360 Size: 20000
+WARNING: : COMMUNIC_end: Task 118 ends with 1 message(s) in reception queue:
+          -> Sender: T117 t00  destT118  destt-1  Tag: 02 CommId: 313435 Size: 20000
+WARNING: : COMMUNIC_end: Task 119 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T120  t-1, Destination T119  t00  Tag: 03 CommId: 313249 Size: 20000
+WARNING: : COMMUNIC_end: Task 119 ends with 1 message(s) in reception queue:
+          -> Sender: T118 t00  destT119  destt-1  Tag: 02 CommId: 313314 Size: 20000
+WARNING: : COMMUNIC_end: Task 120 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T121  t-1, Destination T120  t00  Tag: 03 CommId: 313182 Size: 20000
+WARNING: : COMMUNIC_end: Task 120 ends with 1 message(s) in reception queue:
+          -> Sender: T119 t00  destT120  destt-1  Tag: 02 CommId: 313202 Size: 20000
+WARNING: : COMMUNIC_end: Task 121 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T122  t-1, Destination T121  t00  Tag: 03 CommId: 313123 Size: 20000
+WARNING: : COMMUNIC_end: Task 121 ends with 1 message(s) in reception queue:
+          -> Sender: T120 t00  destT121  destt-1  Tag: 02 CommId: 313081 Size: 20000
+WARNING: : COMMUNIC_end: Task 122 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T123  t-1, Destination T122  t00  Tag: 03 CommId: 313056 Size: 20000
+WARNING: : COMMUNIC_end: Task 122 ends with 1 message(s) in reception queue:
+          -> Sender: T121 t00  destT122  destt-1  Tag: 02 CommId: 313022 Size: 20000
+WARNING: : COMMUNIC_end: Task 123 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T124  t-1, Destination T123  t00  Tag: 03 CommId: 312993 Size: 20000
+WARNING: : COMMUNIC_end: Task 123 ends with 1 message(s) in reception queue:
+          -> Sender: T122 t00  destT123  destt-1  Tag: 02 CommId: 312970 Size: 20000
+WARNING: : COMMUNIC_end: Task 124 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T125  t-1, Destination T124  t00  Tag: 03 CommId: 312884 Size: 20000
+WARNING: : COMMUNIC_end: Task 124 ends with 1 message(s) in reception queue:
+          -> Sender: T123 t00  destT124  destt-1  Tag: 02 CommId: 312911 Size: 20000
+WARNING: : COMMUNIC_end: Task 125 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T126  t-1, Destination T125  t00  Tag: 03 CommId: 312823 Size: 20000
+WARNING: : COMMUNIC_end: Task 125 ends with 1 message(s) in reception queue:
+          -> Sender: T124 t00  destT125  destt-1  Tag: 02 CommId: 312849 Size: 20000
+WARNING: : COMMUNIC_end: Task 126 ends with 1 threads waiting to recv a message:
+          * Thread 00 <-          * Sender: T127  t-1, Destination T126  t00  Tag: 03 CommId: 312778 Size: 20000
+WARNING: : COMMUNIC_end: Task 126 ends with 1 message(s) in reception queue:
+          -> Sender: T125 t00  destT126  destt-1  Tag: 02 CommId: 312746 Size: 20000
+WARNING: : COMMUNIC_end: Task 127 ends with 6 message(s) in reception queue:
+          -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253549 Size: 4
+          -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253552 Size: 4
+          -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253555 Size: 4
+          -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253558 Size: 4
+          -> Sender: T00 t00  destT127  destt-1  Tag: 01 CommId: 253561 Size: 4
+          -> Sender: T126 t00  destT127  destt-1  Tag: 02 CommId: 312696 Size: 20000
+**** Application 0 (2dheat.dim) ****
+
+**** Total Statistics ****
+
+Execution time:	1610.000000000
+Speedup:	94.25 
+CPU Time:	151740.239082560
+
+ Id.	Computation	%time	Communication
+  0	1329.708089867	45.23	0.085248000
+  1	1329.711359601	45.23	0.259644982
+  2	1329.709756242	45.23	0.261610180
+  3	1329.709755307	45.23	0.261976045
+  4	1329.709758303	45.23	0.262337981
+  5	1329.709757251	45.23	0.262703958
+  6	1329.709758724	45.23	0.263067409
+  7	1329.709757371	45.23	0.263433687
+  8	1329.709759673	45.23	0.263412319
+  9	1329.709757755	45.23	0.264162925
+ 10	1329.709765926	45.23	0.264519650
+ 11	1329.709767552	45.23	0.264409097
+ 12	0.000000000	0.00	0.000000000
+ 13	1329.708455305	45.23	274.000507760
+ 14	1329.708453064	45.23	274.000615560
+ 15	1329.708871156	45.23	274.000047027
+ 16	1329.702064489	45.23	274.006699964
+ 17	1329.701662418	45.23	274.006948332
+ 18	1329.702050686	45.23	274.006409611
+ 19	1329.701656138	45.23	274.006650330
+ 20	1329.702039651	45.23	274.006116373
+ 21	1329.701648000	45.23	274.006354419
+ 22	1329.702026983	45.23	274.005824993
+ 23	1329.701642041	45.23	274.006056371
+ 24	1329.701616203	45.23	274.005931765
+ 25	1329.701640031	45.23	274.005757497
+ 26	1329.701992208	45.23	274.005254878
+ 27	1329.701632078	45.23	274.005461297
+ 28	1329.701606540	45.23	274.005336393
+ 29	1329.701626205	45.23	274.005166264
+ 30	1329.701968740	45.23	274.004673289
+ 31	1329.701620224	45.23	274.004868407
+ 32	1329.691971768	45.23	274.014366420
+ 33	1329.692337483	45.23	274.013850266
+ 34	1329.691968251	45.23	274.014065817
+ 35	1329.692319474	45.23	274.013564149
+ 36	1329.691960612	45.23	274.013769313
+ 37	1329.691961753	45.23	274.013617731
+ 38	1329.691956337	45.23	274.013472703
+ 39	1329.691953129	45.23	274.013325469
+ 40	1329.691952705	45.23	274.013175457
+ 41	1329.691948802	45.23	274.013028907
+ 42	1329.691943765	45.23	274.012883478
+ 43	1329.691940667	45.23	274.012736133
+ 44	1329.691936011	45.23	274.012590339
+ 45	1329.691933632	45.23	274.012442276
+ 46	1329.691929027	45.23	274.012296438
+ 47	1329.691930823	45.23	274.012144203
+ 48	1603.638157367	49.90	0.065767212
+ 49	1603.638160777	49.90	0.065612765
+ 50	1603.638528338	49.90	0.065094072
+ 51	1603.638149424	49.90	0.065318112
+ 52	1603.638514868	49.90	0.064801637
+ 53	1603.638142684	49.90	0.065018924
+ 54	1603.638136168	49.90	0.064874406
+ 55	1603.638469329	49.90	0.064390212
+ 56	1603.638130048	49.90	0.064574627
+ 57	1603.638128377	49.90	0.064425250
+ 58	1603.638121537	49.90	0.064281055
+ 59	1603.638444251	49.90	0.063807305
+ 60	1603.638114819	49.90	0.063982258
+ 61	1603.638111945	49.90	0.063834095
+ 62	1603.638107822	49.90	0.063687184
+ 63	1603.638106194	49.90	0.063537773
+ 64	46.453985196	2.80	1557.247507735
+ 65	46.454011055	2.80	1557.247330542
+ 66	46.453976710	2.80	1557.247213555
+ 67	46.454003549	2.80	1557.247035387
+ 68	46.454307182	2.80	1557.246580426
+ 69	46.453995928	2.80	1557.246736171
+ 70	46.454289457	2.80	1557.246291308
+ 71	46.453991725	2.80	1557.246433543
+ 72	46.453954788	2.80	1557.246319145
+ 73	46.453980584	2.80	1557.246142014
+ 74	46.454247414	2.80	1557.245723852
+ 75	46.453970547	2.80	1557.245845226
+ 76	46.453939448	2.80	1557.245724996
+ 77	46.453962981	2.80	1557.245550127
+ 78	46.454213420	2.80	1557.245148355
+ 79	46.453960901	2.80	1557.245245818
+ 80	1337.088547096	45.37	266.610508290
+ 81	1337.088535690	45.37	266.610369338
+ 82	1337.088534867	45.37	266.610219799
+ 83	1337.088739286	45.37	266.609865024
+ 84	1337.088534836	45.37	266.609915967
+ 85	1337.088525666	45.37	266.609774760
+ 86	1337.088523075	45.37	266.609626991
+ 87	1337.088715965	45.37	266.609283743
+ 88	1337.088518029	45.37	266.609328486
+ 89	1337.088701824	45.37	266.608994332
+ 90	1337.088512860	45.37	266.609029784
+ 91	1337.088508527	45.37	266.608883759
+ 92	1337.088506256	45.37	266.608735671
+ 93	1337.088502481	45.37	266.608589090
+ 94	1337.088499567	45.37	266.608441652
+ 95	1337.088667112	45.37	266.608123756
+ 96	1337.084967316	45.37	266.611670066
+ 97	1337.085120074	45.37	266.611366949
+ 98	1337.084961159	45.37	266.611372360
+ 99	1337.085108977	45.37	266.611074182
+100	1337.084954432	45.37	266.611075216
+101	1337.084944972	45.37	266.610934316
+102	1337.084947835	45.37	266.610781094
+103	1337.084938742	45.37	266.610639827
+104	1337.085074095	45.37	266.610354118
+105	1337.084932994	45.37	266.610341660
+106	1337.084937750	45.37	266.610186540
+107	1337.084926680	45.37	266.610047224
+108	1337.085049658	45.37	266.609773888
+109	1337.084921396	45.37	266.609748946
+110	1337.084924605	45.37	266.609595377
+111	1337.084915467	45.37	266.609454160
+112	1337.069517322	45.37	266.624701943
+113	1337.069510147	45.37	266.624558758
+114	1337.069512840	45.37	266.624405705
+115	1337.069504352	45.37	266.624263832
+116	1337.069506112	45.37	266.624111718
+117	1337.069592823	45.37	266.623874646
+118	1337.069594310	45.37	266.623719651
+119	1337.069581788	45.37	266.623578596
+120	1337.069495329	45.37	266.623511739
+121	1337.069510093	45.37	266.623346615
+122	1337.069488532	45.37	266.623217815
+123	1337.069481425	45.37	266.623074565
+124	1337.069558715	45.37	266.622846915
+125	1337.069477178	45.37	266.622775089
+126	1337.069477501	45.37	266.622624392
+127	0.000000000	0.00	0.000000000
+
+ Id.	Mess.sent	Bytes sent	Immediate recv	Waiting recv	Bytes recv	Coll.op.	Block time	Comm. time	Wait link time	Wait buses time	I/O time
+  0	7.560000e+02	9.920252e+07	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  1	5.030000e+02	1.080001e+07	5.000000e+00	5.010000e+02	1.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  2	1.003000e+03	2.080001e+07	6.500000e+02	3.560000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  3	1.003000e+03	2.080001e+07	7.970000e+02	2.090000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  4	1.003000e+03	2.080001e+07	7.230000e+02	2.830000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  5	1.003000e+03	2.080001e+07	8.000000e+02	2.060000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  6	1.003000e+03	2.080001e+07	8.280000e+02	1.780000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  7	1.003000e+03	2.080001e+07	7.580000e+02	2.480000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  8	1.003000e+03	2.080001e+07	9.560000e+02	5.000000e+01	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  9	1.003000e+03	2.080001e+07	8.520000e+02	1.540000e+02	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 10	1.003000e+03	2.080001e+07	1.003000e+03	3.000000e+00	2.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 11	5.030000e+02	1.080001e+07	5.000000e+00	5.010000e+02	1.080002e+07	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 12	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 13	1.140000e+02	2.280000e+06	4.000000e+00	1.160000e+02	3.060020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 14	2.260000e+02	4.520000e+06	1.170000e+02	1.150000e+02	5.300020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 15	2.240000e+02	4.480000e+06	1.190000e+02	1.110000e+02	5.260020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 16	2.220000e+02	4.440000e+06	1.150000e+02	1.130000e+02	5.220020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 17	2.200000e+02	4.400000e+06	1.140000e+02	1.120000e+02	5.180020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 18	2.180000e+02	4.360000e+06	1.150000e+02	1.090000e+02	5.140020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 19	2.160000e+02	4.320000e+06	1.120000e+02	1.100000e+02	5.100020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 20	2.140000e+02	4.280000e+06	1.130000e+02	1.070000e+02	5.060020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 21	2.120000e+02	4.240000e+06	1.100000e+02	1.080000e+02	5.020020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 22	2.100000e+02	4.200000e+06	1.110000e+02	1.050000e+02	4.980020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 23	2.080000e+02	4.160000e+06	1.090000e+02	1.050000e+02	4.940020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 24	2.060000e+02	4.120000e+06	1.060000e+02	1.060000e+02	4.900020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 25	2.040000e+02	4.080000e+06	1.060000e+02	1.040000e+02	4.860020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 26	2.020000e+02	4.040000e+06	1.060000e+02	1.020000e+02	4.820020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 27	2.000000e+02	4.000000e+06	1.040000e+02	1.020000e+02	4.780020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 28	1.980000e+02	3.960000e+06	1.030000e+02	1.010000e+02	4.740020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 29	1.960000e+02	3.920000e+06	1.020000e+02	1.000000e+02	4.700020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 30	1.940000e+02	3.880000e+06	1.020000e+02	9.800000e+01	4.660020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 31	1.920000e+02	3.840000e+06	1.010000e+02	9.700000e+01	4.620020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 32	1.900000e+02	3.800000e+06	9.800000e+01	9.800000e+01	4.580020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 33	1.880000e+02	3.760000e+06	9.900000e+01	9.500000e+01	4.540020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 34	1.860000e+02	3.720000e+06	9.700000e+01	9.500000e+01	4.500020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 35	1.840000e+02	3.680000e+06	9.700000e+01	9.300000e+01	4.460020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 36	1.820000e+02	3.640000e+06	9.500000e+01	9.300000e+01	4.420020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 37	1.800000e+02	3.600000e+06	9.400000e+01	9.200000e+01	4.380020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 38	1.780000e+02	3.560000e+06	9.400000e+01	9.000000e+01	4.340020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 39	1.760000e+02	3.520000e+06	9.100000e+01	9.100000e+01	4.300020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 40	1.740000e+02	3.480000e+06	9.000000e+01	9.000000e+01	4.260020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 41	1.720000e+02	3.440000e+06	9.000000e+01	8.800000e+01	4.220020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 42	1.700000e+02	3.400000e+06	8.900000e+01	8.700000e+01	4.180020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 43	1.680000e+02	3.360000e+06	8.800000e+01	8.600000e+01	4.140020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 44	1.660000e+02	3.320000e+06	8.700000e+01	8.500000e+01	4.100020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 45	1.640000e+02	3.280000e+06	8.600000e+01	8.400000e+01	4.060020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 46	1.620000e+02	3.240000e+06	8.500000e+01	8.300000e+01	4.020020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 47	1.600000e+02	3.200000e+06	8.400000e+01	8.200000e+01	3.980020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 48	1.580000e+02	3.160000e+06	8.400000e+01	8.000000e+01	3.920020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 49	1.560000e+02	3.120000e+06	8.300000e+01	7.900000e+01	3.880020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 50	1.540000e+02	3.080000e+06	8.100000e+01	7.900000e+01	3.840020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 51	1.520000e+02	3.040000e+06	8.000000e+01	7.800000e+01	3.800020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 52	1.500000e+02	3.000000e+06	8.100000e+01	7.500000e+01	3.760020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 53	1.480000e+02	2.960000e+06	7.800000e+01	7.600000e+01	3.720020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 54	1.460000e+02	2.920000e+06	7.700000e+01	7.500000e+01	3.680020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 55	1.440000e+02	2.880000e+06	7.700000e+01	7.300000e+01	3.640020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 56	1.420000e+02	2.840000e+06	7.400000e+01	7.400000e+01	3.600020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 57	1.400000e+02	2.800000e+06	7.400000e+01	7.200000e+01	3.560020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 58	1.380000e+02	2.760000e+06	7.300000e+01	7.100000e+01	3.520020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 59	1.360000e+02	2.720000e+06	7.300000e+01	6.900000e+01	3.480020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 60	1.340000e+02	2.680000e+06	7.200000e+01	6.800000e+01	3.440020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 61	1.320000e+02	2.640000e+06	7.000000e+01	6.800000e+01	3.400020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 62	1.300000e+02	2.600000e+06	7.000000e+01	6.600000e+01	3.360020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 63	1.280000e+02	2.560000e+06	6.900000e+01	6.500000e+01	3.320020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 64	1.260000e+02	2.520000e+06	6.600000e+01	6.600000e+01	3.280020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 65	1.240000e+02	2.480000e+06	6.600000e+01	6.400000e+01	3.240020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 66	1.220000e+02	2.440000e+06	6.500000e+01	6.300000e+01	3.200020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 67	1.200000e+02	2.400000e+06	6.400000e+01	6.200000e+01	3.160020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 68	1.180000e+02	2.360000e+06	6.600000e+01	5.800000e+01	3.120020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 69	1.160000e+02	2.320000e+06	6.200000e+01	6.000000e+01	3.080020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 70	1.140000e+02	2.280000e+06	6.600000e+01	5.400000e+01	3.040020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 71	1.120000e+02	2.240000e+06	6.100000e+01	5.700000e+01	3.000020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 72	1.100000e+02	2.200000e+06	5.800000e+01	5.800000e+01	2.960020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 73	1.080000e+02	2.160000e+06	5.800000e+01	5.600000e+01	2.920020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 74	1.060000e+02	2.120000e+06	6.200000e+01	5.000000e+01	2.880020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 75	1.040000e+02	2.080000e+06	5.600000e+01	5.400000e+01	2.840020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 76	1.020000e+02	2.040000e+06	5.500000e+01	5.300000e+01	2.800020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 77	1.000000e+02	2.000000e+06	5.400000e+01	5.200000e+01	2.760020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 78	9.800000e+01	1.960000e+06	5.900000e+01	4.500000e+01	2.720020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 79	9.600000e+01	1.920000e+06	5.300000e+01	4.900000e+01	2.680020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 80	9.400000e+01	1.880000e+06	5.000000e+01	5.000000e+01	2.640020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 81	9.200000e+01	1.840000e+06	5.000000e+01	4.800000e+01	2.600020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 82	9.000000e+01	1.800000e+06	4.900000e+01	4.700000e+01	2.560020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 83	8.800000e+01	1.760000e+06	4.900000e+01	4.500000e+01	2.520020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 84	8.600000e+01	1.720000e+06	4.700000e+01	4.500000e+01	2.480020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 85	8.400000e+01	1.680000e+06	4.600000e+01	4.400000e+01	2.440020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 86	8.200000e+01	1.640000e+06	4.500000e+01	4.300000e+01	2.400020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 87	8.000000e+01	1.600000e+06	4.500000e+01	4.100000e+01	2.360020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 88	7.800000e+01	1.560000e+06	4.200000e+01	4.200000e+01	2.320020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 89	7.600000e+01	1.520000e+06	4.200000e+01	4.000000e+01	2.280020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 90	7.400000e+01	1.480000e+06	4.100000e+01	3.900000e+01	2.240020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 91	7.200000e+01	1.440000e+06	4.000000e+01	3.800000e+01	2.200020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 92	7.000000e+01	1.400000e+06	3.900000e+01	3.700000e+01	2.160020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 93	6.800000e+01	1.360000e+06	3.800000e+01	3.600000e+01	2.120020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 94	6.600000e+01	1.320000e+06	3.600000e+01	3.600000e+01	2.080020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 95	6.400000e+01	1.280000e+06	3.700000e+01	3.300000e+01	2.040020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 96	6.200000e+01	1.240000e+06	3.400000e+01	3.400000e+01	2.000020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 97	6.000000e+01	1.200000e+06	3.400000e+01	3.200000e+01	1.960020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 98	5.800000e+01	1.160000e+06	3.300000e+01	3.100000e+01	1.920020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+ 99	5.600000e+01	1.120000e+06	3.400000e+01	2.800000e+01	1.880020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+100	5.400000e+01	1.080000e+06	3.200000e+01	2.800000e+01	1.840020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+101	5.200000e+01	1.040000e+06	2.800000e+01	3.000000e+01	1.800020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+102	5.000000e+01	1.000000e+06	2.900000e+01	2.700000e+01	1.760020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+103	4.800000e+01	9.600000e+05	2.900000e+01	2.500000e+01	1.720020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+104	4.600000e+01	9.200000e+05	2.800000e+01	2.400000e+01	1.680020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+105	4.400000e+01	8.800000e+05	2.500000e+01	2.500000e+01	1.640020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+106	4.200000e+01	8.400000e+05	2.500000e+01	2.300000e+01	1.600020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+107	4.000000e+01	8.000000e+05	2.400000e+01	2.200000e+01	1.560020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+108	3.800000e+01	7.600000e+05	2.500000e+01	1.900000e+01	1.520020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+109	3.600000e+01	7.200000e+05	2.300000e+01	1.900000e+01	1.480020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+110	3.400000e+01	6.800000e+05	2.100000e+01	1.900000e+01	1.440020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+111	3.200000e+01	6.400000e+05	2.100000e+01	1.700000e+01	1.400020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+112	3.000000e+01	6.000000e+05	1.800000e+01	1.800000e+01	1.360020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+113	2.800000e+01	5.600000e+05	1.800000e+01	1.600000e+01	1.320020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+114	2.600000e+01	5.200000e+05	1.700000e+01	1.500000e+01	1.280020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+115	2.400000e+01	4.800000e+05	1.600000e+01	1.400000e+01	1.240020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+116	2.200000e+01	4.400000e+05	1.500000e+01	1.300000e+01	1.200020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+117	2.000000e+01	4.000000e+05	1.300000e+01	1.300000e+01	1.160020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+118	1.800000e+01	3.600000e+05	1.300000e+01	1.100000e+01	1.120020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+119	1.600000e+01	3.200000e+05	1.300000e+01	9.000000e+00	1.080020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+120	1.400000e+01	2.800000e+05	1.000000e+01	1.000000e+01	1.040020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+121	1.200000e+01	2.400000e+05	1.000000e+01	8.000000e+00	1.000020e+06	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+122	1.000000e+01	2.000000e+05	9.000000e+00	7.000000e+00	9.600200e+05	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+123	8.000000e+00	1.600000e+05	8.000000e+00	6.000000e+00	9.200200e+05	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+124	6.000000e+00	1.200000e+05	7.000000e+00	5.000000e+00	8.800200e+05	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+125	4.000000e+00	8.000000e+04	6.000000e+00	4.000000e+00	8.400200e+05	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+126	2.000000e+00	4.000000e+04	5.000000e+00	3.000000e+00	8.000200e+05	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+127	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total	2.378500e+04	5.679226e+08	1.431600e+04	9.430000e+03	5.560625e+08	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Average	1.858203e+02	4.436895e+06	1.118438e+02	7.367188e+01	4.344238e+06	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Maximum	1.003000e+03	9.920252e+07	1.003000e+03	5.010000e+02	2.080002e+07	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Minimum	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Stdev	2.448592e+02	9.776150e+06	1.990684e+02	7.607676e+01	4.811872e+06	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+
+Output Paraver trace "output.prv" generated
+
+#+end_example
+
+Apparently, this is the same thing Lucas got when running Dimemas.
+A lot of tasks with messages to be received/sent when the simulation ended.
+
+Note at the "Total Statistics" section of the output that the task 12
+and task 127 have 0 computation time and 0 communication time.  It is
+understandable that task 12 does not do anything, we saw at the
+original prv trace that this task was not mapped to any node and,
+therefore, it does not do anything.  But the task 128 should do
+something. We can see on the warning that the task 127 received
+messages (and it did not processed them).
+
+We took a look at what this task does at the original trace and task
+127 (128 on the original trace) does compute and send/receive
+messages.. Task 12 however (13 on the original trace) does not do
+anything. 
+
+Let`s take a look at the =dim= file (I don`t know the
+format of this file very well). The file seems to be ordered by the
+task id.  All the task 0 events then all the task 1 events, so on and
+so forth until the task 127 events.
+Let`s see the events registered for task 12 and 127:
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+cat 2dheat.dim | grep '20:12:'
+cat 2dheat.dim | grep '20:127'
+#+end_src
+
+#+RESULTS:
+: 20:127:0:0:1
+: 20:127:0:0:0
+
+Task 12 does not have any event registered and task 127 has these 2
+lines. I do not know what the lines mean but this is far less that all
+the other tasks.
+
+Let`s go back to the warning we obtained when converting to the dim
+format.  Here is what it said: "1 tasks have communications records
+outside a communication block WARNING: The simulation of this trace
+could be inconsistent".
+
+This is the exact section of the source that generates the warning:
+#+begin_src cpp
+  if (OutsideCommsPresent)
+  {
+    cout << endl;
+    cout << "********************************************************************************" << endl;
+    cout << "*                               WARNING                                        *" << endl;
+    cout << "********************************************************************************" << endl;
+    cout << TasksWithOutsideComms.size() << " ";
+    /*
+    cout << "Tasks ";
+    cout << TasksWithOutsideComms[0];
+    for (size_t i = 1; i < TasksWithOutsideComms.size(); i++)
+      cout << ", " << TasksWithOutsideComms[i];
+    cout << endl;
+    */
+    cout << "tasks have communications records outside a communication block" << endl;
+    cout << "WARNING: The simulation of this trace could be inconsistent" << endl;
+    cout << "NOTE: If the Paraver trace comes from a trace cut, check the cut limtis" << endl;
+    cout << "********************************************************************************" << endl;
+    cout << endl;
+  }
+#+end_src
+
+I uncommented the lines in the middle to see which tasks had this problem.
+I compiled Dimemas again with
+
+#+begin_src sh
+cd dimemas/dimemas-5.2.12/
+make clean
+make
+#+end_src
+
+And run the conversion again
+
+#+begin_src sh :results output :exports both
+cd experiments/18-May-2016/draco2
+./../../../dimemas/dimemas-5.2.12/prv2dim/prv2dim -s 2016-05-14-2D_Heat_Transfer_5k_5k_500.prv 2dheat.dim 2> error.txt
+cat error.txt
+#+end_src
+
+#+RESULTS:
+#+begin_example
+INITIALIZING PARSER... OK!
+SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 001 %SPLITTING COMMUNICATIONS 002 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 010 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 013 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 019 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 021 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 026 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 030 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 036 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 038 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 043 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 048 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 051 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 058 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 063 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 068 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 072 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 078 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 084 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 092 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+-> Trace first pass finished (communications split)
+   * Records parsed:          629411
+   * Splitted communications 375333
+SORTING PARTIAL COMMUNICATIONS
+COMMUNICATIONS SORTED
+INITIALIZING TRANSLATION...  OK
+CREATING TRANSLATION STRUCTURES  001/128CREATING TRANSLATION STRUCTURES  002/128CREATING TRANSLATION STRUCTURES  003/128CREATING TRANSLATION STRUCTURES  004/128CREATING TRANSLATION STRUCTURES  005/128CREATING TRANSLATION STRUCTURES  006/128CREATING TRANSLATION STRUCTURES  007/128CREATING TRANSLATION STRUCTURES  008/128CREATING TRANSLATION STRUCTURES  009/128CREATING TRANSLATION STRUCTURES  010/128CREATING TRANSLATION STRUCTURES  011/128CREATING TRANSLATION STRUCTURES  012/128CREATING TRANSLATION STRUCTURES  013/128CREATING TRANSLATION STRUCTURES  014/128CREATING TRANSLATION STRUCTURES  015/128CREATING TRANSLATION STRUCTURES  016/128CREATING TRANSLATION STRUCTURES  017/128CREATING TRANSLATION STRUCTURES  018/128CREATING TRANSLATION STRUCTURES  019/128CREATING TRANSLATION STRUCTURES  020/128CREATING TRANSLATION STRUCTURES  021/128CREATING TRANSLATION STRUCTURES  022/128CREATING TRANSLATION STRUCTURES  023/128CREATING TRANSLATION STRUCTURES  024/128CREATING TRANSLATION STRUCTURES  025/128CREATING TRANSLATION STRUCTURES  026/128CREATING TRANSLATION STRUCTURES  027/128CREATING TRANSLATION STRUCTURES  028/128CREATING TRANSLATION STRUCTURES  029/128CREATING TRANSLATION STRUCTURES  030/128CREATING TRANSLATION STRUCTURES  031/128CREATING TRANSLATION STRUCTURES  032/128CREATING TRANSLATION STRUCTURES  033/128CREATING TRANSLATION STRUCTURES  034/128CREATING TRANSLATION STRUCTURES  035/128CREATING TRANSLATION STRUCTURES  036/128CREATING TRANSLATION STRUCTURES  037/128CREATING TRANSLATION STRUCTURES  038/128CREATING TRANSLATION STRUCTURES  039/128CREATING TRANSLATION STRUCTURES  040/128CREATING TRANSLATION STRUCTURES  041/128CREATING TRANSLATION STRUCTURES  042/128CREATING TRANSLATION STRUCTURES  043/128CREATING TRANSLATION STRUCTURES  044/128CREATING TRANSLATION STRUCTURES  045/128CREATING TRANSLATION STRUCTURES  046/128CREATING TRANSLATION STRUCTURES  047/128CREATING TRANSLATION STRUCTURES  048/128CREATING TRANSLATION STRUCTURES  049/128CREATING TRANSLATION STRUCTURES  050/128CREATING TRANSLATION STRUCTURES  051/128CREATING TRANSLATION STRUCTURES  052/128CREATING TRANSLATION STRUCTURES  053/128CREATING TRANSLATION STRUCTURES  054/128CREATING TRANSLATION STRUCTURES  055/128CREATING TRANSLATION STRUCTURES  056/128CREATING TRANSLATION STRUCTURES  057/128CREATING TRANSLATION STRUCTURES  058/128CREATING TRANSLATION STRUCTURES  059/128CREATING TRANSLATION STRUCTURES  060/128CREATING TRANSLATION STRUCTURES  061/128CREATING TRANSLATION STRUCTURES  062/128CREATING TRANSLATION STRUCTURES  063/128CREATING TRANSLATION STRUCTURES  064/128CREATING TRANSLATION STRUCTURES  065/128CREATING TRANSLATION STRUCTURES  066/128CREATING TRANSLATION STRUCTURES  067/128CREATING TRANSLATION STRUCTURES  068/128CREATING TRANSLATION STRUCTURES  069/128CREATING TRANSLATION STRUCTURES  070/128CREATING TRANSLATION STRUCTURES  071/128CREATING TRANSLATION STRUCTURES  072/128CREATING TRANSLATION STRUCTURES  073/128CREATING TRANSLATION STRUCTURES  074/128CREATING TRANSLATION STRUCTURES  075/128CREATING TRANSLATION STRUCTURES  076/128CREATING TRANSLATION STRUCTURES  077/128CREATING TRANSLATION STRUCTURES  078/128CREATING TRANSLATION STRUCTURES  079/128CREATING TRANSLATION STRUCTURES  080/128CREATING TRANSLATION STRUCTURES  081/128CREATING TRANSLATION STRUCTURES  082/128CREATING TRANSLATION STRUCTURES  083/128CREATING TRANSLATION STRUCTURES  084/128CREATING TRANSLATION STRUCTURES  085/128CREATING TRANSLATION STRUCTURES  086/128CREATING TRANSLATION STRUCTURES  087/128CREATING TRANSLATION STRUCTURES  088/128CREATING TRANSLATION STRUCTURES  089/128CREATING TRANSLATION STRUCTURES  090/128CREATING TRANSLATION STRUCTURES  091/128CREATING TRANSLATION STRUCTURES  092/128CREATING TRANSLATION STRUCTURES  093/128CREATING TRANSLATION STRUCTURES  094/128CREATING TRANSLATION STRUCTURES  095/128CREATING TRANSLATION STRUCTURES  096/128CREATING TRANSLATION STRUCTURES  097/128CREATING TRANSLATION STRUCTURES  098/128CREATING TRANSLATION STRUCTURES  099/128CREATING TRANSLATION STRUCTURES  100/128CREATING TRANSLATION STRUCTURES  101/128CREATING TRANSLATION STRUCTURES  102/128CREATING TRANSLATION STRUCTURES  103/128CREATING TRANSLATION STRUCTURES  104/128CREATING TRANSLATION STRUCTURES  105/128CREATING TRANSLATION STRUCTURES  106/128CREATING TRANSLATION STRUCTURES  107/128CREATING TRANSLATION STRUCTURES  108/128CREATING TRANSLATION STRUCTURES  109/128CREATING TRANSLATION STRUCTURES  110/128CREATING TRANSLATION STRUCTURES  111/128CREATING TRANSLATION STRUCTURES  112/128CREATING TRANSLATION STRUCTURES  113/128CREATING TRANSLATION STRUCTURES  114/128CREATING TRANSLATION STRUCTURES  115/128CREATING TRANSLATION STRUCTURES  116/128CREATING TRANSLATION STRUCTURES  117/128CREATING TRANSLATION STRUCTURES  118/128CREATING TRANSLATION STRUCTURES  119/128CREATING TRANSLATION STRUCTURES  120/128CREATING TRANSLATION STRUCTURES  121/128CREATING TRANSLATION STRUCTURES  122/128CREATING TRANSLATION STRUCTURES  123/128CREATING TRANSLATION STRUCTURES  124/128CREATING TRANSLATION STRUCTURES  125/128CREATING TRANSLATION STRUCTURES  126/128CREATING TRANSLATION STRUCTURES  127/128CREATING TRANSLATION STRUCTURES  128/128CREATING TRANSLATION STRUCTURES  128/128
+WRITING HEADER... OK
+TRANSLATING COMMUNICATORS... OK
+RECORD TRANSLATION
+TRANSLATING RECORDS 000 %TRANSLATING RECORDS 001 %TRANSLATING RECORDS 002 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 010 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 013 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 019 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 021 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 026 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 030 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 036 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 038 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 043 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 048 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 051 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 054 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 058 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 063 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 068 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 072 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 078 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 084 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 092 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+MERGING PARTIAL OUTPUT TRACES
+   * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * Merging task    5 100 %   * Merging task    6 100 %   * Merging task    7 100 %   * Merging task    8 100 %   * Merging task    9 100 %   * Merging task   10 100 %   * Merging task   11 100 %   * Merging task   12 100 %   * Merging task   13 100 %   * Merging task   14 100 %   * Merging task   15 100 %   * Merging task   16 100 %   * Merging task   17 100 %   * Merging task   18 100 %   * Merging task   19 100 %   * Merging task   20 100 %   * Merging task   21 100 %   * Merging task   22 100 %   * Merging task   23 100 %   * Merging task   24 100 %   * Merging task   25 100 %   * Merging task   26 100 %   * Merging task   27 100 %   * Merging task   28 100 %   * Merging task   29 100 %   * Merging task   30 100 %   * Merging task   31 100 %   * Merging task   32 100 %   * Merging task   33 100 %   * Merging task   34 100 %   * Merging task   35 100 %   * Merging task   36 100 %   * Merging task   37 100 %   * Merging task   38 100 %   * Merging task   39 100 %   * Merging task   40 100 %   * Merging task   41 100 %   * Merging task   42 100 %   * Merging task   43 100 %   * Merging task   44 100 %   * Merging task   45 100 %   * Merging task   46 100 %   * Merging task   47 100 %   * Merging task   48 100 %   * Merging task   49 100 %   * Merging task   50 100 %   * Merging task   51 100 %   * Merging task   52 100 %   * Merging task   53 100 %   * Merging task   54 100 %   * Merging task   55 100 %   * Merging task   56 100 %   * Merging task   57 100 %   * Merging task   58 100 %   * Merging task   59 100 %   * Merging task   60 100 %   * Merging task   61 100 %   * Merging task   62 100 %   * Merging task   63 100 %   * Merging task   64 100 %   * Merging task   65 100 %   * Merging task   66 100 %   * Merging task   67 100 %   * Merging task   68 100 %   * Merging task   69 100 %   * Merging task   70 100 %   * Merging task   71 100 %   * Merging task   72 100 %   * Merging task   73 100 %   * Merging task   74 100 %   * Merging task   75 100 %   * Merging task   76 100 %   * Merging task   77 100 %   * Merging task   78 100 %   * Merging task   79 100 %   * Merging task   80 100 %   * Merging task   81 100 %   * Merging task   82 100 %   * Merging task   83 100 %   * Merging task   84 100 %   * Merging task   85 100 %   * Merging task   86 100 %   * Merging task   87 100 %   * Merging task   88 100 %   * Merging task   89 100 %   * Merging task   90 100 %   * Merging task   91 100 %   * Merging task   92 100 %   * Merging task   93 100 %   * Merging task   94 100 %   * Merging task   95 100 %   * Merging task   96 100 %   * Merging task   97 100 %   * Merging task   98 100 %   * Merging task   99 100 %   * Merging task  100 100 %   * Merging task  101 100 %   * Merging task  102 100 %   * Merging task  103 100 %   * Merging task  104 100 %   * Merging task  105 100 %   * Merging task  106 100 %   * Merging task  107 100 %   * Merging task  108 100 %   * Merging task  109 100 %   * Merging task  110 100 %   * Merging task  111 100 %   * Merging task  112 100 %   * Merging task  113 100 %   * Merging task  114 100 %   * Merging task  115 100 %   * Merging task  116 100 %   * Merging task  117 100 %   * Merging task  118 100 %   * Merging task  119 100 %   * Merging task  120 100 %   * Merging task  121 100 %   * Merging task  122 100 %   * Merging task  123 100 %   * Merging task  124 100 %   * Merging task  125 100 %   * Merging task  126 100 %   * Merging task  127 100 %   * Merging task  128 100 %   * All task merged!         
+
+********************************************************************************
+*                               WARNING                                        *
+********************************************************************************
+1 Tasks 128
+tasks have communications records outside a communication block
+WARNING: The simulation of this trace could be inconsistent
+NOTE: If the Paraver trace comes from a trace cut, check the cut limtis
+********************************************************************************
+
+TRANSLATION FINISHED
+GENERATING PCF
+   * Input PCF 2016-05-14-2D_Heat_Transfer_5k_5k_500.pcf correctly copied to 2dheat.pcf
+COPYING ROW FILE
+#+end_example
+
+Task 128 is responsible for this warning. Now, I am not sure of what
+the communication block means..
+I will continue to look into this after a break.
