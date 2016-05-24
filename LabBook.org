@@ -9496,5 +9496,538 @@ A quick look at the dim file shows that we have the same thing, but the outside 
 registered in this file.
 
 
+* 2016-05-24 Simgrid multiple mpi_wait
+
+We made a MPI app for testing what happens when we have multiple
+MPI_Waits. 
+
+#+begin_src text :results output :session :exports both  :tangle "./experiments/24-May-2016/wait1/wait_example.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+
+int main(int argc, char **argv) {
+    MPI_Init(&argc, &argv);
+
+    int rank, num_procs;
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if(num_procs < 2 || num_procs % 2 != 0) {
+      MPI_Finalize();
+      return 1;
+    }
+
+    MPI_Request request;
+    request = MPI_REQUEST_NULL;
+    if(rank % 2 == 0) {
+      int msg = 9999;
+      MPI_Isend(&msg, 1, MPI_INT, rank + 1, 1234, MPI_COMM_WORLD, &request);
+      printf("process %d sent message to process %d\n", rank, rank + 1);
+    }
+    else {
+      int buffer;
+      MPI_Irecv(&buffer, 1, MPI_INT, rank - 1, 1234, MPI_COMM_WORLD, &request);
+      printf("process %d received a message from process %d\n", rank, rank - 1);
+    }
+
+    MPI_Status status;
+    MPI_Wait(&request, &status);
+    MPI_Wait(&request, &status);
+    MPI_Wait(&request, &status);
+
+    MPI_Finalize();
+}
+#+end_src
+
+I tangled it with C-c C-v t.
+Compile it and run it normally.
+
+#+begin_src sh  :results output :exports both
+cd experiments/24-May-2016/wait1
+mpicc wait_example.c -o wait_example
+mpirun -np 4 ./wait_example
+#+end_src
+
+#+RESULTS:
+: process 1 received a message from process 0
+: process 3 received a message from process 2
+: process 0 sent message to process 1
+: process 2 sent message to process 3
+
+It runs fine.
+Let`s trace it.
+
+#+begin_src sh  :results output :exports both
+cd experiments/24-May-2016/wait1/extrae
+export LD_PRELOAD=/home/tiago/install/extrae-3.1.0/lib/libmpitrace.so
+  export EXTRAE_CONFIG_FILE=extrae.xml
+  mpirun -np 4 ./../wait_example
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Welcome to Extrae 3.1.0 (revision 3316 based on extrae/trunk)
+Extrae: Parsing the configuration file (extrae.xml) begins
+Extrae: Tracing package is located on /home/tiago/install/extrae-3.1.0
+Extrae: Generating intermediate files for Paraver traces.
+Extrae: MPI routines will collect HW counters information.
+Extrae: Warning! <pthread> tag will be ignored. This library does not support OpenMP.
+Extrae: Tracing 3 level(s) of MPI callers: [ 1 2 3 ]
+Extrae: <dynamic-memory> tag at <Callers> level will be ignored. This library does not support dynamic memory instrumentation.
+Extrae: Warning! change-at-time time units not specified. Using seconds
+Extrae: PAPI domain set to ALL for HWC set 1
+Extrae: HWC set 1 contains following counters < PAPI_TOT_INS (0x80000032) PAPI_TOT_CYC (0x8000003b) PAPI_L2_DCM (0x80000002) PAPI_L3_TCM (0x80000008) PAPI_BR_MSP (0x8000002e) > - never changes
+Extrae: Warning! change-at-time time units not specified. Using seconds
+Extrae: PAPI domain set to ALL for HWC set 2
+Extrae: HWC set 2 contains following counters < PAPI_TOT_INS (0x80000032) PAPI_TOT_CYC (0x8000003b) PAPI_LD_INS (0x80000035) PAPI_SR_INS (0x80000036) PAPI_BR_UCN (0x8000002a) PAPI_BR_CN (0x8000002b) RESOURCE_STALLS (0x40000028) > - never changes
+Extrae: Resource usage is disabled at flush buffer.
+Extrae: Memory usage is disabled at flush buffer.
+Extrae: Tracing buffer can hold 500000 events
+Extrae: Circular buffer disabled.
+Extrae: Dynamic memory instrumentation is disabled.
+Extrae: Basic I/O memory instrumentation is disabled.
+Extrae: Parsing the configuration file (extrae.xml) has ended
+Extrae: Intermediate traces will be stored in /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae
+Extrae: Temporal directory (/home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae) is shared among processes.
+Extrae: Final directory (/home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae) is shared among processes.
+Extrae: Tracing mode is set to: Detail.
+Extrae: Successfully initiated with 4 tasks
+
+process 1 received a message from process 0
+process 2 sent message to process 3
+process 3 received a message from process 2
+process 0 sent message to process 1
+Extrae: Intermediate raw trace file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029051000002000000.mpit
+Extrae: Intermediate raw trace file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029050000001000000.mpit
+Extrae: Intermediate raw trace file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029049000000000000.mpit
+Extrae: Intermediate raw trace file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029052000003000000.mpit
+Extrae: Intermediate raw sym file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029050000001000000.sym
+Extrae: Intermediate raw sym file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029049000000000000.sym
+Extrae: Intermediate raw sym file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029052000003000000.sym
+Extrae: Deallocating memory.
+Extrae: Intermediate raw sym file created : /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029051000002000000.sym
+Extrae: Application has ended. Tracing has been terminated.
+Extrae: Proceeding with the merge of the intermediate tracefiles.
+Extrae: Waiting for all tasks to reach the checkpoint.
+Extrae: Executing the merge process (using /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/TRACE.mpits).
+merger: Extrae 3.1.0 (revision 3316 based on extrae/trunk)
+mpi2prv: Tree order is set to 16 but is larger that numtasks. Setting tree order to 4
+mpi2prv: Assigned nodes < johanna, johanna, johanna, johanna >
+mpi2prv: Assigned size per processor < <1 Mbyte, <1 Mbyte, <1 Mbyte, <1 Mbyte >
+mpi2prv: File /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029049000000000000.mpit is object 1.1.1 on node johanna assigned to processor 0
+mpi2prv: File /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029050000001000000.mpit is object 1.2.1 on node johanna assigned to processor 1
+mpi2prv: File /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029051000002000000.mpit is object 1.3.1 on node johanna assigned to processor 2
+mpi2prv: File /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/set-0/TRACE.0000029052000003000000.mpit is object 1.4.1 on node johanna assigned to processor 3
+mpi2prv: Time synchronization has been turned off
+mpi2prv: A total of 10 symbols were imported from /home/tiago/trabalhoconclusao/experiments/24-May-2016/wait1/extrae/TRACE.sym file
+mpi2prv: 0 function symbols imported
+mpi2prv: 10 HWC counter descriptions imported
+mpi2prv: Checking for target directory existance... exists, ok!
+mpi2prv: Selected output trace format is Paraver
+mpi2prv: Stored trace format is Paraver
+mpi2prv: Searching synchronization points... done
+mpi2prv: Enabling Time Synchronization (Node).
+mpi2prv: Circular buffer enabled at tracing time? NO
+mpi2prv: Parsing intermediate files
+mpi2prv: Processor 3 succeeded to translate its assigned files
+mpi2prv: Processor 0 succeeded to translate its assigned files
+mpi2prv: Processor 1 succeeded to translate its assigned files
+mpi2prv: Processor 2 succeeded to translate its assigned files
+mpi2prv: Elapsed time translating files: 0 hours 0 minutes 0 seconds
+mpi2prv: Gathering addresses across processors... done
+mpi2prv: Elapsed time broadcasting and sorting addresses: 0 hours 0 minutes 0 seconds
+mpi2prv: Starting the distribution of foreign receives.
+mpi2prv: Processor 2 is storing 1 foreign receives (0 Kbytes) for the next phase.
+mpi2prv: Processor 1 is storing 0 foreign receives (0 Kbytes) for the next phase.
+mpi2prv: Processor 3 is storing 0 foreign receives (0 Kbytes) for the next phase.
+mpi2prv: Processor 0 is storing 1 foreign receives (0 Kbytes) for the next phase.
+mpi2prv: Ended the distribution of foreign receives.
+mpi2prv: Sharing information < MPI OpenMP pthread TRT CUDA HWC MISC callers >
+mpi2prv: Elapsed time sharing communications: 0 hours 0 minutes 0 seconds
+mpi2prv: Sharing thread accounting information for ptask 0 done
+mpi2prv: Merge tree depth for 4 tasks is 1 levels using a fan-out of 4 leaves
+mpi2prv: Executing merge tree step 1 of 1.
+mpi2prv: Generating tracefile (intermediate buffers of 335539 events)
+         This process can take a while. Please, be patient.
+mpi2prv: Progress ... 5.8% 10.2% 15.9% 21.1% 26.4% 30.8% 35.3% 41.4% 45.1% 50.4% 55.8% 60.3% 66.4% 70.8% 76.1% 80.6% 85.9% 90.5% 95.8% done
+mpi2prv: Elapsed time on tree step 1: 0 hours 0 minutes 0 seconds
+mpi2prv: Resulting tracefile occupies 12305 bytes
+mpi2prv: Removing temporal files... done
+mpi2prv: Elapsed time removing temporal files: 0 hours 0 minutes 0 seconds
+mpi2prv: Congratulations! wait_example.prv has been generated.
+#+end_example
+
+The trace was successfully created.
+Let`s simulate it on Dimemas.
+First, we have to convert it to the Dimemas format.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+./../../../dimemas/dimemas-5.2.12/prv2dim/prv2dim -s extrae/wait_example.prv wait_example.dim
+#+end_src
+
+#+RESULTS:
+#+begin_example
+INITIALIZING PARSER... OK!
+SPLITTING COMMUNICATIONS 000 %SPLITTING COMMUNICATIONS 003 %SPLITTING COMMUNICATIONS 004 %SPLITTING COMMUNICATIONS 005 %SPLITTING COMMUNICATIONS 006 %SPLITTING COMMUNICATIONS 007 %SPLITTING COMMUNICATIONS 008 %SPLITTING COMMUNICATIONS 009 %SPLITTING COMMUNICATIONS 011 %SPLITTING COMMUNICATIONS 012 %SPLITTING COMMUNICATIONS 014 %SPLITTING COMMUNICATIONS 015 %SPLITTING COMMUNICATIONS 016 %SPLITTING COMMUNICATIONS 017 %SPLITTING COMMUNICATIONS 018 %SPLITTING COMMUNICATIONS 020 %SPLITTING COMMUNICATIONS 022 %SPLITTING COMMUNICATIONS 023 %SPLITTING COMMUNICATIONS 024 %SPLITTING COMMUNICATIONS 025 %SPLITTING COMMUNICATIONS 027 %SPLITTING COMMUNICATIONS 028 %SPLITTING COMMUNICATIONS 029 %SPLITTING COMMUNICATIONS 031 %SPLITTING COMMUNICATIONS 032 %SPLITTING COMMUNICATIONS 033 %SPLITTING COMMUNICATIONS 034 %SPLITTING COMMUNICATIONS 035 %SPLITTING COMMUNICATIONS 037 %SPLITTING COMMUNICATIONS 039 %SPLITTING COMMUNICATIONS 040 %SPLITTING COMMUNICATIONS 041 %SPLITTING COMMUNICATIONS 042 %SPLITTING COMMUNICATIONS 044 %SPLITTING COMMUNICATIONS 045 %SPLITTING COMMUNICATIONS 046 %SPLITTING COMMUNICATIONS 047 %SPLITTING COMMUNICATIONS 049 %SPLITTING COMMUNICATIONS 050 %SPLITTING COMMUNICATIONS 052 %SPLITTING COMMUNICATIONS 053 %SPLITTING COMMUNICATIONS 054 %SPLITTING COMMUNICATIONS 055 %SPLITTING COMMUNICATIONS 056 %SPLITTING COMMUNICATIONS 057 %SPLITTING COMMUNICATIONS 059 %SPLITTING COMMUNICATIONS 060 %SPLITTING COMMUNICATIONS 061 %SPLITTING COMMUNICATIONS 062 %SPLITTING COMMUNICATIONS 064 %SPLITTING COMMUNICATIONS 065 %SPLITTING COMMUNICATIONS 066 %SPLITTING COMMUNICATIONS 067 %SPLITTING COMMUNICATIONS 069 %SPLITTING COMMUNICATIONS 070 %SPLITTING COMMUNICATIONS 071 %SPLITTING COMMUNICATIONS 073 %SPLITTING COMMUNICATIONS 074 %SPLITTING COMMUNICATIONS 075 %SPLITTING COMMUNICATIONS 076 %SPLITTING COMMUNICATIONS 077 %SPLITTING COMMUNICATIONS 079 %SPLITTING COMMUNICATIONS 080 %SPLITTING COMMUNICATIONS 081 %SPLITTING COMMUNICATIONS 082 %SPLITTING COMMUNICATIONS 083 %SPLITTING COMMUNICATIONS 085 %SPLITTING COMMUNICATIONS 086 %SPLITTING COMMUNICATIONS 087 %SPLITTING COMMUNICATIONS 088 %SPLITTING COMMUNICATIONS 089 %SPLITTING COMMUNICATIONS 090 %SPLITTING COMMUNICATIONS 091 %SPLITTING COMMUNICATIONS 093 %SPLITTING COMMUNICATIONS 094 %SPLITTING COMMUNICATIONS 095 %SPLITTING COMMUNICATIONS 096 %SPLITTING COMMUNICATIONS 097 %SPLITTING COMMUNICATIONS 098 %SPLITTING COMMUNICATIONS 099 %SPLITTING COMMUNICATIONS 100 %
+-> Trace first pass finished (communications split)
+   * Records parsed:          92
+   * Splitted communications 6
+SORTING PARTIAL COMMUNICATIONS
+COMMUNICATIONS SORTED
+INITIALIZING TRANSLATION...  OK
+CREATING TRANSLATION STRUCTURES  001/004CREATING TRANSLATION STRUCTURES  002/004CREATING TRANSLATION STRUCTURES  003/004CREATING TRANSLATION STRUCTURES  004/004CREATING TRANSLATION STRUCTURES  004/004
+WRITING HEADER... OK
+TRANSLATING COMMUNICATORS... OK
+RECORD TRANSLATION
+TRANSLATING RECORDS 000 %TRANSLATING RECORDS 003 %TRANSLATING RECORDS 004 %TRANSLATING RECORDS 005 %TRANSLATING RECORDS 006 %TRANSLATING RECORDS 007 %TRANSLATING RECORDS 008 %TRANSLATING RECORDS 009 %TRANSLATING RECORDS 011 %TRANSLATING RECORDS 012 %TRANSLATING RECORDS 014 %TRANSLATING RECORDS 015 %TRANSLATING RECORDS 016 %TRANSLATING RECORDS 017 %TRANSLATING RECORDS 018 %TRANSLATING RECORDS 020 %TRANSLATING RECORDS 022 %TRANSLATING RECORDS 023 %TRANSLATING RECORDS 024 %TRANSLATING RECORDS 025 %TRANSLATING RECORDS 027 %TRANSLATING RECORDS 028 %TRANSLATING RECORDS 029 %TRANSLATING RECORDS 031 %TRANSLATING RECORDS 032 %TRANSLATING RECORDS 033 %TRANSLATING RECORDS 034 %TRANSLATING RECORDS 035 %TRANSLATING RECORDS 037 %TRANSLATING RECORDS 039 %TRANSLATING RECORDS 040 %TRANSLATING RECORDS 041 %TRANSLATING RECORDS 042 %TRANSLATING RECORDS 044 %TRANSLATING RECORDS 045 %TRANSLATING RECORDS 046 %TRANSLATING RECORDS 047 %TRANSLATING RECORDS 049 %TRANSLATING RECORDS 050 %TRANSLATING RECORDS 052 %TRANSLATING RECORDS 053 %TRANSLATING RECORDS 055 %TRANSLATING RECORDS 056 %TRANSLATING RECORDS 057 %TRANSLATING RECORDS 059 %TRANSLATING RECORDS 060 %TRANSLATING RECORDS 061 %TRANSLATING RECORDS 062 %TRANSLATING RECORDS 064 %TRANSLATING RECORDS 065 %TRANSLATING RECORDS 066 %TRANSLATING RECORDS 067 %TRANSLATING RECORDS 069 %TRANSLATING RECORDS 070 %TRANSLATING RECORDS 071 %TRANSLATING RECORDS 073 %TRANSLATING RECORDS 074 %TRANSLATING RECORDS 075 %TRANSLATING RECORDS 076 %TRANSLATING RECORDS 077 %TRANSLATING RECORDS 079 %TRANSLATING RECORDS 080 %TRANSLATING RECORDS 081 %TRANSLATING RECORDS 082 %TRANSLATING RECORDS 083 %TRANSLATING RECORDS 085 %TRANSLATING RECORDS 086 %TRANSLATING RECORDS 087 %TRANSLATING RECORDS 088 %TRANSLATING RECORDS 089 %TRANSLATING RECORDS 090 %TRANSLATING RECORDS 091 %TRANSLATING RECORDS 093 %TRANSLATING RECORDS 094 %TRANSLATING RECORDS 095 %TRANSLATING RECORDS 096 %TRANSLATING RECORDS 097 %TRANSLATING RECORDS 098 %TRANSLATING RECORDS 099 %TRANSLATING RECORDS 100 %
+MERGING PARTIAL OUTPUT TRACES
+   * Merging task    1 100 %   * Merging task    2 100 %   * Merging task    3 100 %   * Merging task    4 100 %   * All task merged!         
+TRANSLATION FINISHED
+GENERATING PCF
+   * Input PCF extrae/wait_example.pcf correctly copied to wait_example.pcf
+COPYING ROW FILE
+#+end_example
+
+Then we have to create a configuration file.
+We will use the same configuration file we used in the last experiments.
+
+#+begin_src text :results output :session :exports both  :tangle "./experiments/24-May-2016/wait1/MN3.cfg"
+#DIMEMAS_CONFIGURATION
+
+/*******************************************************************************
+ * RECORDS DEFINITION - NOTES TO MANUAL EDIT OF THIS FILE
+ *******************************************************************************
+ * 
+ * The records here described follow the SDDF file defintio. Each field must be
+ * sepparated by commas in the actual records.
+ *
+ * The basic types are self-descriptive. When the field type correspond to an
+ * array (<type>[]), the structure of the values must be in this format:
+ *
+ * [array_length] { value_1, value_2, ..., value_array_lenght }
+ *
+ *******************************************************************************
+ 
+ "wide area network information" {
+  1: char[] "name of the wide area network simulated"
+  2: int    "number of machines in wan"
+	3: int    "number of dedicated connections between machines in the simulated system"
+	4: int    "function that models influence of traffic in the non dedicated network"
+            "options: 1 EXPONENTIAl, 2 LOGARITHMIC, 3 LINEAR, 4 CONSTANT" 
+  5: double "maximal value of traffic in the network"
+	6: double "external net bandwidth (MBps)"
+  7: int    "external network collective communications model"
+            "options: 1 CONSTANT, 2 LINEAR, 3 LOGARITHMIC"
+};;
+
+"environment information" {
+  1: char[] "machine name"
+	2: int    "machine ID";
+	3: char[] "architecture used to instrument"
+  4: int    "number of nodes on virtual machine"
+	5: double "data tranfer rate between nodes (MBps)"
+          	"0 means instantaneous communication"
+  6: int    "maximun number of messages on network"
+            "0 means no limit"
+            "1 means bus contention"
+  7: int    "internal network collective communications model"
+            "options: 1 CONSTANT, 2 LINEAR, 3 LOGARITHMIC"
+};;
+
+
+"node information" {
+  1: int     "machine ID"
+	2: char[]  "architecture node name"
+	3: int     "number of processors within node"
+  4: double  "relative processor speed (divisive factor)"
+	5: double  "latency time (s) of intra-node communications model"
+	6: double  "bandwidth (MBps) of intra-node communications model"
+	           "0 means instantaneous communication"
+	7: int     "maximum number of concurrent messages of intra-node communications model"
+             "0 means no limit"
+             "1 means bus contention"
+  8: int     "input links of intra-node communications model"
+  9: int     "output links of intra-node communications model"
+  10: double "latency time (s) of inter-node communications model"
+  11: int    "input links of inter-node communications model"
+  12: int    "input links of intra-node communications model"
+  13: double "latency time (s) of inter-machines (WAN) communications model"
+};;
+
+"multi node information" {
+  1: int     "machine ID"
+  2: int     "number of nodes with same configuration"
+	3: char[]  "architecture node name"
+	4: int     "number of processors within node"
+  5: double  "processor speed ratio wrt. original execution (divisive factor)"
+             "0 means instantaneous | negative value means fixed duration in s."
+	6: double  "latency time (s) of intra-node communications model"
+	7: double  "bandwidth (MBps) of intra-node communications model"
+	           "0 means instantaneous communication"
+	8: int     "maximum number of concurrent messages of intra-node communications model"
+             "0 means no limit"
+             "1 means bus contention"
+  9: int     "input links of intra-node communications model"
+  10: int    "output links of intra-node communications model"
+  11: double "latency time (s) of inter-node communications model"
+  12: int    "input links of inter-node communications model"
+  13: int    "input links of intra-node communications model"
+  14: double "latency time (s) of inter-machines (WAN) communications model"
+};;
+
+"mapping information" {
+  1: char[] "application tracefile name"
+  2: int    "number of tasks in application"
+  3: int[]  "list of nodes where each application tasks is mapped"
+};;
+
+"predefined mapping information" {
+  1: char[] "application tracefile name" (OPTIONAL)
+  2: char[] "predefined map identifier"
+            "options: FILL_NODES | <int> TASKS_PER_NODE | INTERLEAVED"
+}
+
+"configuration files" {
+  1: char[] "scheduler definition filename"
+	2: char[] "file system definition filename"
+	3: char[] "communications fine tuning configuration filename"
+	4: char[] "sensitivity configuration filename"
+};;
+
+"modules information" {
+	1: int    "module type"
+  2: int    "module value"
+  3: double "module speed ration wrt. original execution (divisive factor)"
+            "0 means instantaneous | negative value means fixed duration in s."
+};;
+
+
+
+"file system parameters" {
+  1: double "disk latency"
+  2: double "disk bandwidth";
+	3: double "block size";
+	4: int    "concurrent requests";
+	5: double "hit ratio";
+};;
+
+"dedicated connection information" {
+	1:  int    "connection ID"
+	2:  int    "source machine ID"
+  3:  int	   "destination machine ID"
+  4:  double "bandwidth of the connection (MBps)"
+	5:  int[]  "list of tags that will use the connection"
+	6:  int    "size of first message (bytes) to apply the comparision to use the connection"
+	7:  char[] "size condition that should meet messages to use the connection"
+             "it can be <, =, > and (referent to first message size)"
+  8:  char[]  "operation. options: & AND, | OR"
+  9:  int    "size of second condition that should meet messages to use the connection"
+  10: char[] "size condition that should meet messages to use the connection"
+             "it can be <, =, > and its is referent to second message size"
+  11: int[]  "list of communicators of coll. Operations that can use the connection"
+  12: double "latency of dedicated connection (s)"
+  13: double "latency due to distance (s)"
+};;
+
+*******************************************************************************/
+
+
+"wide area network information" {"", 1, 0, 4, 0.0, 0.0, 1};;
+
+
+"environment information" {"", 0, "", 1024, 2048.0, 0, 1};;
+
+"multi node information" {0, 1024, "", 16, 1.0, 0.000002, 4096.0, 1, 1, 0, 0.000002, 1, 1, 0.0};;
+
+"predefined mapping information" {"12 TASKS_PER_NODE"};;
+
+"configuration files" {"", "", "", ""};;
+
+
+
+"file system parameters" {0.0, 0.0, 8.0, 0, 1.0};;
+#+end_src
+
+Tangle it with C-c C-v t.  We have to remove the first line of the
+file so Dimemas will be able to read it.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+sed '1d' MN3.cfg > tmp; mv tmp MN3.cfg
+#+end_src
+
+Now, let`s run Dimemas.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+./../../../dimemas/dimemas-5.2.12/Simulator/Dimemas -S 32K -p wait_example_dimemas.prv --dim wait_example.dim MN3.cfg
+#+end_src
+
+#+RESULTS:
+#+begin_example
+-> Simulator configuration to be read MN3.cfg
+-> Loading default random values
+-> Loading default scheduler configuration
+   * Machine 0. Policy: FIFO
+   * Loading default communications configuration
+-> Loding initial memory status
+-> Loding initial semaphores status
+-> Loading default file sytem configuration
+
+10.000000000: END SIMULATION
+
+a**** Application 0 (wait_example.dim) ****
+
+a**** Total Statistics ****
+
+Execution time:	0.003655777
+Speedup:	3.95 
+CPU Time:	0.014424599
+
+ Id.	Computation	%time	Communication
+  0	0.003632326	49.84	0.000002000
+  1	0.003601091	49.62	0.000054686
+  2	0.003600045	49.62	0.000002000
+  3	0.003591137	49.55	0.000002000
+
+ Id.	Mess.sent	Bytes sent	Immediate recv	Waiting recv	Bytes recv	Coll.op.	Block time	Comm. time	Wait link time	Wait buses time	I/O time
+  0	1.000000e+00	4.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  1	0.000000e+00	0.000000e+00	0.000000e+00	1.000000e+00	4.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  2	1.000000e+00	4.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+  3	0.000000e+00	0.000000e+00	1.000000e+00	0.000000e+00	4.000000e+00	0.000000e+00	0.000000000	0.000000000	0.000000000	0.000000000	0.000000000
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total	2.000000e+00	8.000000e+00	1.000000e+00	1.000000e+00	8.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Average	5.000000e-01	2.000000e+00	2.500000e-01	2.500000e-01	2.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Maximum	1.000000e+00	4.000000e+00	1.000000e+00	1.000000e+00	4.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Minimum	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+Stdev	5.000000e-01	2.000000e+00	4.330127e-01	4.330127e-01	2.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	0.000000e+00	
+
+Output Paraver trace "wait_example_dimemas.prv" generated
+
+#+end_example
+
+It runs fine.
+Let`s simulate it on Simgrid.
+First, we have to convert the prv file to tit.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+perl ../../../getpjdump/prv2tit.pl -i extrae/wait_example > wait_example.tit 2> err
+cat err
+#+end_src
+
+#+RESULTS:
+: Scalar value @ar[$task] better written as $ar[$task] at ../../../getpjdump/prv2tit.pl line 903.
+: Scalar value @ar[$task] better written as $ar[$task] at ../../../getpjdump/prv2tit.pl line 923.
+: Translated events:
+: MPI_Isend, MPI_Irecv, MPI_Finalize, MPI_Init, MPI_Wait
+: Ignored events:
+: 0 (Unresolved), Outside MPI, End, Detailed, Begin, Unresolved, MPI_Comm_size, MPI_Comm_rank
+
+Secondly, we have to create a deployment file.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+rm MN3-deployment.txt
+i=1
+while [ $i -le 1024 ]; do
+    echo 'mn3-'$i >> MN3-deployment.txt
+    i=$((i+1))
+done
+#+end_src
+
+And separate the tit file according to the task number.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+rm task*.tit
+i=0
+while [ $i -lt 4 ]; do
+    grep ^$i' ' wait_example.tit > task$i.tit;
+    echo task$i.tit >> simgrid_input.txt
+    i=$((i+1))
+done
+#+end_src
+
+Lastly, let`s create a platform file.
+
+#+begin_src text :results output :session :exports both  :tangle "./experiments/24-May-2016/wait1/MN3.xml"
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid.dtd">
+<platform version="3">
+<AS  id="AS_mn3"  routing="Full">
+     <cluster id="mn3" prefix="mn3-" suffix="" radical="1-1024" core="16" power="1e9" bw="2048MBps" lat="0.000002s" loopback_bw="4096MBps" loopback_lat="0.000002s"/>
+</AS>
+</platform>
+#+end_src
+
+Tangle it with C-c C-v t.
+Let`s take a look at one tit file to see if we have our extra MPI_Waits.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+cat task0.tit
+#+end_src
+
+#+RESULTS:
+#+begin_example
+0 compute 928678.740267
+0 init
+0 compute 35213.590569
+0 compute 1271.942802
+0 compute 1288.821935
+0 isend 1 4
+0 compute 12495.135812
+0 wait
+0 compute 925.777532
+0 wait
+0 compute 742.967939
+0 wait
+0 compute 737.532286
+0 finalize
+0 compute 33435.845951
+0 compute 10803.503381
+#+end_example
+
+Yes, we do.
+Now, let`s run Simgrid.
+
+#+begin_src sh :results output :exports both
+cd experiments/24-May-2016/wait1
+smpirun -ext smpi_replay -map --cfg=network/model:SMPI --cfg=tracing/smpi/computing:yes --cfg=smpi/cpu_threshold:0 --cfg=tracing/precision:9 --cfg=smpi/bw_factor:0:1.0 --cfg=smpi/lat_factor:0:1.0 --cfg=smpi/send_is_detached_thres:0 --cfg=smpi/async_small_thres:0 --cfg=smpi/ois:0:0:0 --cfg=smpi/os:0:0:0 --cfg=smpi/or:0:0:0 --log=smpi_kernel.thres:warning --cfg=contexts/factory:thread -trace --cfg=tracing/filename:out-simgrid.trace -hostfile MN3-deployment.txt -platform MN3.xml -np 4 ../../../simgrid/SimGrid-3.12/examples/smpi/smpi_replay simgrid_input.txt 2> err
+cat err
+#+end_src
+
+#+RESULTS:
+#+begin_example
+[rank 0] -> mn3-1
+[rank 1] -> mn3-2
+[rank 2] -> mn3-3
+[rank 3] -> mn3-4
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'tracing' to 'yes'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'tracing/filename' to 'smpi_simgrid.trace'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'tracing/smpi' to 'yes'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'tracing/smpi/computing' to 'yes'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/cpu_threshold' to '0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'tracing/precision' to '9'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/bw_factor' to '0:1.0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/lat_factor' to '0:1.0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/send_is_detached_thres' to '0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/async_small_thres' to '0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/ois' to '0:0:0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/os' to '0:0:0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/or' to '0:0:0'
+[0.000000] [xbt_cfg/INFO] Configuration change: Set 'tracing/filename' to 'out-simgrid.trace'
+[mn3-3:2:(0) 0.000955] /home/tiago/trabalhoconclusao/simgrid/SimGrid-3.12/src/xbt/xbt_replay.c:209: [xbt/CRITICAL] Replay error on line 10 of file task2.tit :
+ action wait not preceded by any irecv or isend: 2 wait
+#+end_example
+
+Action wait without previous irecv or isend.
+Apparently, Simgrid does not support extra waits and wait_alls but Dimemas does. 
 
 
